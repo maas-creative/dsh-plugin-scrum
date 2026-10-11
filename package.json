@@ -72,13 +72,18 @@
     "docs/independent-release-evidence.json",
     "docs/independent-implementation-inventory.json",
     "docs/runtime-reference.md",
-    "docs/readme-policy.md"
+    "docs/readme-policy.md",
+    "docs/assets",
+    "docs/visual-assets.md",
+    "scripts/readme-demo.mjs",
+    "docs/assets-manifest.json"
   ],
   "scripts": {
     "test": "node --import ./test-env.mjs --test --test-concurrency=1 *-test.mjs",
     "postinstall": "node ./session-compat.mjs",
     "build:client": "esbuild client-source.js --bundle --format=iife --platform=browser --outfile=client.js",
-    "test:prepare": "node scripts/prepare-tests.mjs"
+    "test:prepare": "node scripts/prepare-tests.mjs",
+    "demo:readme": "node scripts/readme-demo.mjs"
   },
   "engines": {
     "node": ">=24"

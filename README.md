@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/assets/logo.png" alt="Scrum logo" width="112" height="112">
+</p>
+
 # Scrum
 
 **DSHで、計画・担当への委譲・結果回収・成果物確認をつなぐマルチエージェントプラグイン。**
@@ -11,6 +15,17 @@ hdt このプロジェクトの不具合を調査して修正し、テストと�
 `hdt`はHardTackleというScrum独自のモード名の略です。計画から実行・確認まで継続するモードを有効にします。通常の依頼でも担当への委譲は利用できます。
 
 [リリース](https://github.com/maas-creative/dsh-plugin-scrum/releases) · [設定と実行仕様](docs/runtime-reference.md) · [Issues](https://github.com/maas-creative/dsh-plugin-scrum/issues)
+
+![DSH WebでのScrum接続状態、hdt操作、担当一覧](docs/assets/scrum-workspace.png)
+
+*DSH Web上のScrum表示。担当の状態は公開用サンプルです。*
+
+<details>
+<summary>担当ごとのモデル設定を見る</summary>
+
+![DSH Webの役割別モデル選択](docs/assets/worker-models.png)
+
+</details>
 
 ## できること
 

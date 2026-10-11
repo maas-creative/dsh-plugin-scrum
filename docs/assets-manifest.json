@@ -1,0 +1,28 @@
+{
+  "generatedLogos": "built-in imagegen",
+  "screenshots": "Playwright; actual UI with synthetic display data",
+  "assets": [
+    {
+      "file": "logo.png",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 571656,
+      "sha256": "4420440508e93ae81c4b2bda3f4ce00e13d5fc0d6b9ee6c5b37f140962148ab9",
+      "transparentCorner": true
+    },
+    {
+      "file": "scrum-workspace.png",
+      "width": 1600,
+      "height": 760,
+      "bytes": 98176,
+      "sha256": "749fe38f742a09b65dbbc3f4db4c27b15bb4147f296ed2a19c67b3f90f8dd35c"
+    },
+    {
+      "file": "worker-models.png",
+      "width": 1600,
+      "height": 1000,
+      "bytes": 163433,
+      "sha256": "b7f366d587f7162ac398c9e1e107c7682c3658fdeb4edcae5ca0b9050a48f4a4"
+    }
+  ]
+}
