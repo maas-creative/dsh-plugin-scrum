@@ -70,7 +70,9 @@
     "LICENSE",
     "!vendor/public-reader-independent/source/observations/**",
     "docs/independent-release-evidence.json",
-    "docs/independent-implementation-inventory.json"
+    "docs/independent-implementation-inventory.json",
+    "docs/runtime-reference.md",
+    "docs/readme-policy.md"
   ],
   "scripts": {
     "test": "node --import ./test-env.mjs --test --test-concurrency=1 *-test.mjs",
