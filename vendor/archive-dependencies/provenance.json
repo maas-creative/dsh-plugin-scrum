@@ -1,0 +1,26 @@
+{
+  "scope": "Separately licensed npm archive engines; no OMO implementation reused",
+  "dependencies": [
+    {
+      "name": "tar",
+      "version": "7.5.22",
+      "license": "BlueOak-1.0.0",
+      "source": "https://github.com/isaacs/node-tar",
+      "sourceCommit": "2a22bfc5d3a432a606d9da0e2d87ba634aa3b1cb",
+      "registryIntegrity": "sha512-MFO/QzvtAOmJbkhOaCTvbGcFN9L9b+JunIsDwaKljSOdcLMea3NJ1k9Usz/rjdfSXTq4dfzfeS7W4p4YOAAHeA==",
+      "notice": "tar-7.5.22-LICENSE.md",
+      "noticeSha256": "8a1af140fdfbf5afd3df27f7e662f989c5b963a300020dfafce42033cae9e004"
+    },
+    {
+      "name": "yauzl",
+      "version": "3.4.0",
+      "license": "MIT",
+      "source": "https://github.com/thejoshwolfe/yauzl",
+      "sourceCommit": "f5798e15204ffbb9a428b00217e4659684a41b0f",
+      "registryIntegrity": "sha512-jIH9yLR9wqr0wOS0TpBvo/g/2UgZH5qePVbjgRliiF0BYvOZyaBknKsF+x9Iht0O6sqgnB93rCICdOZFecJuDw==",
+      "notice": "yauzl-3.4.0-LICENSE",
+      "noticeSha256": "b303783d5eb7ca50b853ffa5f145e4e7998fab339831d848f507ca6cd970577a"
+    }
+  ],
+  "wholeProjectLicenseAuditComplete": false
+}

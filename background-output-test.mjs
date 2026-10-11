@@ -1,0 +1,11 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {backgroundOutput} from './background-output.mjs';
+test('background output waits for settlement, scopes ownership and filters native transcript',async()=>{
+ let assignment={id:'a',parentSession:'parent',status:'running',runId:'worker'};const runtime={list:()=>[assignment],collect:async()=>{assignment={...assignment,status:'review',result:'done'}},pi:{readMessages:async()=>[{id:'old',role:'assistant',content:[{type:'text',text:'old'}]},{id:'tool',role:'tool',content:[]},{id:'new',role:'assistant',content:[{type:'thinking',text:'private'},{type:'text',text:'final'}]}]}};
+ await assert.rejects(backgroundOutput(runtime,{task_id:'a'},'other'),/owned/);assert.equal((await backgroundOutput(runtime,{task_id:'a',block:true,timeout:1000},'parent')).timedOut,false);
+ const result=await backgroundOutput(runtime,{task_id:'a',full_session:true,since_message_id:'old',from_end:true,message_limit:1},'parent');assert.equal(result.messages.length,1);assert.deepEqual(result.messages[0].content,[{type:'text',text:'final'}]);assert.equal((await backgroundOutput(runtime,{task_id:'a',full_session:true,include_thinking:true,thinking_max_chars:2,from_end:true,message_limit:1},'parent')).messages[0].content[0].text,'pr');
+ await assert.rejects(backgroundOutput(runtime,{task_id:'a',message_limit:201},'parent'),/message_limit/);assignment.status='running';assert.equal((await backgroundOutput(runtime,{task_id:'a',block:true,timeout:0},'parent')).timedOut,true);
+});
+test('full output removes embedded tool parts and zero limit never returns an unbounded transcript',async()=>{
+ const runtime={list:()=>[{id:'a',parentSession:'p',status:'pending',runId:'s'}],pi:{readMessages:async()=>[{id:'1',role:'assistant',content:[{type:'tool_use',name:'secret'},{type:'tool_result',text:'large'},{type:'text',text:'visible'}]}]}};
+ assert.deepEqual((await backgroundOutput(runtime,{task_id:'a',full_session:true},'p')).messages[0].content,[{type:'text',text:'visible'}]);assert.equal((await backgroundOutput(runtime,{task_id:'a',full_session:true,message_limit:0,from_end:true},'p')).messages.length,0);assert.equal((await backgroundOutput(runtime,{task_id:'a',block:true,timeout:0},'p')).timedOut,true);
+});

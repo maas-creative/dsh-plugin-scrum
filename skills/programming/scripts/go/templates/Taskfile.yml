@@ -1,0 +1,10 @@
+version: "3"
+tasks:
+  test:
+    cmds: [go test -race ./...]
+  vet:
+    cmds: [go vet ./...]
+  build:
+    cmds: [go build -o bin/server ./cmd/server]
+  lint:
+    cmds: [golangci-lint run]

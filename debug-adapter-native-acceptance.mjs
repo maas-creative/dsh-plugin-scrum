@@ -1,0 +1,23 @@
+import {spawn,execFileSync} from 'node:child_process';import {once} from 'node:events';import {writeFileSync,mkdirSync,mkdtempSync,rmSync,existsSync} from 'node:fs';import {resolve,join} from 'node:path';import assert from 'node:assert/strict';import {tmpdir} from 'node:os';import {setTimeout as delay} from 'node:timers/promises';
+import {DapFrameParser} from './independent/debug-adapter-framing.mjs';
+const prepared=resolve('work/independent-data-query/venv/bin/python');const root=mkdtempSync(join(tmpdir(),'scrum-debugpy-live-')),python=process.env.SCRUM_DEBUG_PYTHON||(existsSync(prepared)?prepared:'python3');mkdirSync(root,{recursive:true});const program=join(root,'program.py');writeFileSync(program,'value = 40\nvalue += 2\nprint(value)\n');
+const child=spawn(python,['-m','debugpy.adapter'],{cwd:root,stdio:['pipe','pipe','pipe'],detached:true}),closed=once(child,'close'),parser=new DapFrameParser(),pending=new Map(),events=[];let seq=0,stderr='';const ownedPids=new Set();
+child.stderr.on('data',bytes=>{stderr=(stderr+bytes.toString()).slice(-65536)});
+child.stdout.on('data',bytes=>{for(const message of parser.push(bytes)){if(message.type==='response'){const entry=pending.get(message.request_seq);if(entry){pending.delete(message.request_seq);clearTimeout(entry.timer);message.success?entry.resolve(message.body||{}):entry.reject(Error(message.message||'DAP request failed'));}}else if(message.type==='event'){events.push(message);if(message.event==='process'&&Number.isInteger(message.body?.systemProcessId))ownedPids.add(message.body.systemProcessId);}}});
+child.on('close',()=>{for(const entry of pending.values()){clearTimeout(entry.timer);entry.reject(Error('Adapter closed: '+stderr));}pending.clear();});
+function request(command,args={}){return new Promise((resolve,reject)=>{const id=++seq,timer=setTimeout(()=>{pending.delete(id);reject(Error('DAP timeout: '+command+' '+stderr))},15000);pending.set(id,{resolve,reject,timer});const body=JSON.stringify({seq:id,type:'request',command,arguments:args});child.stdin.write(Buffer.from(`Content-Length: ${Buffer.byteLength(body)}\r\n\r\n${body}`));});}
+async function event(name){const deadline=Date.now()+15000;for(;;){const index=events.findIndex(e=>e.event===name);if(index>=0)return events.splice(index,1)[0].body||{};if(Date.now()>deadline)throw Error('Event timeout '+name+' '+stderr);await delay(20);}}
+let passed=false;
+try{
+ const capabilities=await request('initialize',{adapterID:'debugpy',clientID:'scrum-independent-acceptance',linesStartAt1:true,columnsStartAt1:true,pathFormat:'path',supportsRunInTerminalRequest:false});
+ const launching=request('launch',{name:'owned independent debugger acceptance',type:'python',request:'launch',python:[python],program,console:'internalConsole',redirectOutput:true,justMyCode:true,subProcess:false});launching.catch(()=>{});
+ await event('initialized');const breakpoints=await request('setBreakpoints',{source:{path:program},breakpoints:[{line:3}]});await request('configurationDone');await launching;
+ const stopped=await event('stopped');const stack=await request('stackTrace',{threadId:stopped.threadId});const scopes=await request('scopes',{frameId:stack.stackFrames[0].id});const locals=scopes.scopes.find(s=>s.name==='Locals');assert(locals);const variables=await request('variables',{variablesReference:locals.variablesReference});assert.equal(variables.variables.find(v=>v.name==='value')?.value,'42');
+ const evaluated=await request('evaluate',{expression:'value',frameId:stack.stackFrames[0].id,context:'watch'});assert.equal(evaluated.result,'42');await request('continue',{threadId:stopped.threadId});await event('terminated');await request('disconnect',{terminateDebuggee:true});child.stdin.end();await Promise.race([closed,delay(3000).then(()=>{throw Error('Adapter did not exit after disconnect')})]);
+ const result={actualDebugpy:true,version:execFileSync(python,['-c','import debugpy;print(debugpy.__version__)'],{encoding:'utf8'}).trim(),initialize:true,breakpointVerified:breakpoints.breakpoints[0].verified,stopped:true,variablesInspected:true,evaluation:'42',continued:true,terminated:true,disconnected:true,ownedAdapterClosed:true,synthetic:false};writeFileSync(join(root,'proof.json'),JSON.stringify(result,null,2));passed=true;console.log(JSON.stringify(result));
+}finally{
+ if(child.exitCode===null){try{process.kill(-child.pid,'SIGKILL')}catch{}}
+ if(!passed)for(const pid of ownedPids){try{process.kill(pid,'SIGKILL')}catch{}}
+ for(const entry of pending.values()){clearTimeout(entry.timer);entry.reject(Error('Acceptance cleanup'));}pending.clear();
+ rmSync(root,{recursive:true,force:true});
+}

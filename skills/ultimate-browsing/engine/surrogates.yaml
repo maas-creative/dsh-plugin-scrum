@@ -1,0 +1,44 @@
+# Scrum independent infrastructure registry; JSON is valid YAML.
+{
+  "wayback": {
+    "kind": "archive",
+    "enabled": true,
+    "last_verified": null,
+    "discovery": {
+      "url": "https://archive.org/wayback/available?url={target_encoded}",
+      "flag_pointer": "/archived_snapshots/closest/available",
+      "snapshot_url_pointer": "/archived_snapshots/closest/url",
+      "snapshot_timestamp_pointer": "/archived_snapshots/closest/timestamp"
+    },
+    "snapshot_host": "web.archive.org",
+    "min_body_bytes": 128,
+    "require_embedded_target": true
+  },
+  "jina_reader": {
+    "kind": "reader",
+    "enabled": true,
+    "last_verified": "2026-10-11",
+    "fetch": "https://r.jina.ai/{target}",
+    "min_body_bytes": 128
+  },
+  "archive_today": {
+    "kind": "archive",
+    "enabled": true,
+    "last_verified": null,
+    "host_rotation": [
+      "archive.ph",
+      "archive.md",
+      "archive.li",
+      "archive.is"
+    ],
+    "fetch": "https://{host}/newest/{target}",
+    "min_body_bytes": 128
+  },
+  "anon_relay_example": {
+    "kind": "proxy",
+    "enabled": false,
+    "last_verified": null,
+    "fetch": "https://relay.invalid/?u={target_encoded}",
+    "min_body_bytes": 128
+  }
+}

@@ -1,0 +1,3 @@
+export const TODOWRITE_DESCRIPTION='Replace the durable checklist owned by this session. Each item must specify its content and status; priority orders work. Only one item may be in progress. Use an empty list to explicitly clear it. Checklist completion does not establish project completion or artifact acceptance.';
+export function isAtlasBootstrapTodoList(todos){return Array.isArray(todos)&&todos.length===1&&(todos[0].id==='orchestrate-plan'||/^Complete ALL implementation tasks\.?$/i.test(todos[0].content||''));}
+export function hasDetailedTodos(todos){return Array.isArray(todos)&&todos.length>0&&!isAtlasBootstrapTodoList(todos);}

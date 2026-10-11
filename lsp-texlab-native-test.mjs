@@ -1,0 +1,2 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {execFileSync} from 'node:child_process';
+test('actual Texlab server initializes, resolves document symbols and closes owned resources',{timeout:40000},()=>{const proof=JSON.parse(execFileSync(process.execPath,['lsp-texlab-native-acceptance.mjs'],{encoding:'utf8',timeout:35000}));assert.equal(proof.actualLspInitialize,true);assert.equal(proof.documentSymbols,true);assert.equal(proof.ownedServerStopped,true);assert.equal(proof.synthetic,false);});

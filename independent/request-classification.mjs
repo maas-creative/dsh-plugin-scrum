@@ -1,0 +1,4 @@
+// Only typed diagnostic fields may leave the provider boundary.
+function candidates(error){const seen=new Set(),queue=[error],out=[];while(queue.length&&out.length<16){const value=queue.shift();if(!value||typeof value!=='object'||seen.has(value))continue;seen.add(value);out.push(value);queue.push(value.cause,value.error,value.response);}return out;}
+export function getRuntimeFallbackStatusCode(error){for(const value of candidates(error)){for(const key of ['statusCode','status']){const status=value[key];if(Number.isInteger(status)&&status>=100&&status<=599)return status;}}}
+export function getRuntimeFallbackRetryableSignal(error){for(const value of candidates(error)){if(typeof value.isRetryable==='boolean')return value.isRetryable;if(typeof value.retryable==='boolean')return value.retryable;}}

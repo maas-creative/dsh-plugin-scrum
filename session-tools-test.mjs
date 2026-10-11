@@ -1,0 +1,23 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {registerNativeTools} from './native-tools.mjs';
+test('saved sessions support scoped listing, latest messages, durable Todos and case-sensitive search',async()=>{
+ const tools=new Map(),headers=[{id:'one',cwd:'/fixture',createdAt:'2026-10-09T00:00:00Z'},{id:'two',cwd:'/other',createdAt:'2026-10-08T00:00:00Z'}];
+ const events=[{seq:1,type:'user/message',data:{content:'Research'}},{seq:2,type:'todo/write',data:{scrum:{todos:[{id:'t',content:'verify',status:'cancelled',priority:'high'}]}}},{seq:3,type:'assistant/message',data:{message:{content:'research complete'}}}];
+ let closed=0;
+ await registerNativeTools({tools:{register:t=>tools.set(t.name,t)},systemPrompt:{context(){}},on(){},commands:{list:()=>[],register(){}},sessionPersistence:{list:async()=>headers.map(header=>({header,eventCount:events.length})),stat:async id=>{const header=headers.find(h=>h.id===id);return header&&{header}},open:async()=>({read:async()=>({events}),close:async()=>closed++})}});
+ const exec={agent:{session:{header:{cwd:'/fixture'}}}},run=async(name,args)=>JSON.parse(await tools.get(name).execute(args,exec));
+ assert.equal((await run('session_list',{}))[0].id,'one');
+ assert.equal((await run('session_list',{project_path:'/other'}))[0].id,'two');
+ const recent=await run('session_read',{session_id:'one',from_end:true,limit:1,include_todos:true,include_transcript:true});
+ assert.equal(recent.messages[0].seq,3);assert.equal(recent.todos[0].status,'cancelled');assert.equal(recent.transcript.length,3);
+ assert.equal((await run('session_search',{query:'Research',session_id:'one',case_sensitive:true})).length,1);
+ assert.equal((await run('session_search',{query:'Research',session_id:'one'})).length,2);
+ assert.equal((await run('session_read',{session_id:'two'})).length,2);
+ assert.equal((await run('session_info',{session_id:'two'})).header.cwd,'/other');
+ assert.equal((await run('session_search',{query:'Research'})).length,4);
+ await assert.rejects(run('session_list',{limit:-1}),/limit/);
+ await assert.rejects(run('session_list',{from_date:'2026-10-10',to_date:'2026-10-01'}),/日付/);
+ await assert.rejects(run('session_read',{session_id:'one',limit:-1}),/range/);
+ assert.equal(closed,8);
+});

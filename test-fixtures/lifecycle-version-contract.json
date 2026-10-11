@@ -1,0 +1,1355 @@
+{
+  "scope": "Public comparator outputs, no implementation source",
+  "cases": [
+    {
+      "a": "1.0.0",
+      "b": "1.0.0",
+      "comparison": 0,
+      "newer": false
+    },
+    {
+      "a": "1.0.0",
+      "b": "2.0.0",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0",
+      "b": "1.0.1",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0",
+      "b": "1.0.0-alpha",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.0",
+      "b": "1.0.0-alpha.2",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.0",
+      "b": "1.0.0-alpha.10",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.0",
+      "b": "1.0.0-beta",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.0",
+      "b": "1.0.0+build",
+      "comparison": 0,
+      "newer": false
+    },
+    {
+      "a": "1.0.0",
+      "b": "01.0.0",
+      "comparison": 0,
+      "newer": false
+    },
+    {
+      "a": "1.0.0",
+      "b": "1.0.0-01",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.0",
+      "b": " 1.0.0",
+      "comparison": 0,
+      "newer": false
+    },
+    {
+      "a": "1.0.0",
+      "b": "invalid",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0",
+      "b": "v1.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0",
+      "b": "1.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0",
+      "b": "1.0.0-",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "2.0.0",
+      "b": "1.0.0",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "2.0.0",
+      "b": "2.0.0",
+      "comparison": 0,
+      "newer": false
+    },
+    {
+      "a": "2.0.0",
+      "b": "1.0.1",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "2.0.0",
+      "b": "1.0.0-alpha",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "2.0.0",
+      "b": "1.0.0-alpha.2",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "2.0.0",
+      "b": "1.0.0-alpha.10",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "2.0.0",
+      "b": "1.0.0-beta",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "2.0.0",
+      "b": "1.0.0+build",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "2.0.0",
+      "b": "01.0.0",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "2.0.0",
+      "b": "1.0.0-01",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "2.0.0",
+      "b": " 1.0.0",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "2.0.0",
+      "b": "invalid",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "2.0.0",
+      "b": "v1.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "2.0.0",
+      "b": "1.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "2.0.0",
+      "b": "1.0.0-",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.1",
+      "b": "1.0.0",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.1",
+      "b": "2.0.0",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.1",
+      "b": "1.0.1",
+      "comparison": 0,
+      "newer": false
+    },
+    {
+      "a": "1.0.1",
+      "b": "1.0.0-alpha",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.1",
+      "b": "1.0.0-alpha.2",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.1",
+      "b": "1.0.0-alpha.10",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.1",
+      "b": "1.0.0-beta",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.1",
+      "b": "1.0.0+build",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.1",
+      "b": "01.0.0",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.1",
+      "b": "1.0.0-01",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.1",
+      "b": " 1.0.0",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.1",
+      "b": "invalid",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.1",
+      "b": "v1.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.1",
+      "b": "1.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.1",
+      "b": "1.0.0-",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-alpha",
+      "b": "1.0.0",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-alpha",
+      "b": "2.0.0",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-alpha",
+      "b": "1.0.1",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-alpha",
+      "b": "1.0.0-alpha",
+      "comparison": 0,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-alpha",
+      "b": "1.0.0-alpha.2",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-alpha",
+      "b": "1.0.0-alpha.10",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-alpha",
+      "b": "1.0.0-beta",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-alpha",
+      "b": "1.0.0+build",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-alpha",
+      "b": "01.0.0",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-alpha",
+      "b": "1.0.0-01",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-alpha",
+      "b": " 1.0.0",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-alpha",
+      "b": "invalid",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-alpha",
+      "b": "v1.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-alpha",
+      "b": "1.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-alpha",
+      "b": "1.0.0-",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-alpha.2",
+      "b": "1.0.0",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-alpha.2",
+      "b": "2.0.0",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-alpha.2",
+      "b": "1.0.1",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-alpha.2",
+      "b": "1.0.0-alpha",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-alpha.2",
+      "b": "1.0.0-alpha.2",
+      "comparison": 0,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-alpha.2",
+      "b": "1.0.0-alpha.10",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-alpha.2",
+      "b": "1.0.0-beta",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-alpha.2",
+      "b": "1.0.0+build",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-alpha.2",
+      "b": "01.0.0",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-alpha.2",
+      "b": "1.0.0-01",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-alpha.2",
+      "b": " 1.0.0",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-alpha.2",
+      "b": "invalid",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-alpha.2",
+      "b": "v1.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-alpha.2",
+      "b": "1.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-alpha.2",
+      "b": "1.0.0-",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-alpha.10",
+      "b": "1.0.0",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-alpha.10",
+      "b": "2.0.0",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-alpha.10",
+      "b": "1.0.1",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-alpha.10",
+      "b": "1.0.0-alpha",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-alpha.10",
+      "b": "1.0.0-alpha.2",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-alpha.10",
+      "b": "1.0.0-alpha.10",
+      "comparison": 0,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-alpha.10",
+      "b": "1.0.0-beta",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-alpha.10",
+      "b": "1.0.0+build",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-alpha.10",
+      "b": "01.0.0",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-alpha.10",
+      "b": "1.0.0-01",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-alpha.10",
+      "b": " 1.0.0",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-alpha.10",
+      "b": "invalid",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-alpha.10",
+      "b": "v1.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-alpha.10",
+      "b": "1.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-alpha.10",
+      "b": "1.0.0-",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-beta",
+      "b": "1.0.0",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-beta",
+      "b": "2.0.0",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-beta",
+      "b": "1.0.1",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-beta",
+      "b": "1.0.0-alpha",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-beta",
+      "b": "1.0.0-alpha.2",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-beta",
+      "b": "1.0.0-alpha.10",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-beta",
+      "b": "1.0.0-beta",
+      "comparison": 0,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-beta",
+      "b": "1.0.0+build",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-beta",
+      "b": "01.0.0",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-beta",
+      "b": "1.0.0-01",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-beta",
+      "b": " 1.0.0",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-beta",
+      "b": "invalid",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-beta",
+      "b": "v1.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-beta",
+      "b": "1.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-beta",
+      "b": "1.0.0-",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0+build",
+      "b": "1.0.0",
+      "comparison": 0,
+      "newer": false
+    },
+    {
+      "a": "1.0.0+build",
+      "b": "2.0.0",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0+build",
+      "b": "1.0.1",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0+build",
+      "b": "1.0.0-alpha",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.0+build",
+      "b": "1.0.0-alpha.2",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.0+build",
+      "b": "1.0.0-alpha.10",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.0+build",
+      "b": "1.0.0-beta",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.0+build",
+      "b": "1.0.0+build",
+      "comparison": 0,
+      "newer": false
+    },
+    {
+      "a": "1.0.0+build",
+      "b": "01.0.0",
+      "comparison": 0,
+      "newer": false
+    },
+    {
+      "a": "1.0.0+build",
+      "b": "1.0.0-01",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "1.0.0+build",
+      "b": " 1.0.0",
+      "comparison": 0,
+      "newer": false
+    },
+    {
+      "a": "1.0.0+build",
+      "b": "invalid",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0+build",
+      "b": "v1.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0+build",
+      "b": "1.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0+build",
+      "b": "1.0.0-",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "01.0.0",
+      "b": "1.0.0",
+      "comparison": 0,
+      "newer": false
+    },
+    {
+      "a": "01.0.0",
+      "b": "2.0.0",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "01.0.0",
+      "b": "1.0.1",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "01.0.0",
+      "b": "1.0.0-alpha",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "01.0.0",
+      "b": "1.0.0-alpha.2",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "01.0.0",
+      "b": "1.0.0-alpha.10",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "01.0.0",
+      "b": "1.0.0-beta",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "01.0.0",
+      "b": "1.0.0+build",
+      "comparison": 0,
+      "newer": false
+    },
+    {
+      "a": "01.0.0",
+      "b": "01.0.0",
+      "comparison": 0,
+      "newer": false
+    },
+    {
+      "a": "01.0.0",
+      "b": "1.0.0-01",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": "01.0.0",
+      "b": " 1.0.0",
+      "comparison": 0,
+      "newer": false
+    },
+    {
+      "a": "01.0.0",
+      "b": "invalid",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "01.0.0",
+      "b": "v1.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "01.0.0",
+      "b": "1.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "01.0.0",
+      "b": "1.0.0-",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-01",
+      "b": "1.0.0",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-01",
+      "b": "2.0.0",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-01",
+      "b": "1.0.1",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-01",
+      "b": "1.0.0-alpha",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-01",
+      "b": "1.0.0-alpha.2",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-01",
+      "b": "1.0.0-alpha.10",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-01",
+      "b": "1.0.0-beta",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-01",
+      "b": "1.0.0+build",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-01",
+      "b": "01.0.0",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-01",
+      "b": "1.0.0-01",
+      "comparison": 0,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-01",
+      "b": " 1.0.0",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": "1.0.0-01",
+      "b": "invalid",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-01",
+      "b": "v1.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-01",
+      "b": "1.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-01",
+      "b": "1.0.0-",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": " 1.0.0",
+      "b": "1.0.0",
+      "comparison": 0,
+      "newer": false
+    },
+    {
+      "a": " 1.0.0",
+      "b": "2.0.0",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": " 1.0.0",
+      "b": "1.0.1",
+      "comparison": -1,
+      "newer": true
+    },
+    {
+      "a": " 1.0.0",
+      "b": "1.0.0-alpha",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": " 1.0.0",
+      "b": "1.0.0-alpha.2",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": " 1.0.0",
+      "b": "1.0.0-alpha.10",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": " 1.0.0",
+      "b": "1.0.0-beta",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": " 1.0.0",
+      "b": "1.0.0+build",
+      "comparison": 0,
+      "newer": false
+    },
+    {
+      "a": " 1.0.0",
+      "b": "01.0.0",
+      "comparison": 0,
+      "newer": false
+    },
+    {
+      "a": " 1.0.0",
+      "b": "1.0.0-01",
+      "comparison": 1,
+      "newer": false
+    },
+    {
+      "a": " 1.0.0",
+      "b": " 1.0.0",
+      "comparison": 0,
+      "newer": false
+    },
+    {
+      "a": " 1.0.0",
+      "b": "invalid",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": " 1.0.0",
+      "b": "v1.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": " 1.0.0",
+      "b": "1.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": " 1.0.0",
+      "b": "1.0.0-",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "invalid",
+      "b": "1.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "invalid",
+      "b": "2.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "invalid",
+      "b": "1.0.1",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "invalid",
+      "b": "1.0.0-alpha",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "invalid",
+      "b": "1.0.0-alpha.2",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "invalid",
+      "b": "1.0.0-alpha.10",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "invalid",
+      "b": "1.0.0-beta",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "invalid",
+      "b": "1.0.0+build",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "invalid",
+      "b": "01.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "invalid",
+      "b": "1.0.0-01",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "invalid",
+      "b": " 1.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "invalid",
+      "b": "invalid",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "invalid",
+      "b": "v1.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "invalid",
+      "b": "1.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "invalid",
+      "b": "1.0.0-",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "v1.0.0",
+      "b": "1.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "v1.0.0",
+      "b": "2.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "v1.0.0",
+      "b": "1.0.1",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "v1.0.0",
+      "b": "1.0.0-alpha",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "v1.0.0",
+      "b": "1.0.0-alpha.2",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "v1.0.0",
+      "b": "1.0.0-alpha.10",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "v1.0.0",
+      "b": "1.0.0-beta",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "v1.0.0",
+      "b": "1.0.0+build",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "v1.0.0",
+      "b": "01.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "v1.0.0",
+      "b": "1.0.0-01",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "v1.0.0",
+      "b": " 1.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "v1.0.0",
+      "b": "invalid",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "v1.0.0",
+      "b": "v1.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "v1.0.0",
+      "b": "1.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "v1.0.0",
+      "b": "1.0.0-",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0",
+      "b": "1.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0",
+      "b": "2.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0",
+      "b": "1.0.1",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0",
+      "b": "1.0.0-alpha",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0",
+      "b": "1.0.0-alpha.2",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0",
+      "b": "1.0.0-alpha.10",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0",
+      "b": "1.0.0-beta",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0",
+      "b": "1.0.0+build",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0",
+      "b": "01.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0",
+      "b": "1.0.0-01",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0",
+      "b": " 1.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0",
+      "b": "invalid",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0",
+      "b": "v1.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0",
+      "b": "1.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0",
+      "b": "1.0.0-",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-",
+      "b": "1.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-",
+      "b": "2.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-",
+      "b": "1.0.1",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-",
+      "b": "1.0.0-alpha",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-",
+      "b": "1.0.0-alpha.2",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-",
+      "b": "1.0.0-alpha.10",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-",
+      "b": "1.0.0-beta",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-",
+      "b": "1.0.0+build",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-",
+      "b": "01.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-",
+      "b": "1.0.0-01",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-",
+      "b": " 1.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-",
+      "b": "invalid",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-",
+      "b": "v1.0.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-",
+      "b": "1.0",
+      "comparison": null,
+      "newer": false
+    },
+    {
+      "a": "1.0.0-",
+      "b": "1.0.0-",
+      "comparison": null,
+      "newer": false
+    }
+  ]
+}

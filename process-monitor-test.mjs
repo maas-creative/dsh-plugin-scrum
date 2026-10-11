@@ -1,0 +1,14 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {ProcessMonitor} from './process-monitor.mjs';
+import {BrowserSessions,browserDoctor} from './browser.mjs';
+import {TerminalSessions,terminalDoctor} from './terminal.mjs';
+test('command monitoring captures streams and bounds sequence ring',async()=>{
+ const monitor=new ProcessMonitor({maxBytes:100,maxRecords:2});
+ try{let job=monitor.start({command:process.execPath,args:['-e',"process.stdout.write('stdout');process.stderr.write('stderr')"]});job=await monitor.wait(job.id);assert.equal(job.status,'exited');assert.deepEqual(new Set(job.records.map(r=>r.stream)),new Set(['stdout','stderr']));job=monitor.start({command:process.execPath,args:['-e',"setInterval(()=>process.stdout.write('tick'),10)"]});const deadline=Date.now()+5000;while(Date.now()<deadline&&!monitor.read(job.id).truncated)await new Promise(r=>setTimeout(r,20));const snapshot=monitor.read(job.id);assert(snapshot.truncated);assert(snapshot.records.length<=2);assert.equal(monitor.read(job.id,{after:snapshot.nextSeq}).records.length,0);await monitor.stop(job.id);assert.equal(monitor.read(job.id).status,'exited');}finally{await monitor.dispose()}
+});
+test('real PTY captures output',async t=>{const doctor=await terminalDoctor();if(!doctor.available)return t.skip(doctor.remediation);const terminals=new TerminalSessions();try{const job=await terminals.open({command:'/bin/sh',args:['-c','printf PTY-real; exit 0']});for(let i=0;i<40&&terminals.read(job.id).status==='running';i++)await new Promise(r=>setTimeout(r,50));const result=terminals.read(job.id);assert(result.records.some(r=>r.text.includes('PTY-real')));assert.equal(result.status,'exited')}finally{terminals.dispose()}});
+test('browser retains real page and JS state across calls',async t=>{const doctor=await browserDoctor();if(!doctor.available)return t.skip(doctor.remediation);const sessions=new BrowserSessions();try{await sessions.connect('one',{mode:'owned'});assert.equal(await sessions.execute('one','globalThis.counter=7;globalThis.page=await browser.newPage();await page.setContent("<h1>Real page</h1>");return counter'),7);assert.deepEqual(await sessions.execute('one','return {counter:++counter,text:await page.locator("h1").textContent()}'),{counter:8,text:'Real page'})}finally{await sessions.dispose()}});
+test('stop terminates child descendants',async()=>{
+ const monitor=new ProcessMonitor();try{const job=monitor.start({command:process.execPath,args:['-e',`const {spawn}=require('node:child_process');const child=spawn(process.execPath,['-e','setInterval(()=>{},1000)'],{stdio:'ignore'});console.log(child.pid);setInterval(()=>{},1000)`]});let pid;for(let i=0;i<40&&!pid;i++){await new Promise(r=>setTimeout(r,25));pid=Number(monitor.read(job.id).records.find(r=>r.stream==='stdout')?.text.trim())}assert(pid>0);await monitor.stop(job.id);assert.throws(()=>process.kill(pid,0),/ESRCH/)}finally{await monitor.dispose()}
+});

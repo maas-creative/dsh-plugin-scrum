@@ -1,0 +1,6 @@
+# Local Python caches and OS metadata are not source artifacts.
+__pycache__/
+*.py[cod]
+.DS_Store
+# Keep private environments separate from the published skill.
+.venv/

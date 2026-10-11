@@ -1,0 +1,1491 @@
+[
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "x.ts",
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": [
+      {
+        "filePath": "x.ts",
+        "before": "old",
+        "after": "new"
+      }
+    ],
+    "actual": [
+      {
+        "filePath": "x.ts",
+        "before": "old",
+        "after": "new"
+      }
+    ]
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "file_path": "x.ts",
+          "before": "",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": [
+      {
+        "filePath": "x.ts",
+        "before": "",
+        "after": "new"
+      }
+    ],
+    "actual": [
+      {
+        "filePath": "x.ts",
+        "before": "",
+        "after": "new"
+      }
+    ]
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "x.ts",
+          "type": "delete",
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {
+      "patch": "*** Begin Patch\n*** Add File: y.ts\n+x\n*** End Patch"
+    },
+    "expected": [
+      {
+        "filePath": "y.ts",
+        "before": "",
+        "after": "x\n"
+      }
+    ],
+    "actual": [
+      {
+        "filePath": "y.ts",
+        "before": "",
+        "after": "x\n"
+      }
+    ]
+  },
+  {
+    "meta": {},
+    "args": {
+      "patch": "*** Begin Patch\n*** Add File: x.ts\n+// hi\n+const x=1;\n*** End Patch"
+    },
+    "expected": [
+      {
+        "filePath": "x.ts",
+        "before": "",
+        "after": "// hi\nconst x=1;\n"
+      }
+    ],
+    "actual": [
+      {
+        "filePath": "x.ts",
+        "before": "",
+        "after": "// hi\nconst x=1;\n"
+      }
+    ]
+  },
+  {
+    "meta": {},
+    "args": {
+      "patch": "*** Begin Patch\n*** Update File: x.ts\n@@\n const x=1;\n-// old\n+// new\n*** End Patch"
+    },
+    "expected": [
+      {
+        "filePath": "x.ts",
+        "before": "// old\n",
+        "after": "// new\n"
+      }
+    ],
+    "actual": [
+      {
+        "filePath": "x.ts",
+        "before": "// old\n",
+        "after": "// new\n"
+      }
+    ]
+  },
+  {
+    "meta": {},
+    "args": {
+      "patch": "*** Begin Patch\n*** Delete File: x.ts\n*** End Patch"
+    },
+    "expected": [],
+    "actual": []
+  },
+  {
+    "meta": {},
+    "args": {
+      "patchText": "*** Begin Patch\n*** Add File: x.ts\n+// hi\n+const x=1;\n*** End Patch"
+    },
+    "expected": [
+      {
+        "filePath": "x.ts",
+        "before": "",
+        "after": "// hi\nconst x=1;\n"
+      }
+    ],
+    "actual": [
+      {
+        "filePath": "x.ts",
+        "before": "",
+        "after": "// hi\nconst x=1;\n"
+      }
+    ]
+  },
+  {
+    "meta": {},
+    "args": {
+      "patchText": "*** Begin Patch\n*** Update File: x.ts\n@@\n const x=1;\n-// old\n+// new\n*** End Patch"
+    },
+    "expected": [
+      {
+        "filePath": "x.ts",
+        "before": "// old\n",
+        "after": "// new\n"
+      }
+    ],
+    "actual": [
+      {
+        "filePath": "x.ts",
+        "before": "// old\n",
+        "after": "// new\n"
+      }
+    ]
+  },
+  {
+    "meta": {},
+    "args": {
+      "patchText": "*** Begin Patch\n*** Delete File: x.ts\n*** End Patch"
+    },
+    "expected": [],
+    "actual": []
+  },
+  {
+    "meta": {},
+    "args": {
+      "input": "*** Begin Patch\n*** Add File: x.ts\n+// hi\n+const x=1;\n*** End Patch"
+    },
+    "expected": [
+      {
+        "filePath": "x.ts",
+        "before": "",
+        "after": "// hi\nconst x=1;\n"
+      }
+    ],
+    "actual": [
+      {
+        "filePath": "x.ts",
+        "before": "",
+        "after": "// hi\nconst x=1;\n"
+      }
+    ]
+  },
+  {
+    "meta": {},
+    "args": {
+      "input": "*** Begin Patch\n*** Update File: x.ts\n@@\n const x=1;\n-// old\n+// new\n*** End Patch"
+    },
+    "expected": [
+      {
+        "filePath": "x.ts",
+        "before": "// old\n",
+        "after": "// new\n"
+      }
+    ],
+    "actual": [
+      {
+        "filePath": "x.ts",
+        "before": "// old\n",
+        "after": "// new\n"
+      }
+    ]
+  },
+  {
+    "meta": {},
+    "args": {
+      "input": "*** Begin Patch\n*** Delete File: x.ts\n*** End Patch"
+    },
+    "expected": [],
+    "actual": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "",
+          "before": "",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": [
+      {
+        "filePath": "",
+        "before": "",
+        "after": "new"
+      }
+    ]
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "",
+          "before": null,
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "",
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": [
+      {
+        "filePath": "",
+        "before": "old",
+        "after": "new"
+      }
+    ]
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "",
+          "type": "add",
+          "before": "",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": [
+      {
+        "filePath": "",
+        "before": "",
+        "after": "new"
+      }
+    ]
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "",
+          "type": "add",
+          "before": null,
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "",
+          "type": "add",
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": [
+      {
+        "filePath": "",
+        "before": "old",
+        "after": "new"
+      }
+    ]
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "",
+          "type": "update",
+          "before": "",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": [
+      {
+        "filePath": "",
+        "before": "",
+        "after": "new"
+      }
+    ]
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "",
+          "type": "update",
+          "before": null,
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "",
+          "type": "update",
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": [
+      {
+        "filePath": "",
+        "before": "old",
+        "after": "new"
+      }
+    ]
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "",
+          "type": "delete",
+          "before": "",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "",
+          "type": "delete",
+          "before": null,
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "",
+          "type": "delete",
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "",
+          "type": "deleted",
+          "before": "",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": [
+      {
+        "filePath": "",
+        "before": "",
+        "after": "new"
+      }
+    ]
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "",
+          "type": "deleted",
+          "before": null,
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "",
+          "type": "deleted",
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": [
+      {
+        "filePath": "",
+        "before": "old",
+        "after": "new"
+      }
+    ]
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "x.ts",
+          "before": "",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": [
+      {
+        "filePath": "x.ts",
+        "before": "",
+        "after": "new"
+      }
+    ]
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "x.ts",
+          "before": null,
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "x.ts",
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": [
+      {
+        "filePath": "x.ts",
+        "before": "old",
+        "after": "new"
+      }
+    ]
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "x.ts",
+          "type": "add",
+          "before": "",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": [
+      {
+        "filePath": "x.ts",
+        "before": "",
+        "after": "new"
+      }
+    ]
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "x.ts",
+          "type": "add",
+          "before": null,
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "x.ts",
+          "type": "add",
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": [
+      {
+        "filePath": "x.ts",
+        "before": "old",
+        "after": "new"
+      }
+    ]
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "x.ts",
+          "type": "update",
+          "before": "",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": [
+      {
+        "filePath": "x.ts",
+        "before": "",
+        "after": "new"
+      }
+    ]
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "x.ts",
+          "type": "update",
+          "before": null,
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "x.ts",
+          "type": "update",
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": [
+      {
+        "filePath": "x.ts",
+        "before": "old",
+        "after": "new"
+      }
+    ]
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "x.ts",
+          "type": "delete",
+          "before": "",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "x.ts",
+          "type": "delete",
+          "before": null,
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "x.ts",
+          "type": "delete",
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "x.ts",
+          "type": "deleted",
+          "before": "",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": [
+      {
+        "filePath": "x.ts",
+        "before": "",
+        "after": "new"
+      }
+    ]
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "x.ts",
+          "type": "deleted",
+          "before": null,
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "x.ts",
+          "type": "deleted",
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": [
+      {
+        "filePath": "x.ts",
+        "before": "old",
+        "after": "new"
+      }
+    ]
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": " x.ts ",
+          "before": "",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": [
+      {
+        "filePath": " x.ts ",
+        "before": "",
+        "after": "new"
+      }
+    ]
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": " x.ts ",
+          "before": null,
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": " x.ts ",
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": [
+      {
+        "filePath": " x.ts ",
+        "before": "old",
+        "after": "new"
+      }
+    ]
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": " x.ts ",
+          "type": "add",
+          "before": "",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": [
+      {
+        "filePath": " x.ts ",
+        "before": "",
+        "after": "new"
+      }
+    ]
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": " x.ts ",
+          "type": "add",
+          "before": null,
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": " x.ts ",
+          "type": "add",
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": [
+      {
+        "filePath": " x.ts ",
+        "before": "old",
+        "after": "new"
+      }
+    ]
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": " x.ts ",
+          "type": "update",
+          "before": "",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": [
+      {
+        "filePath": " x.ts ",
+        "before": "",
+        "after": "new"
+      }
+    ]
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": " x.ts ",
+          "type": "update",
+          "before": null,
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": " x.ts ",
+          "type": "update",
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": [
+      {
+        "filePath": " x.ts ",
+        "before": "old",
+        "after": "new"
+      }
+    ]
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": " x.ts ",
+          "type": "delete",
+          "before": "",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": " x.ts ",
+          "type": "delete",
+          "before": null,
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": " x.ts ",
+          "type": "delete",
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": " x.ts ",
+          "type": "deleted",
+          "before": "",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": [
+      {
+        "filePath": " x.ts ",
+        "before": "",
+        "after": "new"
+      }
+    ]
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": " x.ts ",
+          "type": "deleted",
+          "before": null,
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": " x.ts ",
+          "type": "deleted",
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": [
+      {
+        "filePath": " x.ts ",
+        "before": "old",
+        "after": "new"
+      }
+    ]
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": null,
+          "before": "",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": null,
+          "before": null,
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": null,
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": null,
+          "type": "add",
+          "before": "",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": null,
+          "type": "add",
+          "before": null,
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": null,
+          "type": "add",
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": null,
+          "type": "update",
+          "before": "",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": null,
+          "type": "update",
+          "before": null,
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": null,
+          "type": "update",
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": null,
+          "type": "delete",
+          "before": "",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": null,
+          "type": "delete",
+          "before": null,
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": null,
+          "type": "delete",
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": null,
+          "type": "deleted",
+          "before": "",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": null,
+          "type": "deleted",
+          "before": null,
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": null,
+          "type": "deleted",
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": 5,
+          "before": "",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": 5,
+          "before": null,
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": 5,
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": 5,
+          "type": "add",
+          "before": "",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": 5,
+          "type": "add",
+          "before": null,
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": 5,
+          "type": "add",
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": 5,
+          "type": "update",
+          "before": "",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": 5,
+          "type": "update",
+          "before": null,
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": 5,
+          "type": "update",
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": 5,
+          "type": "delete",
+          "before": "",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": 5,
+          "type": "delete",
+          "before": null,
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": 5,
+          "type": "delete",
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": 5,
+          "type": "deleted",
+          "before": "",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": 5,
+          "type": "deleted",
+          "before": null,
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": 5,
+          "type": "deleted",
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": []
+  },
+  {
+    "meta": {
+      "files": [
+        {
+          "path": "path.ts",
+          "filePath": "camel.ts",
+          "file_path": "snake.ts",
+          "before": "old",
+          "after": "new"
+        }
+      ]
+    },
+    "args": {},
+    "expected": [
+      {
+        "filePath": "camel.ts",
+        "before": "old",
+        "after": "new"
+      }
+    ]
+  },
+  {
+    "meta": {},
+    "args": {
+      "patch": "*** Begin Patch\n*** Update File: x.ts\n*** Move to: y.ts\n@@\n-old\n+new\n*** End Patch"
+    },
+    "expected": [
+      {
+        "filePath": "y.ts",
+        "before": "old\n",
+        "after": "new\n"
+      }
+    ]
+  },
+  {
+    "meta": {},
+    "args": {
+      "patch": "*** Begin Patch\n*** Add File: x.ts\n+\n+x\n+\n*** End Patch"
+    },
+    "expected": [
+      {
+        "filePath": "x.ts",
+        "before": "",
+        "after": "\nx\n\n"
+      }
+    ]
+  },
+  {
+    "meta": {},
+    "args": {
+      "patch": "*** Begin Patch\n*** Update File: x.ts\n@@\n unchanged\n*** End Patch"
+    },
+    "expected": []
+  },
+  {
+    "meta": {},
+    "args": {
+      "patch": "*** Begin Patch\n*** Add File: x.ts\n+x\n*** Delete File: y.ts\n*** End Patch"
+    },
+    "expected": [
+      {
+        "filePath": "x.ts",
+        "before": "",
+        "after": "x\n"
+      }
+    ]
+  },
+  {
+    "meta": {},
+    "args": {
+      "patch": "*** Begin Patch\n*** Add File: x.ts\n+x\n*** Add File: y.ts\n+y\n*** End Patch"
+    },
+    "expected": [
+      {
+        "filePath": "x.ts",
+        "before": "",
+        "after": "x\n"
+      },
+      {
+        "filePath": "y.ts",
+        "before": "",
+        "after": "y\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "source": "https://github.com/GroepOnline/pi-agent-orchestrator",
+  "commit": "7208bdb089f15c7d371407531d53394fb2a61f6a",
+  "license": "MIT",
+  "entryExport": "createWorktree",
+  "exactReproduction": true,
+  "existingSha256": "6c973d17a5f50c265525bdbf068013dffcfcde33480d0116c2a3f26c5b449d34",
+  "notice": "vendor/LICENSE.orchestrator",
+  "noticeSha256": "c916444d5de0906391c68d02d8a23a071f561384405ddcacf8499ae014da03e3",
+  "buildProof": "work/independent-vendor-rebuild/worktree-proof.json",
+  "wholeProjectAuditComplete": false
+}

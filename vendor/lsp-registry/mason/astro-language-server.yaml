@@ -1,0 +1,24 @@
+---
+name: astro-language-server
+description: The Astro language server, its structure is inspired by the Svelte Language Server.
+homepage: https://github.com/withastro/language-tools
+licenses:
+  - MIT
+languages:
+  - Astro
+categories:
+  - LSP
+
+source:
+  id: pkg:npm/%40astrojs/language-server@2.17.1
+  extra_packages:
+    # Not support typescript v7 yet.
+    # See https://github.com/withastro/roadmap/discussions/1321
+    - "typescript@6.0.3"
+    - "@astrojs/ts-plugin"
+
+bin:
+  astro-ls: npm:astro-ls
+
+neovim:
+  lspconfig: astro

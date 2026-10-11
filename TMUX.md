@@ -1,0 +1,11 @@
+# Native tmux adapter
+
+`interactive_bash` accepts tmux subcommands without a `tmux` prefix. Supported operations are new-session/new, new-window/neww, split-window/splitw, send-keys/send, resize-pane/resizep, select-layout/selectl, kill-pane/killp, kill-window/killw, and kill-session. Targets must belong to the current native session or its children. Capture commands use `tmux_output`; kill-server is prohibited. Commands are passed as argument arrays, and interactive shells use the existing process sandbox adapter.
+
+The native tools `tmux_create`, `tmux_input`, `tmux_resize`, `tmux_layout`, `tmux_output`, `tmux_status`, and `tmux_close` expose the same owned resources. `scrum-doctor` diagnoses tmux availability and version.
+
+Enable `.omo/omo.json` with `{"tmux":{"enabled":true}}` to place native agent event views. Views display actual committed session events; they do not start a second writer for the agent. Agent disposal closes its pane. Parent disposal closes the parent's own panes and child panes. Configuration uses the pinned layout, size, minimum width, and isolation fields. Native inline placement splits the owned parent task view; window placement creates an owned window. The native SDK has no preexisting operator terminal pane, so the manager creates its own detached container. The status result contains the socket and session names for an operator to attach with `tmux -L <socket> attach-session -t <session>`.
+
+Each SDK root session uses a separate socket and registry namespace. Persisted random pane tags are checked before every operation and cleanup. Restart adopts matching owned tags from a dead host and refuses takeover from an active host. Missing or retagged panes are retired; retagged panes and their live views remain untouched. Automatic placement recreates a missing view when the agent runs again. Native placement bounds the grid to four panes and checks minimum dimensions before splitting. Event view files are bounded to about 1 MiB.
+
+Pinned tmux-core source: `59d23b5c1ddc2a02210ede4cb485f88996fd02bd`. Build inputs and hashes are recorded in `vendor/omo/tmux-core.provenance.json`; reproduce with `work/scrum-implementation/tmux-build.mjs` from the project root.

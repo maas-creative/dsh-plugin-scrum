@@ -1,0 +1,105 @@
+{
+  "source": "https://github.com/code-yeongyu/coding-agent-sessions-ts",
+  "commit": "dcb9cef579a53d7bec81baadd69b8445acf9d972",
+  "license": "MIT",
+  "modifications": [
+    {
+      "path": "src/payloads.ts",
+      "change": "Provide installed launcher hints and shell-quote untrusted session identifiers"
+    },
+    {
+      "path": "src/scanners/index.ts",
+      "change": "Add oh-my-pi and gajae-code platform registrations"
+    },
+    {
+      "path": "src/scanners/generic.ts",
+      "change": "Add observed .omp/agent and .gjc/agent JSONL session roots"
+    }
+  ],
+  "build": {
+    "tool": "esbuild",
+    "version": "0.28.2",
+    "target": "node24",
+    "format": "esm",
+    "entry": "src/cli.ts"
+  },
+  "inputs": [
+    {
+      "path": "vendor/session-finder-independent/src/json.ts",
+      "sha256": "7ab9fc2da9ed1956dbeac8533a1effe8dae6febccf3cd03e9ef36e2a30d431ea"
+    },
+    {
+      "path": "vendor/session-finder-independent/src/content.ts",
+      "sha256": "70ca519d506f0c5732958ef7e45680dd58cc3229396e3df08846beeb5d0df5d1"
+    },
+    {
+      "path": "vendor/session-finder-independent/src/fs.ts",
+      "sha256": "6e0252fc2f3139a93642b19d1382b0d886813f15408a8fe2d92bcaa01184f01e"
+    },
+    {
+      "path": "vendor/session-finder-independent/src/time.ts",
+      "sha256": "15d7970b4cd9588a1c36ee9e17a0b6066a043df418c9af7eedcc953c0487de8f"
+    },
+    {
+      "path": "vendor/session-finder-independent/src/event-text.ts",
+      "sha256": "0bc18b6988450a3adde6bf22350e7765e38238f00b4569f00ed34187f22148fb"
+    },
+    {
+      "path": "vendor/session-finder-independent/src/scanners/jsonl.ts",
+      "sha256": "2f2e78446d96bba2c1586baee5c7167eb4c7dbebe55b4762c0c2e746d1d5e157"
+    },
+    {
+      "path": "vendor/session-finder-independent/src/scanners/codex.ts",
+      "sha256": "eb768cb61ce05062a984ca75ef1e6ede1d7ec1981ae2070a41f23711faaa0d40"
+    },
+    {
+      "path": "vendor/session-finder-independent/src/scanners/claude.ts",
+      "sha256": "b17772434dc0d9ef73a2f5c3754986332ff72c344aaa40ca6596cb8f8b616ba2"
+    },
+    {
+      "path": "vendor/session-finder-independent/src/scanners/aside.ts",
+      "sha256": "5481142c6c28757c94dcc0dbdf2cc5d53cd5fb51bfb6c8f84eef00407c5a82bd"
+    },
+    {
+      "path": "vendor/session-finder-independent/src/scanners/opencode.ts",
+      "sha256": "5d1d826617839b68e96ef44a34c330ff693b6ecfdd1f50542815a2e8dbf947d7"
+    },
+    {
+      "path": "vendor/session-finder-independent/src/scanners/generic.ts",
+      "sha256": "d444269d8313947fbef0bbb3c24f9e968286d838228758d5750c4530bcdd6034"
+    },
+    {
+      "path": "vendor/session-finder-independent/src/scanners/kodu.ts",
+      "sha256": "f0452708117121e2954a87dd1a4cf144660efc9f9c50de13a0e7c93e251e3c20"
+    },
+    {
+      "path": "vendor/session-finder-independent/src/scanners/kiro.ts",
+      "sha256": "2b9c0d34ee2bfa692944d0faf22e51ddf0d779bd6ba437c91135d67e74e4ec07"
+    },
+    {
+      "path": "vendor/session-finder-independent/src/scanners/sqlite.ts",
+      "sha256": "36be38fac19fac2be2119232d6734b52e0b9d807b179c923cf5f7f5f3d451b05"
+    },
+    {
+      "path": "vendor/session-finder-independent/src/scanners/index.ts",
+      "sha256": "39a29b30fe41955fb0827353cbe33cd54d842c64188ac56f008aa5f889f6cef8"
+    },
+    {
+      "path": "vendor/session-finder-independent/src/arg-parser.ts",
+      "sha256": "28b560afd520979c5e405e72b6b399fede9d8ad19cf487641b6516c8f37ab21d"
+    },
+    {
+      "path": "vendor/session-finder-independent/src/payloads.ts",
+      "sha256": "4261e32c11e1fce860bd4a45a18c1c4cc1101a40a45645c6790ddb9bf0764140"
+    },
+    {
+      "path": "vendor/session-finder-independent/src/cli.ts",
+      "sha256": "43df5cf3bfd0512360175aa4e54539843034a9550aaf4d8bf31a25842d72e7c8"
+    }
+  ],
+  "output": {
+    "path": "vendor/session-finder-independent/runtime/cli.mjs",
+    "sha256": "095911457ce64d4e1b2dd051a3b0816fbedbb05a97645d1f3a7c1b10cafb04e9"
+  },
+  "functionalAcceptanceComplete": false
+}

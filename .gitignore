@@ -1,0 +1,25 @@
+
+node_modules/
+.test-tmp/
+.development/
+*.tgz
+
+# Private acceptance work, live state and historical protected source snapshots.
+work/
+.scrum/
+.playwright-cli/
+vendor/omo/
+vendor/lifecycle/
+vendor/desktop/
+.DS_Store
+
+# Generated public-reader observations are execution records, not preferred source.
+vendor/public-reader-independent/source/observations/
+
+# Interpreter caches are generated artifacts and can retain local source paths.
+__pycache__/
+*.pyc
+*.pyo
+
+.test-venv/
+.test-tools/

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Scrum implementation planning"
+  short_description: "Plan the full output and its acceptance checks"
+  default_prompt: "Plan the requested result through implementation, verification and delivery using the existing model and delegation policy."

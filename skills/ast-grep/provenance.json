@@ -1,0 +1,112 @@
+{
+  "source": "https://github.com/code-yeongyu/ast-grep-skill",
+  "commit": "3148c69c370a51afb661b9f37879c0bd7cf0cc3b",
+  "license": "MIT",
+  "fullAcceptanceComplete": false,
+  "files": [
+    {
+      "path": "skills/ast-grep/LICENSE",
+      "sha256": "b083425948376611de9b92b0aeb7377e604505756ea427e541a34d9b030d4dc1",
+      "upstreamSha256": "b083425948376611de9b92b0aeb7377e604505756ea427e541a34d9b030d4dc1",
+      "independentAdaptation": false
+    },
+    {
+      "path": "skills/ast-grep/install.sh",
+      "sha256": "dba55290b9546e5dc58f5fd889badb8fba5574739542b8eb06cf412689e173bf",
+      "upstreamSha256": "d93fcd360b4a83fda9cd67114c28488480330c12ccea2775805534a70f0f29d5",
+      "independentAdaptation": true
+    },
+    {
+      "path": "skills/ast-grep/README.md",
+      "sha256": "eb4d54eeb38d3d2449dc1eacc89c4da4d53227c153c299afe3e599428c05cd30",
+      "upstreamSha256": "eb4d54eeb38d3d2449dc1eacc89c4da4d53227c153c299afe3e599428c05cd30",
+      "independentAdaptation": false
+    },
+    {
+      "path": "skills/ast-grep/install.ps1",
+      "sha256": "6891912ba731c97708bcda0265c6f245b7713ab53f40789ea0bee698796de7dd",
+      "upstreamSha256": "a49e3d6a12bc9d1eaee9dc8aee9a2671d024f8d88b0a891c0e4f31f0fed66012",
+      "independentAdaptation": true
+    },
+    {
+      "path": "skills/ast-grep/.gitignore",
+      "sha256": "ee7f2b315ff326aa49cc69cf32dc7ba220424d4d85b3ecd71c2350f528ac0a83",
+      "upstreamSha256": "ee7f2b315ff326aa49cc69cf32dc7ba220424d4d85b3ecd71c2350f528ac0a83",
+      "independentAdaptation": false
+    },
+    {
+      "path": "skills/ast-grep/SKILL.md",
+      "sha256": "c5512fb494945183219f23fe3edd05c601a09c396c5771bd750bf8a079b62d3e",
+      "upstreamSha256": "c5512fb494945183219f23fe3edd05c601a09c396c5771bd750bf8a079b62d3e",
+      "independentAdaptation": false
+    },
+    {
+      "path": "skills/ast-grep/references/recipes.md",
+      "sha256": "759043076319c4812f18d66730815b6b8202944c29a089908e11aa5b52da5b9f",
+      "upstreamSha256": "759043076319c4812f18d66730815b6b8202944c29a089908e11aa5b52da5b9f",
+      "independentAdaptation": false
+    },
+    {
+      "path": "skills/ast-grep/references/pitfalls.md",
+      "sha256": "508459b3133e5376e31762c5c9c94c497a9559651d3a452fb2ccf8f220ed2485",
+      "upstreamSha256": "508459b3133e5376e31762c5c9c94c497a9559651d3a452fb2ccf8f220ed2485",
+      "independentAdaptation": false
+    },
+    {
+      "path": "skills/ast-grep/references/cli.md",
+      "sha256": "2efbc5c65289e720142d59817319abb4844accfd9d818b875b9e132ec8ac7825",
+      "upstreamSha256": "2efbc5c65289e720142d59817319abb4844accfd9d818b875b9e132ec8ac7825",
+      "independentAdaptation": false
+    },
+    {
+      "path": "skills/ast-grep/references/install.md",
+      "sha256": "112528e9c25540bb1680c7ab3c64d38e63fb277992ca40cacf9639ec0d7c0789",
+      "upstreamSha256": "112528e9c25540bb1680c7ab3c64d38e63fb277992ca40cacf9639ec0d7c0789",
+      "independentAdaptation": false
+    },
+    {
+      "path": "skills/ast-grep/references/patterns.md",
+      "sha256": "b31b187a6e855e7b19043435c383d0555a849234f8a62e429750b46879820f7d",
+      "upstreamSha256": "b31b187a6e855e7b19043435c383d0555a849234f8a62e429750b46879820f7d",
+      "independentAdaptation": false
+    },
+    {
+      "path": "skills/ast-grep/references/yaml-rules.md",
+      "sha256": "2d6414b75f9a4ac08414d034403099daa6abafd62503fa607cfcba6ebd0fbcd3",
+      "upstreamSha256": "2d6414b75f9a4ac08414d034403099daa6abafd62503fa607cfcba6ebd0fbcd3",
+      "independentAdaptation": false
+    },
+    {
+      "path": "skills/ast-grep/references/sgconfig.md",
+      "sha256": "c3b246b39f9537a618ec9769c731a3c33549670aa9759fbc8cbd69420c886089",
+      "upstreamSha256": "c3b246b39f9537a618ec9769c731a3c33549670aa9759fbc8cbd69420c886089",
+      "independentAdaptation": false
+    },
+    {
+      "path": "skills/ast-grep/tests/smoke.ps1",
+      "sha256": "36316c7e369f32e74f31c6d1bec0bead7088b87c0d345f85f1f23ca0830c0b56",
+      "upstreamSha256": "36316c7e369f32e74f31c6d1bec0bead7088b87c0d345f85f1f23ca0830c0b56",
+      "independentAdaptation": false
+    },
+    {
+      "path": "skills/ast-grep/tests/smoke.sh",
+      "sha256": "428432f2be1d4575f05bbb7b87ced89a2570abb4df8654753faf020c28f77834",
+      "upstreamSha256": "428432f2be1d4575f05bbb7b87ced89a2570abb4df8654753faf020c28f77834",
+      "independentAdaptation": false
+    },
+    {
+      "path": "skills/ast-grep/scripts/ast_grep_helper.py",
+      "sha256": "e7139bac1dd857c9f24e96a5c27cd751043d8b65a8c22cb0d82f6f8ca191dfca",
+      "upstreamSha256": "893aca6da07e5262ba370188fdecaa0d27ace7b79c5dcafb53e30d354a6e3945",
+      "independentAdaptation": true
+    }
+  ],
+  "functionalAcceptance": {
+    "currentHost": "macOS arm64",
+    "native": "work/independent-ast-grep/native-proof.json",
+    "actualInstaller": "work/independent-ast-grep/install-proof.json",
+    "actualDshModel": "work/independent-ast-grep/model-guided-proof.json",
+    "model": "GPT 6.1 Sol low",
+    "scope": "Native structural search, dry-run, applied rewrite, non-code text preservation, pinned GitHub installation, registered skill used by actual DSH model; other OS native execution not inferred"
+  }
+}

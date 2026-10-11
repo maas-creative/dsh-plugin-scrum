@@ -1,0 +1,8 @@
+# $name
+
+Purpose: $purpose
+
+Run `go mod tidy`, `go test -race ./...`, and `go build -o bin/server ./cmd/server`.
+The service defaults to loopback port 8080. Configure LISTEN_ADDRESS and SHUTDOWN_TIMEOUT explicitly.
+GET /health returns a local readiness response. SIGINT and SIGTERM start bounded graceful shutdown.
+Use golangci-lint for the supplied lint configuration and Task for the optional task shortcuts.

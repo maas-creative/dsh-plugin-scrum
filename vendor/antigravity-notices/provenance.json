@@ -1,0 +1,313 @@
+{
+  "complete": false,
+  "scope": "Separately MIT-licensed audio runtime notices and source identities; exact existing bundle reproduced from recorded current source inputs. Whole-project license audit remains open.",
+  "runtime": "vendor/antigravity-audio-runtime.mjs",
+  "runtimeSha256": "a83acdd799cb1a46034ba131a1ef5686ed1cbe215d209f1a910d84a26c2cc79f",
+  "sources": [
+    {
+      "repository": "https://github.com/suntianc/dsh-antigravity-auth",
+      "commit": "4a4ccd36958581bec497e30e008c50f155e24bea",
+      "version": "0.1.4-rc.5",
+      "license": "MIT"
+    },
+    {
+      "repository": "https://github.com/cortexkit/antigravity-auth",
+      "package": "@cortexkit/antigravity-auth-core",
+      "version": "2.2.0",
+      "license": "MIT"
+    }
+  ],
+  "notices": [
+    {
+      "package": "dsh-antigravity-auth",
+      "path": "vendor/antigravity-notices/DSH-AUTH-LICENSE",
+      "sha256": "464a0ff7113f1962ac9ffe1c8d0eea4de96a1a87025d476a21bf2d1e57d36fc8"
+    },
+    {
+      "package": "@cortexkit/antigravity-auth-core",
+      "path": "vendor/antigravity-notices/CORE-LICENSE",
+      "sha256": "014bee4cf24fc88a9c033984957588c9f8742eec5e9874dc18b5c3e83c74178a"
+    }
+  ],
+  "observedCurrentSourceInputs": [
+    {
+      "observedSourcePath": "work/dsh-runtime/antigravity-build/node_modules/@cortexkit/antigravity-auth-core/dist/account-manager.js",
+      "currentSourceSha256": "37587974da288f8336a9057cb986056e725d5e978de01b9445dd56bc9b298c9e"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/antigravity-build/node_modules/@cortexkit/antigravity-auth-core/dist/account-storage.js",
+      "currentSourceSha256": "5346976e87486ca3496881d5f9e16cc71039a205c39aea39228965fc2dc767c1"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/antigravity-build/node_modules/@cortexkit/antigravity-auth-core/dist/account-types.js",
+      "currentSourceSha256": "619a0e2e48bdb81a61308d5ad39f60ed8010584d6849503c9138d4a3bcdfc667"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/antigravity-build/node_modules/@cortexkit/antigravity-auth-core/dist/agy-request-metadata.js",
+      "currentSourceSha256": "0d3a181c191ceb448142dad9f97441b7fdc9cabaa7974cad2abc88c0892680ec"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/antigravity-build/node_modules/@cortexkit/antigravity-auth-core/dist/agy-transport.js",
+      "currentSourceSha256": "7267ccffb928070e560ae9872e51ee88bd774b7278fe181ba48e66ca46a7aecd"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/antigravity-build/node_modules/@cortexkit/antigravity-auth-core/dist/antigravity/oauth.js",
+      "currentSourceSha256": "2099d73fb6c527ff52e404fbf0596b8e966c2cf63d54873dfba477330c2f0587"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/antigravity-build/node_modules/@cortexkit/antigravity-auth-core/dist/atomic-write.js",
+      "currentSourceSha256": "6ff0c7d69d973a10c4be5552dc68425dddcf8a0a7c9062bc38741cc5dac22abe"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/antigravity-build/node_modules/@cortexkit/antigravity-auth-core/dist/auth-types.js",
+      "currentSourceSha256": "8edb313d22e353ac47e373574ad5c809221cc3a44723b4157aa5a8fa7284df80"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/antigravity-build/node_modules/@cortexkit/antigravity-auth-core/dist/auth.js",
+      "currentSourceSha256": "f8b8566330251fe78f20600d2a5b1b0a17dc2f993d5288ef7bc2e128b24af4d1"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/antigravity-build/node_modules/@cortexkit/antigravity-auth-core/dist/constants.js",
+      "currentSourceSha256": "df591c62829212b974ff8053602bb625ec17534ddf0dba7b9488d04a5a7545dd"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/antigravity-build/node_modules/@cortexkit/antigravity-auth-core/dist/fetch-timeout.js",
+      "currentSourceSha256": "88c1200da73ade5c8d8e339049358c918042ca3dd77d9626719410073202c8e0"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/antigravity-build/node_modules/@cortexkit/antigravity-auth-core/dist/file-lock.js",
+      "currentSourceSha256": "b6dbc0e2de9db485141925460d50bff3ccdd297eccfd12c7c1105a54d73e2e23"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/antigravity-build/node_modules/@cortexkit/antigravity-auth-core/dist/fingerprint.js",
+      "currentSourceSha256": "e3ac990242dce05fbe463feae1b3276521c7a5fea8d0d7642ba754e0dba7467d"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/antigravity-build/node_modules/@cortexkit/antigravity-auth-core/dist/index.js",
+      "currentSourceSha256": "917a30cbb4d8a1ffd7ab27e6cb1d30719b9a35c81f0b33aae2e2e191f4fe1bb6"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/antigravity-build/node_modules/@cortexkit/antigravity-auth-core/dist/logger.js",
+      "currentSourceSha256": "207e7dcbbd54f18372735322154d5f2c8d2acfa78dc811bae29747899c3cb3d3"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/antigravity-build/node_modules/@cortexkit/antigravity-auth-core/dist/model-registry.js",
+      "currentSourceSha256": "03dcf73e543dc3db3f806e3035340d5725f77b7a39856f08764ba5e85e89c9e7"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/antigravity-build/node_modules/@cortexkit/antigravity-auth-core/dist/model-types.js",
+      "currentSourceSha256": "8239c97c4262c12201ec381ab2256c5cd5b372f56327408916107b40fec07a67"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/antigravity-build/node_modules/@cortexkit/antigravity-auth-core/dist/project.js",
+      "currentSourceSha256": "4d24b974ac205b74e151fa6e9f13c3043d2c65a5883108dcced88b760fdcef9e"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/antigravity-build/node_modules/@cortexkit/antigravity-auth-core/dist/quota-manager.js",
+      "currentSourceSha256": "25c1a7fd5b6031cec4e0df91bb789e93a25aa92cc195f775fc71486ecd637f58"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/antigravity-build/node_modules/@cortexkit/antigravity-auth-core/dist/quota-types.js",
+      "currentSourceSha256": "1f073caf05aa955576264b7da33490c3b4f56f0a7a05d7f66a822158e5469b1f"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/antigravity-build/node_modules/@cortexkit/antigravity-auth-core/dist/rotation.js",
+      "currentSourceSha256": "edc89893a9cef4616069512965edc36a1460f86afcd32f2284bedf083919c845"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/antigravity-build/node_modules/@cortexkit/antigravity-auth-core/dist/transform/claude.js",
+      "currentSourceSha256": "6c6818d0fcb904b944162111fa05acf2e41779e35cdf1ee955da4d20ee65842f"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/antigravity-build/node_modules/@cortexkit/antigravity-auth-core/dist/transform/cross-model-sanitizer.js",
+      "currentSourceSha256": "c351068229743f5e6d50b79627571d6c79f11dbf31ea79e8060ff087536e5c61"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/antigravity-build/node_modules/@cortexkit/antigravity-auth-core/dist/transform/gemini.js",
+      "currentSourceSha256": "09bfbf3713f3dde933bad507a7ed38e3c10ba53063e84486c4ce749fdcac7727"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/antigravity-build/node_modules/@cortexkit/antigravity-auth-core/dist/transform/index.js",
+      "currentSourceSha256": "42974d08eaa897c24912d43d3a08e37a759819be0bb4ba0132cdd06705cdd8cd"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/antigravity-build/node_modules/@cortexkit/antigravity-auth-core/dist/transform/model-resolver.js",
+      "currentSourceSha256": "5af0624c9082797c8f60724e9f7eefed34daef1db00e9aa4bfb0c4177ebf76dd"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/antigravity-build/node_modules/@cortexkit/antigravity-auth-core/dist/version.js",
+      "currentSourceSha256": "00daeb5a003642299179c9ec8dab8d9d0ee6cba7dfbaeffadaa0e4765b6c1694"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/account-routes.ts",
+      "currentSourceSha256": "494011c14b02ed0180ee85042b303c2d4435add9fbf8a475a18b4406e3f66746"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/account-store.ts",
+      "currentSourceSha256": "ae544420547be775343c9279321af2ffc88540b56d9dfa847cc7acd8c8d4a903"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/auth-command.ts",
+      "currentSourceSha256": "9a9e9be604544bd61977a3a81f05646c011cfb82c77a71edd1d4ff5fca8fa576"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/auth-service.ts",
+      "currentSourceSha256": "e1f5684ce6b6a375878fc2c8f01f0ece9b2ca1bf00afafa90bd1b183f370d66e"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/auth-store.ts",
+      "currentSourceSha256": "f15360a0bfb2eb38a5ea8d2b27cb23a02caf1b843efc22f37dd3bbffdc6a927c"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/capability-gates.ts",
+      "currentSourceSha256": "fecc5115978b473ad2ba8969707d6f2b2e206517a3321f352066679538aaab67"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/capability-lifecycle.ts",
+      "currentSourceSha256": "ca4db1a3d596236a01f69c6595ef363d0185fea8365c44d44ac2de865636d603"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/credential-coordinator.ts",
+      "currentSourceSha256": "330ef8f7f67ba8c935f4b0a3bca9201f1cbd803dc4b3c2c8d7457013a299b339"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/image.ts",
+      "currentSourceSha256": "b7f5d9fd56df968098db466c47c70f4af0b873ad84094a94a82e67c03d80d88a"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/index.ts",
+      "currentSourceSha256": "1f718b55b947016ab401cef550b93d16aca3108a179c71638b94407281dd2f98"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/live-gate-attachments.ts",
+      "currentSourceSha256": "86db85acf627a6f57e26870346c812227a0208ac995c132e5d428d790f0faa62"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/live-gate-auth.ts",
+      "currentSourceSha256": "2956eb8fa51fad59c1389e1bda80224ddba76a351d33589d861293301db83300"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/live-gate-image.ts",
+      "currentSourceSha256": "4d1e0195477b5c1c3d7e5aaa83a76e05359606458dbe5366cb00ea310544d52f"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/live-gate-llm.ts",
+      "currentSourceSha256": "bbc5958646b86a1de7d8fa2f0cdb8bce96c4a88dcd1a1f82b923748907c4dd4c"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/live-gate-outcome.ts",
+      "currentSourceSha256": "933a6146c51fc65d12c78bc1e03ab726b708c43bca760dee7290913faf481891"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/live-gate-runner.ts",
+      "currentSourceSha256": "f2407153da20443fef73a720cab9791a46eee291c851ebe94363558a5d9d2c3f"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/live-gate-search.ts",
+      "currentSourceSha256": "cac8ed3139d41a55fb769b06b6a37c2a2de7963e3659f985cc3b5bd0166091b9"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/live-gate-video.ts",
+      "currentSourceSha256": "4c6e05cb9b9472f59ee88c2b39f8629e76c8f330090051e8dfbcd3439222f5c9"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/live-gates.ts",
+      "currentSourceSha256": "ed17543fed927006e2508853bee6f77a07f1104dfbc57cd589a547eb507cdb40"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/llm-adapter.ts",
+      "currentSourceSha256": "5f397698778fb5d15e196b6441432c5d8fcf4c83db0882555fc6a2cfd2ec2123"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/login-types.ts",
+      "currentSourceSha256": "99469bae48460cf0dbdc7e3ca2b94b0e4e524424e63b6799ec41b8e30a3229dd"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/loopback-rpc.ts",
+      "currentSourceSha256": "0a27b8cd920269953d09a20084fc674e7a80412d7dc2ffd0cf70f7e3bdd9042e"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/media-admission.ts",
+      "currentSourceSha256": "0a4eaba78f8cc53d7c628785d55bd9620721b9d6a437e295ddad1afa2cff958c"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/model-catalog.ts",
+      "currentSourceSha256": "79c8f87c68f118625d5c2cad676b2acf61d4ceddbfb00459e27280f819b896fa"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/oauth-flow.ts",
+      "currentSourceSha256": "8d340bf84f7a9c84fa010bbc9b0541ba77532ba65b918125f2004a2cfaacc7a7"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/open-authorization-url.ts",
+      "currentSourceSha256": "b2141e6b78d7ca4d6c51e7dd8f8bd7eaf0c7b43a337a74852f44f51b3fe533fc"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/private-failure.ts",
+      "currentSourceSha256": "d0a79c12142c4736c81c0457458c5dfe9ba16e3e25b0b06252585166f3e4c7c3"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/private-transport-error.ts",
+      "currentSourceSha256": "a13c3a455872a1be286f63ffc007279cc794cd99e635338287aaa4ad56f0a04f"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/private-transport.ts",
+      "currentSourceSha256": "e08b770231b53e992eaa3c896bc1aa967678f0b6b2f07a5262c52e4917eab042"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/project-context.ts",
+      "currentSourceSha256": "f46e7ab54f7c88a82852b48213099fa6b9a6b782750afeba683283c6ba7cafb4"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/quota.ts",
+      "currentSourceSha256": "f33adc411fd48f93ebe79ca6d7e5eee236215bc4c2850cb119fafc5c17607d53"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/raw-http.ts",
+      "currentSourceSha256": "f61603cb781b65c1a680be8fcaebfb778f069ece939d5a57991235950ee42d9f"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/replay.ts",
+      "currentSourceSha256": "efe74dd62951d30ce14019a2918b5012f26ed23404350e0b25583370a85020bf"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/rpc-contract.ts",
+      "currentSourceSha256": "0f600c088bb10c7c1c0ebb113d170eb588f063b41a57f79bcf87c46a31d86c14"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/rpc-vocabulary.ts",
+      "currentSourceSha256": "71722343070d8e530e9c89524897e77b112460c3f74ad19579ee69b4371d6700"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/rpc.ts",
+      "currentSourceSha256": "f3acca8c52ccb9bb4090318ea3aa407a7823769ff40da5be4e3c44477008d4a7"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/safe-text.ts",
+      "currentSourceSha256": "ba1e1e93c4ea01ac77804f5c8ad846b688de72f6337bb5508cf90abe243c4116"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/search.ts",
+      "currentSourceSha256": "ebaaa3d01cb33c332ca0c83a0674dd3a6681f59957dbd36f2ebc95dd8b7a513f"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/status.ts",
+      "currentSourceSha256": "630bb6a558d3a44ec3ca396787d2da65fb9f500635e3c2e561780df19d7e6574"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/video.ts",
+      "currentSourceSha256": "e1abbd3d9b8ea2b709288dab555fd63e376d1e51b08440e177cd4ec98f30dd97"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/volatile-config.ts",
+      "currentSourceSha256": "8319b6a50ad065377fb01731b363679cee48ec5aadba08c982c26c4bbda475ad"
+    },
+    {
+      "observedSourcePath": "work/dsh-runtime/dsh-antigravity-auth/src/wire-identity.ts",
+      "currentSourceSha256": "7a7706d5072e1f25310102bf847bba4c4d047642b944f644aa6518f697de4536"
+    }
+  ],
+  "exactSourceRebuildVerified": true,
+  "buildProof": "work/independent-audio-runtime/build-proof.json",
+  "verifiedSourceInputCount": 69
+}

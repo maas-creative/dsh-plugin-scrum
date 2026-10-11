@@ -1,0 +1,3 @@
+const gitEnvironment=Object.freeze({GIT_TERMINAL_PROMPT:'0',GIT_EDITOR:':',GIT_SEQUENCE_EDITOR:':',PAGER:'cat',GIT_PAGER:'cat',CI:'true'});
+export function noninteractiveSpec(spec){return /\bgit\b/.test(spec.command||'')?{...spec,env:{...gitEnvironment,...spec.env}}:spec;}
+export function interactiveWarning(command){if(typeof command!=='string')return null;const match=/\bgit\s+(?:add\s+(?:-p|--patch)|rebase\s+(?:-i|--interactive))\b|\b(?:vim|vi|nano|emacs|less|more|top|htop)\b/.exec(command);return match?`Warning: '${match[0]}' is an interactive command that may hang in non-interactive environments.`:null;}

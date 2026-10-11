@@ -1,0 +1,3 @@
+Run `node vendor/antigravity-source/rebuild.mjs` from the Scrum package root. Node 24 is required. Web/worktree recipes use esbuild 0.28.2 from the development dependencies. The audio recipe installs pinned build-only dependencies into a new temporary directory with lifecycle scripts disabled. It does not change the installed runtime. A different bundle fails verification. Source labels and attribution are retained for reproducibility.
+
+MaaS Creative adaptation: OAuth client credentials are supplied by environment variables. `--write` explicitly updates the runtime bundle from the included source; without it, the recipe only verifies byte identity.

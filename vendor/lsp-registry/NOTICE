@@ -1,0 +1,4 @@
+Contains selected package metadata from mason-org/mason-registry and launch configuration references from neovim/nvim-lspconfig, licensed under Apache License 2.0.
+The JSON conversion and host integration are changes made for Scrum by MaaS Creative.
+Language-server executables are not bundled; their individual licenses are listed in recipes.json.
+See PROVENANCE.json for pinned commits and source hashes; see MASON-LICENSE and LSPCONFIG-LICENSE for license terms.

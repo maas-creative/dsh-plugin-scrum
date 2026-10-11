@@ -1,0 +1,77 @@
+{
+  "package": "ws",
+  "version": "8.22.0",
+  "license": "MIT",
+  "preferredSourceIncluded": true,
+  "usedBy": "browser-runtime-build.mjs",
+  "files": [
+    {
+      "path": "LICENSE",
+      "sha256": "2b29dcfe0d6471f7e8c92c5fb38c9f93edee10330937055440192f1832b1ecef"
+    },
+    {
+      "path": "index.js",
+      "sha256": "924564d5be26d59b9682c4263f68320e48dde7240bd2d1ad17ec305537429dd2"
+    },
+    {
+      "path": "lib/buffer-util.js",
+      "sha256": "8b0a45739132f82e25ea13163780abf547ccfe989267f3eb7abb475beec92da3"
+    },
+    {
+      "path": "lib/constants.js",
+      "sha256": "391e823142b8b370e55a2fd32b022deaf03b8415c56000009674ebc86a0b4f86"
+    },
+    {
+      "path": "lib/event-target.js",
+      "sha256": "c45d3c6e12d170c860c0c3f1a050aa0f864d9806632b609a1e607d675aba128c"
+    },
+    {
+      "path": "lib/extension.js",
+      "sha256": "852564f0f6b460287043803eae732666fb5610f676874354fc89f06aa4e986ed"
+    },
+    {
+      "path": "lib/limiter.js",
+      "sha256": "e0469d4b83f6ba764b15f80e1766b75c136fbff68f048f4c050f0b1c7f065f69"
+    },
+    {
+      "path": "lib/permessage-deflate.js",
+      "sha256": "16a91536988a53c23047ee5882392068728a839a244178c3b09b8c54982f58b0"
+    },
+    {
+      "path": "lib/receiver.js",
+      "sha256": "a6ada33c9a2d54eaf595824b821ea89ca2c6395f89aa06755c52142148274884"
+    },
+    {
+      "path": "lib/sender.js",
+      "sha256": "d0791d30c3defd44dcabbddb879a901c757993fea2c00a7ffea01d53b23b4b77"
+    },
+    {
+      "path": "lib/stream.js",
+      "sha256": "a56fcb6e2b152097ee820b6f5410b1f71e59819b45d08d9f8bda588fe39070ec"
+    },
+    {
+      "path": "lib/subprotocol.js",
+      "sha256": "be3f6323d6f549568577dcba9004c1479d95c65a7abb0fe0c582875b9fac0b7c"
+    },
+    {
+      "path": "lib/validation.js",
+      "sha256": "41ce8e83d0d434132e1704895fedb91f6703a701b42d91c80954ab29b2845593"
+    },
+    {
+      "path": "lib/websocket-server.js",
+      "sha256": "6d8dd89a841748c80445fd5fcdb5ba8005369b53cc3525135e11304c8b9c55e5"
+    },
+    {
+      "path": "lib/websocket.js",
+      "sha256": "7ccf305925f0cdb74e06b75b4c84de134b1bd771a220ef409b24520def08128f"
+    },
+    {
+      "path": "package.json",
+      "sha256": "c1ef91ca04eb4754c011c5f0e7638b5078ff71104fada400c44ac761cf93e0b1"
+    },
+    {
+      "path": "wrapper.mjs",
+      "sha256": "fe154662301fd558f935f9c217fccbe7a7dac02ff39e648a000589403ff27c7f"
+    }
+  ]
+}

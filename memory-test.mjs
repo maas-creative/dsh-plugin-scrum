@@ -1,0 +1,36 @@
+import assert from 'node:assert/strict';
+import {mkdtempSync,rmSync,mkdirSync,symlinkSync,writeFileSync} from 'node:fs';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
+import {DatabaseSync} from 'node:sqlite';
+import {execFileSync} from 'node:child_process';
+import {createGitMemory} from './memory.mjs';
+const home=mkdtempSync(join(tmpdir(),'scrum-memory-'));
+try {
+ const memory=createGitMemory({cwd:join(home,'project'),home});
+ const a=await memory.write({key:'日本語',value:'first fact',source:'artifact.md'});
+ await memory.write({key:'日本語',value:'second fact',source:'artifact2.md'});
+ assert.equal(memory.read({key:'日本語'}).body,'second fact');
+ assert.equal(memory.read({key:'日本語',revision:a.sha}).body,'first fact');
+ assert.equal(memory.search({query:'SECOND'}).length,1);
+ assert.equal(memory.history({key:'日本語'}).length,2);
+ assert.match(memory.diff({from:a.sha}),/second fact/);
+ await memory.rollback({revision:a.sha,path:a.path});assert.equal(memory.read({key:'日本語'}).body,'first fact');
+ assert.match(memory.project().text,/first fact/);
+ writeFileSync(join(memory.directory,a.path),'uncommitted garbage');assert.match(memory.project().text,/first fact/);await memory.rollback({revision:a.sha,path:a.path});
+ await memory.mutate({operation:'insert',path:a.path,text:' suffix'});assert.match(memory.read({path:a.path}).body,/suffix/);
+ await memory.mutate({operation:'replace',path:a.path,find:'suffix',text:'replacement'});
+ await memory.mutate({operation:'rename',path:a.path,to:'reference/moved.md'});assert.equal(memory.read({path:a.path}),null);
+ await memory.mutate({operation:'delete',path:'reference/moved.md'});assert.equal(memory.read({path:'reference/moved.md'}),null);
+ assert.equal(memory.repair().invalid.length,0);
+ const bundle=join(home,'backup.bundle');await memory.backup({destination:bundle});
+ await assert.rejects(memory.write({path:'../escape',body:'x',source:'test'}));
+ symlinkSync(home,join(memory.directory,'escape'));await assert.rejects(memory.write({path:'escape/secret',body:'x',source:'test'}));
+ await memory.write({path:'system/locked',body:'fixed',source:'test',readOnly:true});await assert.rejects(memory.write({path:'system/locked',body:'changed',source:'test'}));
+ mkdirSync(join(home,'scrum'),{recursive:true});const database=join(home,'scrum','memory.sqlite');const db=new DatabaseSync(database);db.exec('CREATE TABLE facts(scope TEXT,key TEXT,value TEXT,updated INTEGER,PRIMARY KEY(scope,key))');db.prepare('INSERT INTO facts VALUES(?,?,?,?)').run(memory.scope,'legacy',JSON.stringify({text:'old fact',source:'old-source',verified:false}),1);db.close();
+ assert.deepEqual(await memory.migrateSQLite(),{migrated:1,skipped:0});assert.deepEqual(await memory.migrateSQLite(),{migrated:0,skipped:1});
+ assert.equal(memory.search({query:'old fact'})[0].metadata.provenance.legacyUpdated,1);
+ const other=createGitMemory({cwd:join(home,'other'),home});assert.equal(other.search({query:'old fact'}).length,0);
+ const repo=join(home,'git-project');mkdirSync(repo);execFileSync('git',['-C',repo,'init','--quiet']);execFileSync('git',['-C',repo,'-c','user.name=Test','-c','user.email=test@localhost','commit','--allow-empty','--quiet','-m','init']);const tree=join(home,'worktree');execFileSync('git',['-C',repo,'worktree','add','--quiet',tree]);assert.equal(createGitMemory({cwd:tree,home}).scope,createGitMemory({cwd:repo,home}).scope);
+ console.log('Git memory: read/write/search/history/diff/rollback/backup/repair/projection/SQLite migration and confinement passed');
+} finally {rmSync(home,{recursive:true,force:true})}

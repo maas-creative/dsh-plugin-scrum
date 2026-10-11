@@ -1,0 +1,2 @@
+import test from 'node:test';import {execFile} from 'node:child_process';import {promisify} from 'node:util';import {join} from 'node:path';
+test('independent public-reader adapter preserves provenance, fallback and actual bounded HTTP contracts',async()=>{const python=process.env.SCRUM_PUBLIC_READER_PYTHON||'python3';const result=await promisify(execFile)(python,[join(process.cwd(),'public-reader-independent-test.py')],{timeout:30000,maxBuffer:1024*1024});process.stdout.write(result.stdout+result.stderr);});

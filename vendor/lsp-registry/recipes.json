@@ -1,0 +1,1202 @@
+{
+  "typescript-language-server": {
+    "name": "typescript-language-server",
+    "homepage": "https://github.com/typescript-language-server/typescript-language-server",
+    "licenses": [
+      "MIT"
+    ],
+    "source": {
+      "id": "pkg:npm/typescript-language-server@6.0.1",
+      "extra_packages": [
+        "typescript@6.0.3"
+      ]
+    },
+    "bin": {
+      "typescript-language-server": "npm:typescript-language-server"
+    }
+  },
+  "deno": {
+    "name": "deno",
+    "homepage": "https://deno.land/",
+    "licenses": [
+      "MIT"
+    ],
+    "source": {
+      "id": "pkg:github/denoland/deno@v2.9.7",
+      "asset": [
+        {
+          "target": "darwin_arm64",
+          "file": "deno-aarch64-apple-darwin.zip",
+          "bin": "deno"
+        },
+        {
+          "target": "linux_arm64_gnu",
+          "file": "deno-aarch64-unknown-linux-gnu.zip",
+          "bin": "deno"
+        },
+        {
+          "target": "darwin_x64",
+          "file": "deno-x86_64-apple-darwin.zip",
+          "bin": "deno"
+        },
+        {
+          "target": "linux_x64_gnu",
+          "file": "deno-x86_64-unknown-linux-gnu.zip",
+          "bin": "deno"
+        },
+        {
+          "target": "win_x64",
+          "file": "deno-x86_64-pc-windows-msvc.zip",
+          "bin": "deno.exe"
+        }
+      ]
+    },
+    "bin": {
+      "deno": "{{source.asset.bin}}"
+    }
+  },
+  "vue-language-server": {
+    "name": "vue-language-server",
+    "homepage": "https://github.com/vuejs/language-tools",
+    "licenses": [
+      "MIT"
+    ],
+    "source": {
+      "id": "pkg:npm/%40vue/language-server@3.3.12",
+      "extra_packages": [
+        "typescript@6.0.3",
+        "@vue/typescript-plugin"
+      ]
+    },
+    "bin": {
+      "vue-language-server": "npm:vue-language-server"
+    }
+  },
+  "eslint-lsp": {
+    "name": "eslint-lsp",
+    "homepage": "https://github.com/Microsoft/vscode-eslint",
+    "licenses": [
+      "MIT"
+    ],
+    "source": {
+      "id": "pkg:npm/vscode-langservers-extracted@4.10.0"
+    },
+    "bin": {
+      "vscode-eslint-language-server": "npm:vscode-eslint-language-server"
+    }
+  },
+  "oxlint": {
+    "name": "oxlint",
+    "homepage": "https://github.com/oxc-project/oxc",
+    "licenses": [
+      "MIT"
+    ],
+    "source": {
+      "id": "pkg:npm/oxlint@1.87.0"
+    },
+    "bin": {
+      "oxlint": "npm:oxlint"
+    }
+  },
+  "biome": {
+    "name": "biome",
+    "homepage": "https://biomejs.dev",
+    "licenses": [
+      "MIT"
+    ],
+    "source": {
+      "id": "pkg:npm/@biomejs/biome@2.5.15"
+    },
+    "bin": {
+      "biome": "npm:biome"
+    }
+  },
+  "gopls": {
+    "name": "gopls",
+    "homepage": "https://pkg.go.dev/golang.org/x/tools/gopls",
+    "licenses": [
+      "BSD-3-Clause"
+    ],
+    "source": {
+      "id": "pkg:golang/golang.org/x/tools/gopls@v0.23.0"
+    },
+    "bin": {
+      "gopls": "golang:gopls"
+    }
+  },
+  "ruby-lsp": {
+    "name": "ruby-lsp",
+    "homepage": "https://github.com/Shopify/ruby-lsp",
+    "licenses": [
+      "MIT"
+    ],
+    "source": {
+      "id": "pkg:gem/ruby-lsp@0.26.11",
+      "extra_packages": [
+        "ruby-lsp-rails"
+      ]
+    },
+    "bin": {
+      "ruby-lsp": "gem:ruby-lsp"
+    }
+  },
+  "basedpyright": {
+    "name": "basedpyright",
+    "homepage": "https://detachhead.github.io/basedpyright",
+    "licenses": [
+      "MIT"
+    ],
+    "source": {
+      "id": "pkg:pypi/basedpyright@1.40.2"
+    },
+    "bin": {
+      "basedpyright": "pypi:basedpyright",
+      "basedpyright-langserver": "pypi:basedpyright-langserver"
+    }
+  },
+  "pyright": {
+    "name": "pyright",
+    "homepage": "https://github.com/microsoft/pyright",
+    "licenses": [
+      "MIT"
+    ],
+    "source": {
+      "id": "pkg:npm/pyright@1.1.414"
+    },
+    "bin": {
+      "pyright": "npm:pyright",
+      "pyright-langserver": "npm:pyright-langserver"
+    }
+  },
+  "ty": {
+    "name": "ty",
+    "homepage": "https://github.com/astral-sh/ty",
+    "licenses": [
+      "MIT"
+    ],
+    "source": {
+      "id": "pkg:pypi/ty@0.0.85"
+    },
+    "bin": {
+      "ty": "pypi:ty"
+    }
+  },
+  "ruff": {
+    "name": "ruff",
+    "homepage": "https://github.com/astral-sh/ruff/",
+    "licenses": [
+      "MIT"
+    ],
+    "source": {
+      "id": "pkg:github/astral-sh/ruff@0.16.10",
+      "asset": [
+        {
+          "target": "darwin_x64",
+          "file": "ruff-x86_64-apple-darwin.tar.gz",
+          "bin": "ruff-x86_64-apple-darwin/ruff"
+        },
+        {
+          "target": "darwin_arm64",
+          "file": "ruff-aarch64-apple-darwin.tar.gz",
+          "bin": "ruff-aarch64-apple-darwin/ruff"
+        },
+        {
+          "target": "linux_x64",
+          "file": "ruff-x86_64-unknown-linux-musl.tar.gz",
+          "bin": "ruff-x86_64-unknown-linux-musl/ruff"
+        },
+        {
+          "target": "linux_arm64",
+          "file": "ruff-aarch64-unknown-linux-gnu.tar.gz",
+          "bin": "ruff-aarch64-unknown-linux-gnu/ruff"
+        },
+        {
+          "target": "linux_x64_musl",
+          "file": "ruff-x86_64-unknown-linux-musl.tar.gz",
+          "bin": "ruff-x86_64-unknown-linux-musl/ruff"
+        },
+        {
+          "target": "linux_arm64_musl",
+          "file": "ruff-aarch64-unknown-linux-musl.tar.gz",
+          "bin": "ruff-aarch64-unknown-linux-musl/ruff"
+        },
+        {
+          "target": "linux_x86",
+          "file": "ruff-i686-unknown-linux-gnu.tar.gz",
+          "bin": "ruff-i686-unknown-linux-gnu/ruff"
+        },
+        {
+          "target": "linux_armv7_gnu",
+          "file": "ruff-armv7-unknown-linux-gnueabihf.tar.gz",
+          "bin": "ruff-armv7-unknown-linux-gnueabihf/ruff"
+        },
+        {
+          "target": "win_x64",
+          "file": "ruff-x86_64-pc-windows-msvc.zip",
+          "bin": "ruff.exe"
+        },
+        {
+          "target": "win_arm64",
+          "file": "ruff-aarch64-pc-windows-msvc.zip",
+          "bin": "ruff.exe"
+        },
+        {
+          "target": "win_x86",
+          "file": "ruff-i686-pc-windows-msvc.zip",
+          "bin": "ruff.exe"
+        }
+      ]
+    },
+    "bin": {
+      "ruff": "{{source.asset.bin}}"
+    }
+  },
+  "elixir-ls": {
+    "name": "elixir-ls",
+    "homepage": "https://github.com/elixir-lsp/elixir-ls",
+    "licenses": [
+      "Apache-2.0"
+    ],
+    "source": {
+      "id": "pkg:github/elixir-lsp/elixir-ls@v0.31.1",
+      "asset": [
+        {
+          "target": "unix",
+          "file": "elixir-ls-{{version}}.zip",
+          "bin": {
+            "lsp": "language_server.sh",
+            "dap": "debug_adapter.sh"
+          }
+        },
+        {
+          "target": "win",
+          "file": "elixir-ls-{{version}}.zip",
+          "bin": {
+            "lsp": "language_server.bat",
+            "dap": "debug_adapter.bat"
+          }
+        }
+      ],
+      "version_overrides": [
+        {
+          "constraint": "semver:<=v0.17.10",
+          "id": "pkg:github/elixir-lsp/elixir-ls@v0.14.6",
+          "asset": [
+            {
+              "target": "unix",
+              "file": "elixir-ls-{{version}}.zip",
+              "bin": {
+                "lsp": "language_server.sh",
+                "dap": "debugger.sh"
+              }
+            },
+            {
+              "target": "win",
+              "file": "elixir-ls-{{version}}.zip",
+              "bin": {
+                "lsp": "language_server.bat",
+                "dap": "debugger.bat"
+              }
+            }
+          ]
+        },
+        {
+          "constraint": "semver:<=0.14.6",
+          "id": "pkg:github/elixir-lsp/elixir-ls@v0.14.6",
+          "asset": [
+            {
+              "target": "unix",
+              "file": "elixir-ls.zip",
+              "bin": {
+                "lsp": "language_server.sh",
+                "dap": "debugger.sh"
+              }
+            },
+            {
+              "target": "win",
+              "file": "elixir-ls.zip",
+              "bin": {
+                "lsp": "language_server.bat",
+                "dap": "debugger.bat"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "bin": {
+      "elixir-ls": "{{source.asset.bin.lsp}}",
+      "elixir-ls-debugger": "{{source.asset.bin.dap}}"
+    }
+  },
+  "zls": {
+    "name": "zls",
+    "homepage": "https://github.com/zigtools/zls",
+    "licenses": [
+      "MIT"
+    ],
+    "source": {
+      "id": "pkg:github/zigtools/zls@0.16.0",
+      "asset": [
+        {
+          "target": "darwin_arm64",
+          "file": "zls-aarch64-macos.tar.xz",
+          "bin": "zls"
+        },
+        {
+          "target": "darwin_x64",
+          "file": "zls-x86_64-macos.tar.xz",
+          "bin": "zls"
+        },
+        {
+          "target": "linux_arm64",
+          "file": "zls-aarch64-linux.tar.xz",
+          "bin": "zls"
+        },
+        {
+          "target": "linux_x64",
+          "file": "zls-x86_64-linux.tar.xz",
+          "bin": "zls"
+        },
+        {
+          "target": "linux_x86",
+          "file": "zls-x86-linux.tar.xz",
+          "bin": "zls"
+        },
+        {
+          "target": "win_x86",
+          "file": "zls-x86-windows.zip",
+          "bin": "zls.exe"
+        },
+        {
+          "target": "win_x64",
+          "file": "zls-x86_64-windows.zip",
+          "bin": "zls.exe"
+        }
+      ],
+      "version_overrides": [
+        {
+          "constraint": "semver:<=0.11.0",
+          "id": "pkg:github/zigtools/zls@0.11.0",
+          "asset": [
+            {
+              "target": "darwin_arm64",
+              "file": "zls-aarch64-macos.tar.gz",
+              "bin": "bin/zls"
+            },
+            {
+              "target": "darwin_x64",
+              "file": "zls-x86_64-macos.tar.gz",
+              "bin": "bin/zls"
+            },
+            {
+              "target": "linux_arm64",
+              "file": "zls-aarch64-linux.tar.gz",
+              "bin": "bin/zls"
+            },
+            {
+              "target": "linux_x64",
+              "file": "zls-x86_64-linux.tar.gz",
+              "bin": "bin/zls"
+            },
+            {
+              "target": "linux_x86",
+              "file": "zls-x86-linux.tar.gz",
+              "bin": "bin/zls"
+            },
+            {
+              "target": "win_x86",
+              "file": "zls-x86-windows.zip",
+              "bin": "bin/zls.exe"
+            },
+            {
+              "target": "win_x64",
+              "file": "zls-x86_64-windows.zip",
+              "bin": "bin/zls.exe"
+            }
+          ]
+        },
+        {
+          "constraint": "semver:<=0.10.0",
+          "id": "pkg:github/zigtools/zls@0.10.0",
+          "asset": [
+            {
+              "target": "darwin_arm64",
+              "file": "aarch64-macos.tar.zst",
+              "bin": "bin/zls"
+            },
+            {
+              "target": "darwin_x64",
+              "file": "x86_64-macos.tar.zst",
+              "bin": "bin/zls"
+            },
+            {
+              "target": "linux_x64",
+              "file": "x86_64-linux.tar.zst",
+              "bin": "bin/zls"
+            },
+            {
+              "target": "linux_x86",
+              "file": "i386-linux.tar.zst",
+              "bin": "bin/zls"
+            },
+            {
+              "target": "win_x86",
+              "file": "i386-windows.tar.zst",
+              "bin": "bin/zls.exe"
+            },
+            {
+              "target": "win_x64",
+              "file": "x86_64-windows.tar.zst",
+              "bin": "bin/zls.exe"
+            }
+          ]
+        }
+      ]
+    },
+    "bin": {
+      "zls": "{{source.asset.bin}}"
+    }
+  },
+  "csharp-language-server": {
+    "name": "csharp-language-server",
+    "homepage": "https://github.com/razzmatazz/csharp-language-server",
+    "licenses": [
+      "MIT"
+    ],
+    "source": {
+      "id": "pkg:nuget/csharp-ls@0.24.0"
+    },
+    "bin": {
+      "csharp-ls": "nuget:csharp-ls"
+    }
+  },
+  "fsautocomplete": {
+    "name": "fsautocomplete",
+    "homepage": "https://github.com/fsharp/FsAutoComplete",
+    "licenses": [
+      "Apache-2.0"
+    ],
+    "source": {
+      "id": "pkg:nuget/fsautocomplete@0.83.0"
+    },
+    "bin": {
+      "fsautocomplete": "nuget:fsautocomplete"
+    }
+  },
+  "rust-analyzer": {
+    "name": "rust-analyzer",
+    "homepage": "https://github.com/rust-lang/rust-analyzer",
+    "licenses": [
+      "Apache-2.0",
+      "MIT"
+    ],
+    "source": {
+      "id": "pkg:github/rust-lang/rust-analyzer@2026-10-05",
+      "asset": [
+        {
+          "target": "linux_x64_gnu",
+          "file": "rust-analyzer-x86_64-unknown-linux-gnu.gz",
+          "bin": "rust-analyzer-x86_64-unknown-linux-gnu"
+        },
+        {
+          "target": "linux_arm64_gnu",
+          "file": "rust-analyzer-aarch64-unknown-linux-gnu.gz",
+          "bin": "rust-analyzer-aarch64-unknown-linux-gnu"
+        },
+        {
+          "target": "linux_x64_musl",
+          "file": "rust-analyzer-x86_64-unknown-linux-musl.gz",
+          "bin": "rust-analyzer-x86_64-unknown-linux-musl"
+        },
+        {
+          "target": "darwin_x64",
+          "file": "rust-analyzer-x86_64-apple-darwin.gz",
+          "bin": "rust-analyzer-x86_64-apple-darwin"
+        },
+        {
+          "target": "darwin_arm64",
+          "file": "rust-analyzer-aarch64-apple-darwin.gz",
+          "bin": "rust-analyzer-aarch64-apple-darwin"
+        },
+        {
+          "target": "win_x64",
+          "file": "rust-analyzer-x86_64-pc-windows-msvc.zip",
+          "bin": "rust-analyzer.exe"
+        },
+        {
+          "target": "win_arm64",
+          "file": "rust-analyzer-aarch64-pc-windows-msvc.zip",
+          "bin": "rust-analyzer.exe"
+        }
+      ]
+    },
+    "bin": {
+      "rust-analyzer": "{{source.asset.bin}}"
+    }
+  },
+  "clangd": {
+    "name": "clangd",
+    "homepage": "https://clangd.llvm.org",
+    "licenses": [
+      "Apache-2.0"
+    ],
+    "source": {
+      "id": "pkg:github/clangd/clangd@23.1.0",
+      "asset": [
+        {
+          "target": [
+            "darwin_x64",
+            "darwin_arm64"
+          ],
+          "file": "clangd-mac-{{version}}.zip",
+          "bin": "clangd_{{version}}/bin/clangd"
+        },
+        {
+          "target": "linux_x64_gnu",
+          "file": "clangd-linux-{{version}}.zip",
+          "bin": "clangd_{{version}}/bin/clangd"
+        },
+        {
+          "target": "win_x64",
+          "file": "clangd-windows-{{version}}.zip",
+          "bin": "clangd_{{version}}/bin/clangd.exe"
+        }
+      ]
+    },
+    "bin": {
+      "clangd": "{{source.asset.bin}}"
+    }
+  },
+  "svelte-language-server": {
+    "name": "svelte-language-server",
+    "homepage": "https://github.com/sveltejs/language-tools",
+    "licenses": [
+      "MIT"
+    ],
+    "source": {
+      "id": "pkg:npm/svelte-language-server@0.18.4",
+      "extra_packages": [
+        "typescript-svelte-plugin"
+      ]
+    },
+    "bin": {
+      "svelteserver": "npm:svelteserver"
+    }
+  },
+  "astro-language-server": {
+    "name": "astro-language-server",
+    "homepage": "https://github.com/withastro/language-tools",
+    "licenses": [
+      "MIT"
+    ],
+    "source": {
+      "id": "pkg:npm/%40astrojs/language-server@2.17.1",
+      "extra_packages": [
+        "typescript@6.0.3",
+        "@astrojs/ts-plugin"
+      ]
+    },
+    "bin": {
+      "astro-ls": "npm:astro-ls"
+    }
+  },
+  "bash-language-server": {
+    "name": "bash-language-server",
+    "homepage": "https://github.com/bash-lsp/bash-language-server",
+    "licenses": [
+      "MIT"
+    ],
+    "source": {
+      "id": "pkg:npm/bash-language-server@5.8.1"
+    },
+    "bin": {
+      "bash-language-server": "npm:bash-language-server"
+    }
+  },
+  "jdtls": {
+    "name": "jdtls",
+    "homepage": "https://github.com/eclipse/eclipse.jdt.ls",
+    "licenses": [
+      "EPL-2.0"
+    ],
+    "source": {
+      "id": "pkg:generic/eclipse/eclipse.jdt.ls@v1.61.0",
+      "download": [
+        {
+          "target": [
+            "darwin_x64",
+            "darwin_arm64"
+          ],
+          "files": {
+            "jdtls.tar.gz": "https://download.eclipse.org/jdtls/snapshots/jdt-language-server-{{ version | strip_prefix \"v\" }}-202609031315.tar.gz",
+            "lombok.jar": "https://projectlombok.org/downloads/lombok.jar"
+          },
+          "config": "config_mac/"
+        },
+        {
+          "target": "linux",
+          "files": {
+            "jdtls.tar.gz": "https://download.eclipse.org/jdtls/snapshots/jdt-language-server-{{ version | strip_prefix \"v\" }}-202609031315.tar.gz",
+            "lombok.jar": "https://projectlombok.org/downloads/lombok.jar"
+          },
+          "config": "config_linux/"
+        },
+        {
+          "target": "win",
+          "files": {
+            "jdtls.tar.gz": "https://download.eclipse.org/jdtls/snapshots/jdt-language-server-{{ version | strip_prefix \"v\" }}-202609031315.tar.gz",
+            "lombok.jar": "https://projectlombok.org/downloads/lombok.jar"
+          },
+          "config": "config_win/"
+        }
+      ]
+    },
+    "bin": {
+      "jdtls": "python:bin/jdtls"
+    }
+  },
+  "yaml-language-server": {
+    "name": "yaml-language-server",
+    "homepage": "https://github.com/redhat-developer/yaml-language-server",
+    "licenses": [
+      "MIT"
+    ],
+    "source": {
+      "id": "pkg:npm/yaml-language-server@1.24.0"
+    },
+    "bin": {
+      "yaml-language-server": "npm:yaml-language-server"
+    }
+  },
+  "lua-language-server": {
+    "name": "lua-language-server",
+    "homepage": "https://github.com/LuaLS/lua-language-server",
+    "licenses": [
+      "MIT"
+    ],
+    "source": {
+      "id": "pkg:github/LuaLS/lua-language-server@3.19.1",
+      "asset": [
+        {
+          "target": "darwin_arm64",
+          "file": "lua-language-server-{{version}}-darwin-arm64.tar.gz:libexec/",
+          "bin": "exec:libexec/bin/lua-language-server"
+        },
+        {
+          "target": "darwin_x64",
+          "file": "lua-language-server-{{version}}-darwin-x64.tar.gz:libexec/",
+          "bin": "exec:libexec/bin/lua-language-server"
+        },
+        {
+          "target": "linux_arm64_gnu",
+          "file": "lua-language-server-{{version}}-linux-arm64.tar.gz:libexec/",
+          "bin": "exec:libexec/bin/lua-language-server"
+        },
+        {
+          "target": "linux_x64_gnu",
+          "file": "lua-language-server-{{version}}-linux-x64.tar.gz:libexec/",
+          "bin": "exec:libexec/bin/lua-language-server"
+        },
+        {
+          "target": "linux_x64_musl",
+          "file": "lua-language-server-{{version}}-linux-x64-musl.tar.gz:libexec/",
+          "bin": "exec:libexec/bin/lua-language-server"
+        },
+        {
+          "target": "win_x64",
+          "file": "lua-language-server-{{version}}-win32-x64.zip",
+          "bin": "bin/lua-language-server.exe"
+        }
+      ],
+      "version_overrides": [
+        {
+          "constraint": "semver:<=3.8.3",
+          "id": "pkg:github/LuaLS/lua-language-server@3.8.3",
+          "asset": [
+            {
+              "target": "darwin_arm64",
+              "file": "lua-language-server-{{version}}-darwin-arm64.tar.gz:libexec/",
+              "bin": "exec:libexec/bin/lua-language-server"
+            },
+            {
+              "target": "darwin_x64",
+              "file": "lua-language-server-{{version}}-darwin-x64.tar.gz:libexec/",
+              "bin": "exec:libexec/bin/lua-language-server"
+            },
+            {
+              "target": "linux_x64_gnu",
+              "file": "lua-language-server-{{version}}-linux-x64.tar.gz:libexec/",
+              "bin": "exec:libexec/bin/lua-language-server"
+            },
+            {
+              "target": "linux_x64_musl",
+              "file": "lua-language-server-{{version}}-linux-x64-musl.tar.gz:libexec/",
+              "bin": "exec:libexec/bin/lua-language-server"
+            },
+            {
+              "target": "win_x64",
+              "file": "lua-language-server-{{version}}-win32-x64.zip",
+              "bin": "bin/lua-language-server.exe"
+            }
+          ]
+        },
+        {
+          "constraint": "semver:<=3.7.4",
+          "id": "pkg:github/LuaLS/lua-language-server@3.7.4",
+          "asset": [
+            {
+              "target": "darwin_arm64",
+              "file": "lua-language-server-{{version}}-darwin-arm64.tar.gz:libexec/",
+              "bin": "exec:libexec/bin/lua-language-server"
+            },
+            {
+              "target": "darwin_x64",
+              "file": "lua-language-server-{{version}}-darwin-x64.tar.gz:libexec/",
+              "bin": "exec:libexec/bin/lua-language-server"
+            },
+            {
+              "target": "linux_arm64_gnu",
+              "file": "lua-language-server-{{version}}-linux-arm64.tar.gz:libexec/",
+              "bin": "exec:libexec/bin/lua-language-server"
+            },
+            {
+              "target": "linux_x64_gnu",
+              "file": "lua-language-server-{{version}}-linux-x64.tar.gz:libexec/",
+              "bin": "exec:libexec/bin/lua-language-server"
+            },
+            {
+              "target": "linux_x64_musl",
+              "file": "lua-language-server-{{version}}-linux-x64-musl.tar.gz:libexec/",
+              "bin": "exec:libexec/bin/lua-language-server"
+            },
+            {
+              "target": "win_x64",
+              "file": "lua-language-server-{{version}}-win32-x64.zip",
+              "bin": "bin/lua-language-server.exe"
+            }
+          ]
+        }
+      ]
+    },
+    "bin": {
+      "lua-language-server": "{{source.asset.bin}}"
+    }
+  },
+  "intelephense": {
+    "name": "intelephense",
+    "homepage": "https://intelephense.com",
+    "licenses": [
+      "MIT"
+    ],
+    "source": {
+      "id": "pkg:npm/intelephense@1.18.5"
+    },
+    "bin": {
+      "intelephense": "npm:intelephense"
+    }
+  },
+  "terraform-ls": {
+    "name": "terraform-ls",
+    "homepage": "https://github.com/hashicorp/terraform-ls",
+    "licenses": [
+      "MPL-2.0"
+    ],
+    "source": {
+      "id": "pkg:generic/hashicorp/terraform-ls@v0.39.0",
+      "download": [
+        {
+          "target": "darwin_arm64",
+          "files": {
+            "terraform-ls.zip": "https://releases.hashicorp.com/terraform-ls/{{ version | strip_prefix \"v\" }}/terraform-ls_{{ version | strip_prefix \"v\" }}_darwin_arm64.zip"
+          },
+          "bin": "terraform-ls"
+        },
+        {
+          "target": "darwin_x64",
+          "files": {
+            "terraform-ls.zip": "https://releases.hashicorp.com/terraform-ls/{{ version | strip_prefix \"v\" }}/terraform-ls_{{ version | strip_prefix \"v\" }}_darwin_amd64.zip"
+          },
+          "bin": "terraform-ls"
+        },
+        {
+          "target": "linux_arm64",
+          "files": {
+            "terraform-ls.zip": "https://releases.hashicorp.com/terraform-ls/{{ version | strip_prefix \"v\" }}/terraform-ls_{{ version | strip_prefix \"v\" }}_linux_arm64.zip"
+          },
+          "bin": "terraform-ls"
+        },
+        {
+          "target": "linux_arm",
+          "files": {
+            "terraform-ls.zip": "https://releases.hashicorp.com/terraform-ls/{{ version | strip_prefix \"v\" }}/terraform-ls_{{ version | strip_prefix \"v\" }}_linux_arm.zip"
+          },
+          "bin": "terraform-ls"
+        },
+        {
+          "target": "linux_x64",
+          "files": {
+            "terraform-ls.zip": "https://releases.hashicorp.com/terraform-ls/{{ version | strip_prefix \"v\" }}/terraform-ls_{{ version | strip_prefix \"v\" }}_linux_amd64.zip"
+          },
+          "bin": "terraform-ls"
+        },
+        {
+          "target": "linux_x86",
+          "files": {
+            "terraform-ls.zip": "https://releases.hashicorp.com/terraform-ls/{{ version | strip_prefix \"v\" }}/terraform-ls_{{ version | strip_prefix \"v\" }}_linux_386.zip"
+          },
+          "bin": "terraform-ls"
+        },
+        {
+          "target": "win_x64",
+          "files": {
+            "terraform-ls.zip": "https://releases.hashicorp.com/terraform-ls/{{ version | strip_prefix \"v\" }}/terraform-ls_{{ version | strip_prefix \"v\" }}_windows_amd64.zip"
+          },
+          "bin": "terraform-ls.exe"
+        },
+        {
+          "target": "win_x86",
+          "files": {
+            "terraform-ls.zip": "https://releases.hashicorp.com/terraform-ls/{{ version | strip_prefix \"v\" }}/terraform-ls_{{ version | strip_prefix \"v\" }}_windows_386.zip"
+          },
+          "bin": "terraform-ls.exe"
+        },
+        {
+          "target": "win_arm64",
+          "files": {
+            "terraform-ls.zip": "https://releases.hashicorp.com/terraform-ls/{{ version | strip_prefix \"v\" }}/terraform-ls_{{ version | strip_prefix \"v\" }}_windows_arm64.zip"
+          },
+          "bin": "terraform-ls.exe"
+        }
+      ]
+    },
+    "bin": {
+      "terraform-ls": "{{source.download.bin}}"
+    }
+  },
+  "prisma-language-server": {
+    "name": "prisma-language-server",
+    "homepage": "https://github.com/prisma/language-tools",
+    "licenses": [
+      "Apache-2.0"
+    ],
+    "source": {
+      "id": "pkg:npm/%40prisma/language-server@31.12.10"
+    },
+    "bin": {
+      "prisma-language-server": "npm:prisma-language-server"
+    }
+  },
+  "ocaml-lsp": {
+    "name": "ocaml-lsp",
+    "homepage": "https://github.com/ocaml/ocaml-lsp",
+    "licenses": [
+      "ISC"
+    ],
+    "source": {
+      "id": "pkg:opam/ocaml-lsp-server@1.27.0"
+    },
+    "bin": {
+      "ocamllsp": "opam:ocamllsp"
+    }
+  },
+  "texlab": {
+    "name": "texlab",
+    "homepage": "https://github.com/latex-lsp/texlab",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "source": {
+      "id": "pkg:github/latex-lsp/texlab@v5.26.0",
+      "asset": [
+        {
+          "target": "darwin_arm64",
+          "file": "texlab-aarch64-macos.tar.gz",
+          "bin": "texlab"
+        },
+        {
+          "target": "darwin_x64",
+          "file": "texlab-x86_64-macos.tar.gz",
+          "bin": "texlab"
+        },
+        {
+          "target": "linux_x64_gnu",
+          "file": "texlab-x86_64-linux.tar.gz",
+          "bin": "texlab"
+        },
+        {
+          "target": "linux_x64_musl",
+          "file": "texlab-x86_64-alpine.tar.gz",
+          "bin": "texlab"
+        },
+        {
+          "target": "linux_arm64_gnu",
+          "file": "texlab-aarch64-linux.tar.gz",
+          "bin": "texlab"
+        },
+        {
+          "target": "linux_armv7_gnu",
+          "file": "texlab-armv7hf-linux.tar.gz",
+          "bin": "texlab"
+        },
+        {
+          "target": "win_arm64",
+          "file": "texlab-aarch64-windows.zip",
+          "bin": "texlab.exe"
+        },
+        {
+          "target": "win_x64",
+          "file": "texlab-x86_64-windows.zip",
+          "bin": "texlab.exe"
+        },
+        {
+          "target": "win_x86",
+          "file": "texlab-i686-windows.zip",
+          "bin": "texlab.exe"
+        }
+      ]
+    },
+    "bin": {
+      "texlab": "{{source.asset.bin}}"
+    }
+  },
+  "dockerfile-language-server": {
+    "name": "dockerfile-language-server",
+    "homepage": "https://github.com/rcjsuen/dockerfile-language-server-nodejs",
+    "licenses": [
+      "MIT"
+    ],
+    "source": {
+      "id": "pkg:npm/dockerfile-language-server-nodejs@0.15.0"
+    },
+    "bin": {
+      "docker-langserver": "npm:docker-langserver"
+    }
+  },
+  "clojure-lsp": {
+    "name": "clojure-lsp",
+    "homepage": "https://clojure-lsp.io",
+    "licenses": [
+      "MIT"
+    ],
+    "source": {
+      "id": "pkg:github/clojure-lsp/clojure-lsp@2026.07.06-14.34.19",
+      "asset": [
+        {
+          "target": "darwin_arm64",
+          "file": "clojure-lsp-native-macos-aarch64.zip",
+          "bin": "clojure-lsp"
+        },
+        {
+          "target": "darwin_x64",
+          "file": "clojure-lsp-native-macos-amd64.zip",
+          "bin": "clojure-lsp"
+        },
+        {
+          "target": "linux_x64_gnu",
+          "file": "clojure-lsp-native-linux-amd64.zip",
+          "bin": "clojure-lsp"
+        },
+        {
+          "target": "linux_x64",
+          "file": "clojure-lsp-native-static-linux-amd64.zip",
+          "bin": "clojure-lsp"
+        },
+        {
+          "target": "linux_arm64",
+          "file": "clojure-lsp-native-linux-aarch64.zip",
+          "bin": "clojure-lsp"
+        },
+        {
+          "target": "win_x64",
+          "file": "clojure-lsp-native-windows-amd64.zip",
+          "bin": "clojure-lsp.exe"
+        }
+      ]
+    },
+    "bin": {
+      "clojure-lsp": "{{source.asset.bin}}"
+    }
+  },
+  "tinymist": {
+    "name": "tinymist",
+    "homepage": "https://github.com/Myriad-Dreamin/tinymist",
+    "licenses": [
+      "Apache-2.0"
+    ],
+    "source": {
+      "id": "pkg:github/Myriad-Dreamin/tinymist@v0.15.8",
+      "asset": [
+        {
+          "target": "linux_x64_gnu",
+          "file": "tinymist-linux-x64"
+        },
+        {
+          "target": "linux_x64_musl",
+          "file": "tinymist-alpine-x64"
+        },
+        {
+          "target": "linux_arm64_gnu",
+          "file": "tinymist-linux-arm64"
+        },
+        {
+          "target": "linux_arm64_musl",
+          "file": "tinymist-alpine-arm64"
+        },
+        {
+          "target": "darwin_x64",
+          "file": "tinymist-darwin-x64"
+        },
+        {
+          "target": "darwin_arm64",
+          "file": "tinymist-darwin-arm64"
+        },
+        {
+          "target": "win_x64",
+          "file": "tinymist-win32-x64.exe"
+        },
+        {
+          "target": "win_arm64",
+          "file": "tinymist-win32-arm64.exe"
+        }
+      ]
+    },
+    "bin": {
+      "tinymist": "{{source.asset.file}}"
+    }
+  },
+  "haskell-language-server": {
+    "name": "haskell-language-server",
+    "homepage": "https://haskell-language-server.readthedocs.io/en/latest/",
+    "licenses": [
+      "Apache-2.0"
+    ],
+    "source": {
+      "id": "pkg:generic/haskell/haskell-language-server@2.13.0.0",
+      "build": [
+        {
+          "target": "unix",
+          "run": "ghcup --url-source=https://raw.githubusercontent.com/haskell/ghcup-metadata/master/ghcup-vanilla-0.0.9.yaml install hls \"$VERSION\" -i \"$PWD\"",
+          "staged": false,
+          "env": {
+            "VERSION": "{{version}}"
+          },
+          "bin": {
+            "wrapper": "bin/haskell-language-server-wrapper",
+            "server_9_6_7": "bin/haskell-language-server-9.6.7",
+            "server_9_8_4": "bin/haskell-language-server-9.8.4",
+            "server_9_10_3": "bin/haskell-language-server-9.10.3",
+            "server_9_12_2": "bin/haskell-language-server-9.12.2",
+            "server_9_14_1": "bin/haskell-language-server-9.14.1"
+          }
+        },
+        {
+          "target": "win",
+          "run": "ghcup install hls $env:VERSION -i ($pwd).path",
+          "staged": false,
+          "env": {
+            "VERSION": "{{version}}"
+          },
+          "bin": {
+            "wrapper": "haskell-language-server-wrapper.exe",
+            "server_9_6_7": "haskell-language-server-9.6.7.exe",
+            "server_9_8_4": "haskell-language-server-9.8.4.exe",
+            "server_9_10_3": "haskell-language-server-9.10.3.exe",
+            "server_9_12_2": "haskell-language-server-9.12.2.exe",
+            "server_9_14_1": "haskell-language-server-9.14.1.exe"
+          }
+        }
+      ]
+    },
+    "bin": {
+      "haskell-language-server-wrapper": "{{source.build.bin.wrapper}}",
+      "haskell-language-server-9.6.7": "{{source.build.bin.server_9_6_7}}",
+      "haskell-language-server-9.8.4": "{{source.build.bin.server_9_8_4}}",
+      "haskell-language-server-9.10.3": "{{source.build.bin.server_9_10_3}}",
+      "haskell-language-server-9.12.2": "{{source.build.bin.server_9_12_2}}",
+      "haskell-language-server-9.14.1": "{{source.build.bin.server_9_14_1}}"
+    }
+  },
+  "kotlin-lsp": {
+    "name": "kotlin-lsp",
+    "homepage": "https://github.com/Kotlin/kotlin-lsp",
+    "licenses": [
+      "Apache-2.0"
+    ],
+    "source": {
+      "id": "pkg:generic/Kotlin/kotlin-lsp@kotlin-lsp/v263.6379.0",
+      "download": [
+        {
+          "target": "darwin_x64",
+          "files": {
+            "kotlin-lsp.zip": "https://download-cdn.jetbrains.com/language-server/kotlin-server/{{ version | strip_prefix \"kotlin-lsp/v\" }}/kotlin-server-{{ version | strip_prefix \"kotlin-lsp/v\" }}.sit"
+          },
+          "bin": "kotlin-server-{{ version | strip_prefix \"kotlin-lsp/v\" }}/bin/intellij-server"
+        },
+        {
+          "target": "darwin_arm64",
+          "files": {
+            "kotlin-lsp.zip": "https://download-cdn.jetbrains.com/language-server/kotlin-server/{{ version | strip_prefix \"kotlin-lsp/v\" }}/kotlin-server-{{ version | strip_prefix \"kotlin-lsp/v\" }}-aarch64.sit"
+          },
+          "bin": "kotlin-server-{{ version | strip_prefix \"kotlin-lsp/v\" }}/bin/intellij-server"
+        },
+        {
+          "target": "linux_x64",
+          "files": {
+            "kotlin-lsp.tar.gz": "https://download-cdn.jetbrains.com/language-server/kotlin-server/{{ version | strip_prefix \"kotlin-lsp/v\" }}/kotlin-server-{{ version | strip_prefix \"kotlin-lsp/v\" }}.tar.gz"
+          },
+          "bin": "kotlin-server-{{ version | strip_prefix \"kotlin-lsp/v\" }}/bin/intellij-server"
+        },
+        {
+          "target": "linux_arm64",
+          "files": {
+            "kotlin-lsp.tar.gz": "https://download-cdn.jetbrains.com/language-server/kotlin-server/{{ version | strip_prefix \"kotlin-lsp/v\" }}/kotlin-server-{{ version | strip_prefix \"kotlin-lsp/v\" }}-aarch64.tar.gz"
+          },
+          "bin": "kotlin-server-{{{ version | strip_prefix \"kotlin-lsp/v\" }}/bin/intellij-server"
+        },
+        {
+          "target": "win_x64",
+          "files": {
+            "kotlin-lsp.zip": "https://download-cdn.jetbrains.com/language-server/kotlin-server/{{ version | strip_prefix \"kotlin-lsp/v\" }}/kotlin-server-{{ version | strip_prefix \"kotlin-lsp/v\" }}.win.zip"
+          },
+          "bin": "bin/intellij-server.exe"
+        },
+        {
+          "target": "win_arm64",
+          "files": {
+            "kotlin-lsp.zip": "https://download-cdn.jetbrains.com/language-server/kotlin-server/{{ version | strip_prefix \"kotlin-lsp/v\" }}/kotlin-server-{{ version | strip_prefix \"kotlin-lsp/v\" }}-aarch64.win.zip"
+          },
+          "bin": "bin/intellij-server.exe"
+        }
+      ]
+    },
+    "bin": {
+      "intellij-server": "{{source.download.bin}}"
+    }
+  },
+  "julia-lsp": {
+    "name": "julia-lsp",
+    "homepage": "https://github.com/julia-vscode/LanguageServer.jl",
+    "licenses": [
+      "MIT"
+    ],
+    "source": {
+      "id": "pkg:github/mason-org/julia-lsp@v1.219.2",
+      "asset": [
+        {
+          "target": "unix",
+          "file": "julia-lsp-{{version}}.zip:libexec/",
+          "bin": "exec:libexec/bin/julia-lsp"
+        },
+        {
+          "target": "win",
+          "file": "julia-lsp-{{version}}.zip",
+          "bin": "bin/julia-lsp.cmd"
+        }
+      ]
+    },
+    "bin": {
+      "julia-lsp": "{{source.asset.bin}}"
+    }
+  }
+}

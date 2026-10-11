@@ -1,0 +1,155 @@
+{
+  "complete": true,
+  "scope": "Declared root upstream adaptations have independent replacements, current identities and complete target regression evidence. This scoped audit is not an assertion that absence of markers proves every file independent or a formal clean-room/legal clearance.",
+  "entries": [
+    {
+      "path": "config-portable.mjs",
+      "declaredUpstreamMarkers": [
+        "// Pinned omo-opencode config/schema/tmux.ts @59d23b5, mapped to native host."
+      ],
+      "status": "independent-runtime-replacement",
+      "replacementSha256": "4ab5d6c9977e30e34df7be37310888f4891c1ba047b6d2dff69a09fc923f3628",
+      "currentSha256": "4ab5d6c9977e30e34df7be37310888f4891c1ba047b6d2dff69a09fc923f3628",
+      "regression": {
+        "tests": 728,
+        "failed": 0,
+        "log": "/tmp/scrum-source-contract-final-full.log"
+      }
+    },
+    {
+      "path": "desktop-build.mjs",
+      "declaredUpstreamMarkers": [],
+      "status": "independently-rewritten",
+      "evidence": "Current generation preferred source and binary identities validated in work/independent-desktop/current-build-proof.json; old build-proof.json is historical. Shipped independent Swift sources and compiler recipe remain inspectable.",
+      "currentSha256": "ec11218c2f8c7e40780d3fdd4e73a74bceea0a229ec787be972259c440e54b29",
+      "regression": {
+        "tests": 728,
+        "failed": 0,
+        "log": "/tmp/scrum-source-contract-final-full.log"
+      }
+    },
+    {
+      "path": "fsync-tracker.mjs",
+      "declaredUpstreamMarkers": [
+        "// work/harness-comparison/oh-my-openagent/packages/omo-opencode/src/shared/fsync-skip-tracker.ts",
+        "// work/harness-comparison/oh-my-openagent/packages/omo-opencode/src/shared/fsync-skip-warning-formatter.ts",
+        "// work/harness-comparison/oh-my-openagent/packages/utils/src/classify-path-environment.ts"
+      ],
+      "status": "independent-runtime-replacement",
+      "replacementSha256": "3f8945529fac7a4d41c8580c75b6b819637c2a39a7aedd01d83dfb732adea515",
+      "currentSha256": "3f8945529fac7a4d41c8580c75b6b819637c2a39a7aedd01d83dfb732adea515",
+      "regression": {
+        "tests": 728,
+        "failed": 0,
+        "log": "/tmp/scrum-source-contract-final-full.log"
+      }
+    },
+    {
+      "path": "ultrawork.mjs",
+      "declaredUpstreamMarkers": [
+        "Declared masking contract ported from omo-senpi strip-quoted-regions.ts"
+      ],
+      "status": "declared-mask-replaced-with-independent-scanner",
+      "replacement": "independent/request-visibility.mjs",
+      "replacementSha256": "a9c86b17a07ca9fd74185fc06613bdb400b011bbfc37d03798d02d809d1a7fa0",
+      "currentSha256": "a9c86b17a07ca9fd74185fc06613bdb400b011bbfc37d03798d02d809d1a7fa0",
+      "regression": {
+        "tests": 728,
+        "failed": 0,
+        "log": "/tmp/scrum-source-contract-final-full.log"
+      }
+    },
+    {
+      "path": "memory-recall.mjs",
+      "declaredUpstreamMarkers": [
+        "Declared upstream changed-blob algorithm adaptation"
+      ],
+      "status": "declared-corpus-adaptation-replaced-with-independent-reader",
+      "replacement": "independent/committed-memory-corpus.mjs",
+      "replacementSha256": "b1aeebeb066626d81de54c5035e1e4d25df90d92a0986621a6b7dc4a770fb303",
+      "currentSha256": "b1aeebeb066626d81de54c5035e1e4d25df90d92a0986621a6b7dc4a770fb303",
+      "regression": {
+        "tests": 728,
+        "failed": 0,
+        "log": "/tmp/scrum-source-contract-final-full.log"
+      }
+    },
+    {
+      "path": "desktop.mjs",
+      "status": "independent-runtime-replacement",
+      "replacement": "independent/desktop-sessions.mjs",
+      "replacementSha256": "a69f82dabf75916fe06c1635dc431a4ab3e96b8f3d88722b7ed2b19118fc30c9",
+      "evidence": "Root desktop tests passed; actual scoped AX and background input acceptance passed. Protected desktop assets excluded from npm package; full release audit remains incomplete.",
+      "rootModuleSha256": "abe74ae6537d43899e7cf5bba943000f71b1cef11f15450914f88e164dee203b",
+      "hashClarification": "Root adapter and independent session implementation identities recorded separately; no source change.",
+      "currentSha256": "a69f82dabf75916fe06c1635dc431a4ab3e96b8f3d88722b7ed2b19118fc30c9",
+      "regression": {
+        "tests": 728,
+        "failed": 0,
+        "log": "/tmp/scrum-source-contract-final-full.log"
+      }
+    },
+    {
+      "path": "agent-definitions.mjs",
+      "status": "independent-runtime-source-and-target-regression-verified",
+      "replacement": "independent/agent-definitions.mjs",
+      "replacementSha256": "ef38c17119d648681d2c7c8703a3598bdcc858c692aa04b38d13f2d599a3d2dc",
+      "evidence": "/tmp/scrum-independent-agent-definitions-final-tests.log",
+      "focusedTestsPassed": 15,
+      "currentSha256": "ef38c17119d648681d2c7c8703a3598bdcc858c692aa04b38d13f2d599a3d2dc",
+      "regression": {
+        "tests": 728,
+        "failed": 0,
+        "log": "/tmp/scrum-source-contract-final-full.log"
+      }
+    },
+    {
+      "path": "mcp-config.mjs",
+      "status": "independent-runtime-source-and-target-regression-verified",
+      "replacement": "independent/mcp-configuration.mjs",
+      "replacementSha256": "85368e650784bcaa52158b0e7bcf5922db73a7b0c0861724fef9289f0514b374",
+      "evidence": "/tmp/scrum-independent-mcp-config-final-tests.log",
+      "focusedTestsPassed": 14,
+      "currentSha256": "85368e650784bcaa52158b0e7bcf5922db73a7b0c0861724fef9289f0514b374",
+      "regression": {
+        "tests": 728,
+        "failed": 0,
+        "log": "/tmp/scrum-source-contract-final-full.log"
+      }
+    },
+    {
+      "path": "commands.mjs",
+      "status": "independent-runtime-source-and-target-regression-verified",
+      "replacement": "independent/command-templates.mjs",
+      "replacementSha256": "3718750f24a2b082a04964c31cd27842cf720186a3abd479febaa5a7793f46fa",
+      "evidence": "/tmp/scrum-independent-command-templates-tests.log",
+      "focusedTestsPassed": 22,
+      "currentSha256": "3718750f24a2b082a04964c31cd27842cf720186a3abd479febaa5a7793f46fa",
+      "regression": {
+        "tests": 728,
+        "failed": 0,
+        "log": "/tmp/scrum-source-contract-final-full.log"
+      }
+    },
+    {
+      "path": "comment-checker.mjs",
+      "declaredUpstreamMarkers": [],
+      "status": "independent-runtime-source-and-target-regression-verified",
+      "replacementSha256": "b9dfe8eface60e854bfd5aac7b39a579cc31aef3fac1beb6ec79212a82c22071",
+      "evidence": "Root adapter depends on independent/comment-inspection.mjs and separately verified MIT native binaries. Focused native and failure checks and the current 716-test root suite passed. Cross-platform binary execution and complete public package license audit remain separately scoped.",
+      "currentSha256": "b9dfe8eface60e854bfd5aac7b39a579cc31aef3fac1beb6ec79212a82c22071",
+      "regression": {
+        "tests": 728,
+        "failed": 0,
+        "log": "/tmp/scrum-source-contract-final-full.log"
+      }
+    }
+  ],
+  "latestRegression": {
+    "passed": 728,
+    "failed": 0,
+    "skipped": 0,
+    "log": "/tmp/scrum-source-contract-final-full.log",
+    "scope": "Complete current root regression suite on macOS; actual DSH standalone/combined native acceptance is separate."
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "name": "dsh-plugin-scrum",
+  "version": "0.7.0",
+  "private": true,
+  "type": "module",
+  "description": "Scrum: independent agent execution and continuation for DeepSeek Harness",
+  "exports": {
+    ".": "./lifecycle-entry.mjs",
+    "./controller": "./controller.mjs",
+    "./roles": "./roles.mjs",
+    "./models": "./models.mjs",
+    "./runtime": "./runtime.mjs",
+    "./ipc": "./ipc.mjs",
+    "./reports": "./parent-reports.mjs",
+    "./planner": "./planner.mjs",
+    "./standalone": "./standalone.mjs",
+    "./ledger": "./ledger.mjs",
+    "./workspaces": "./workspaces.mjs",
+    "./compaction": "./compaction-hooks.mjs",
+    "./memory-sandbox": "./memory-sandbox.mjs",
+    "./memory-filesystem": "./memory-filesystem.mjs",
+    "./memory-bash": "./memory-bash.mjs",
+    "./execution": "./execution-api.mjs",
+    "./execution-store": "./execution-store.mjs",
+    "./client": "./client.js"
+  },
+  "files": [
+    "*.mjs",
+    "*.md",
+    "vendor/LICENSE.orchestrator",
+    "vendor/antigravity-audio-runtime.mjs",
+    "vendor/comment-checker",
+    "vendor/desktop-independent",
+    "vendor/lsp-registry",
+    "vendor/orchestrator-worktree.mjs",
+    "vendor/pi-web-access-LICENSE.md",
+    "vendor/pi-web-access-provenance.json",
+    "vendor/pi-web-access.mjs",
+    "skills",
+    "skills-conditional",
+    "!*-test.mjs",
+    "!test-env.mjs",
+    "!*acceptance.mjs",
+    "!*live-proof.mjs",
+    "client.js",
+    "cordis.patch.yml",
+    "client-source.js",
+    "independent",
+    "!vendor/omo/**/*.mjs",
+    "!vendor/omo/*.mjs",
+    "!vendor/desktop/**",
+    "vendor/browser-independent",
+    "!vendor/lifecycle/**",
+    "vendor/session-finder-independent",
+    "docs/independent-data-query-replacement.md",
+    "vendor/archive-dependencies",
+    "vendor/public-reader-independent",
+    "!**/__pycache__/**",
+    "!**/*.pyc",
+    "!**/*.pyo",
+    "vendor/gateway-independent",
+    "!skills/onboarding/qa*.sh",
+    "vendor/antigravity-notices",
+    "vendor/orchestrator-worktree-provenance.json",
+    "vendor/antigravity-source",
+    "vendor/web-access-source",
+    "vendor/worktree-source",
+    "vendor/client-build-source",
+    "docs/bundled-source-builds.json",
+    "LICENSE",
+    "!vendor/public-reader-independent/source/observations/**",
+    "docs/independent-release-evidence.json",
+    "docs/independent-implementation-inventory.json"
+  ],
+  "scripts": {
+    "test": "node --import ./test-env.mjs --test --test-concurrency=1 *-test.mjs",
+    "postinstall": "node ./session-compat.mjs",
+    "build:client": "esbuild client-source.js --bundle --format=iife --platform=browser --outfile=client.js",
+    "test:prepare": "node scripts/prepare-tests.mjs"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "peerDependencies": {
+    "@ast-grep/cli": "0.45.3",
+    "@deepseek-ai/dsh": "0.2.0-rc.2",
+    "@deepseek-ai/dsh-agent": "0.2.0-rc.2",
+    "@deepseek-ai/dsh-bash-sandbox": "0.2.0-rc.2",
+    "@deepseek-ai/dsh-compaction-basic": "^0.2.0-rc.2",
+    "@deepseek-ai/dsh-credentials": "0.2.0-rc.2",
+    "@deepseek-ai/dsh-fs-local": "0.2.0-rc.2",
+    "@deepseek-ai/dsh-fs-sandbox": "0.2.0-rc.2",
+    "@deepseek-ai/dsh-llm": "0.2.0-rc.2",
+    "@deepseek-ai/dsh-llm-pi-ai": "0.2.0-rc.2",
+    "@deepseek-ai/dsh-mcp-client": "0.2.0-rc.2",
+    "@deepseek-ai/dsh-sandbox": "0.2.0-rc.2",
+    "@deepseek-ai/dsh-sandbox-local": "0.2.0-rc.2",
+    "@deepseek-ai/dsh-session": "0.2.0-rc.2",
+    "@deepseek-ai/dsh-session-format-catalog": "0.2.0-rc.2",
+    "@deepseek-ai/dsh-skill-filesystem": "0.2.0-rc.2",
+    "@deepseek-ai/dsh-spill-policy": "0.2.0-rc.2",
+    "@deepseek-ai/dsh-tool-fs": "0.2.0-rc.2",
+    "@deepseek-ai/dsh-tool-fs-search": "0.2.0-rc.2",
+    "@deepseek-ai/dsh-tools": "0.2.0-rc.2",
+    "@deepseek-ai/dsh-typert-protocol": "0.2.0-rc.2",
+    "@deepseek-ai/dsh-user-questions": "0.2.0-rc.2",
+    "@earendil-works/pi-ai": "0.87.1",
+    "@modelcontextprotocol/client": "2.3.1",
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "node-pty": "^1.1.0",
+    "playwright": "1.63.0",
+    "typescript": "5.9.3",
+    "typescript-language-server": "6.0.1"
+  },
+  "license": "AGPL-3.0-only",
+  "dependencies": {
+    "@deepseek-ai/dsh-client-connection": "0.2.0-rc.2",
+    "@deepseek-ai/dsh-web": "0.2.0-rc.2",
+    "@deepseek-ai/schemastery": "3.18.4",
+    "@earendil-works/pi-tui": "0.87.0",
+    "@mozilla/readability": "0.6.0",
+    "js-yaml": "4.3.2",
+    "jsonc-parser": "3.3.1",
+    "linkedom": "0.16.11",
+    "picomatch": "4.0.7",
+    "quickjs-emscripten": "0.32.0",
+    "tar": "7.5.22",
+    "turndown": "7.2.4",
+    "typebox": "1.3.27",
+    "yauzl": "3.4.0",
+    "zod": "4.6.5"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-api-remotes",
+        "@deepseek-ai/dsh-client-ui-conversation",
+        "@deepseek-ai/dsh-client-ui-sidebar-right",
+        "@deepseek-ai/dsh-client-ui-plugin-manager",
+        "@deepseek-ai/dsh-client-locale"
+      ]
+    }
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "zod": "4.6.5",
+    "ws": "8.22.0"
+  },
+  "optionalDependencies": {
+    "@steipete/peekaboo": "4.9.0"
+  },
+  "overrides": {
+    "@modelcontextprotocol/client": "2.3.1",
+    "fflate": "0.8.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maas-creative/dsh-plugin-scrum.git"
+  },
+  "bugs": {
+    "url": "https://github.com/maas-creative/dsh-plugin-scrum/issues"
+  },
+  "homepage": "https://github.com/maas-creative/dsh-plugin-scrum#readme",
+  "author": "MaaS Creative"
+}

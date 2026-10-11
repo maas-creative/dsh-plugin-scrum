@@ -1,0 +1,83 @@
+{
+  "scope": "Preferred sources and build recipes for incorporated bundles. No blanket whole-project license conclusion.",
+  "buildTool": "esbuild@0.28.2",
+  "entries": [
+    {
+      "component": "Antigravity audio",
+      "runtime": "vendor/antigravity-audio-runtime.mjs",
+      "runtimeSha256": "9e805753283f4ec47eddb64c3e5af5c06fa12d539c1fb66b2a2c296c3c871059",
+      "preferredSource": "vendor/antigravity-source",
+      "build": "node vendor/antigravity-source/rebuild.mjs",
+      "exactReproduction": true,
+      "license": "MIT",
+      "adaptation": "Environment-supplied OAuth application configuration; no bundled fixed credentials"
+    },
+    {
+      "component": "Web access",
+      "runtime": "vendor/pi-web-access.mjs",
+      "runtimeSha256": "32bd130add9bdaacf2e2c41b69062a7b813835c194a8e5c8046c49812f15c45a",
+      "preferredSource": "vendor/web-access-source",
+      "build": "node vendor/web-access-source/rebuild.mjs",
+      "exactReproduction": true,
+      "license": "MIT"
+    },
+    {
+      "component": "Git worktree creation",
+      "runtime": "vendor/orchestrator-worktree.mjs",
+      "runtimeSha256": "6c973d17a5f50c265525bdbf068013dffcfcde33480d0116c2a3f26c5b449d34",
+      "preferredSource": "vendor/worktree-source",
+      "build": "node vendor/worktree-source/rebuild.mjs",
+      "exactReproduction": true,
+      "license": "MIT"
+    },
+    {
+      "component": "Session finder",
+      "runtime": "vendor/session-finder-independent/runtime/cli.mjs",
+      "runtimeSha256": "095911457ce64d4e1b2dd051a3b0816fbedbb05a97645d1f3a7c1b10cafb04e9",
+      "preferredSource": "vendor/session-finder-independent/src",
+      "build": "node vendor/session-finder-independent/rebuild.mjs",
+      "exactReproduction": true,
+      "license": "MIT"
+    },
+    {
+      "component": "Scrum UI",
+      "runtime": "client.js",
+      "runtimeSha256": "634cb39fbb0e8823a2617719ae31902a6813c207cd6022886c7a8e3d97cdcaaf",
+      "preferredSource": [
+        "client-source.js",
+        "vendor/client-build-source/zod"
+      ],
+      "build": "npm run build:client",
+      "exactReproduction": true,
+      "dependencyLicense": "MIT"
+    },
+    {
+      "component": "Browser runtime",
+      "runtime": "skills/browser/runtime/omowright/index.js",
+      "preferredSource": [
+        "vendor/browser-independent/src",
+        "vendor/client-build-source/ws",
+        "vendor/client-build-source/zod"
+      ],
+      "build": "node browser-runtime-build.mjs <new-output-directory>",
+      "exactReproductionTest": "browser-runtime-build-test.mjs",
+      "license": "MIT"
+    },
+    {
+      "component": "Native desktop helpers",
+      "runtime": "vendor/desktop-independent",
+      "preferredSource": [
+        "independent/desktop-native-stop.swift",
+        "independent/desktop-observe.swift",
+        "independent/desktop-command-guardian.swift"
+      ],
+      "build": "node desktop-build.mjs <new-output-directory>",
+      "identity": "5133d874a984d283067cd4560fcc3ef4b8a2e77996dede1070434ca3c2ef7947",
+      "requires": "macOS SDK and Swift compiler; platform system libraries",
+      "exactReproduction": false,
+      "sourceAndBinaryIdentityVerified": true
+    }
+  ],
+  "wholeProjectLicenseAuditComplete": true,
+  "licenseAuditScope": "Engineering source-origin/notice review for this distribution, including separately acquired OSS; not a formal clean-room or unconditional legal guarantee."
+}

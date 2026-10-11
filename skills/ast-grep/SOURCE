@@ -1,0 +1,2 @@
+MIT upstream: https://github.com/code-yeongyu/ast-grep-skill @ 3148c69c370a51afb661b9f37879c0bd7cf0cc3b
+Scrum adaptations: independently fixed variadic path parsing; installer version pinned to 0.45.3.

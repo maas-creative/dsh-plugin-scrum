@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "implementation": "Scrum independently authored native helpers",
+  "preferredSources": {
+    "stop": "independent/desktop-native-stop.swift",
+    "observe": "independent/desktop-observe.swift",
+    "guardian": "independent/desktop-command-guardian.swift"
+  },
+  "sourceSha256": {
+    "stop": "fd459f05fda9277b11222e34479b4d1bc131ce4839aef02c9e8639baa1760fad",
+    "observe": "c1038fd5e0dd886cfe91c7cbca8ab7934704a3122002cb90069c75f7931034f2",
+    "guardian": "9956e86a71a255128c0da9d99b3a35ed9e1181afa77f025da18164a8e01c71d4"
+  },
+  "binarySha256": {
+    "stop": "c56b398e3c1d40bd8b9666aead3201e7736205faaf446a6467a92f79aa2502bb",
+    "observe": "d7938d8c9e2e477b2b881a992d8ee105c35e0b0c9d29a0c4974d5bbb0bc238c1",
+    "guardian": "dfd78b8ae24a655681c2a77efcf80a062acc14b67767b23309ec3edae5b0fbfa"
+  },
+  "compilerVersion": "Apple Swift version 6.3.3 (swiftlang-6.3.3.1.3 clang-2100.1.1.101)\nTarget: arm64-apple-macosx26.0",
+  "sdk": "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+  "target": "arm64-apple-macosx15.0",
+  "buildKey": "5133d874a984d283067cd4560fcc3ef4b8a2e77996dede1070434ca3c2ef7947"
+}

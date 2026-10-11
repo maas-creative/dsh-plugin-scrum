@@ -1,0 +1,17 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {mkdtemp,writeFile,rm} from 'node:fs/promises';import {tmpdir} from 'node:os';import {join} from 'node:path';
+import {registerNativeTools} from './native-tools.mjs';
+test('native parent abort and disposal terminate only owned resident memory children',async()=>{
+ const home=await mkdtemp(join(tmpdir(),'scrum-kibitzer-owned-')),keys=['DSH_HOME','DSH_MEMORY_ADMIN_CONFIG','DSH_MEMORY_MODEL_JOBS'],saved=Object.fromEntries(keys.map(k=>[k,process.env[k]])),listeners=[],effects=[],tools=new Map(),parents=new Map(),children=[];
+ const emit=async(name,...args)=>{for(const [event,fn] of listeners)if(event===name)await fn(...args)};
+ try {
+  process.env.DSH_HOME=home;process.env.DSH_MEMORY_MODEL_JOBS='1';process.env.DSH_MEMORY_ADMIN_CONFIG=join(home,'config.json');await writeFile(process.env.DSH_MEMORY_ADMIN_CONFIG,JSON.stringify({locksDirectory:join(home,'locks'),memory:{reflection:{enabled:false},dream:{enabled:false}}}));
+  const ctx={tools:{register:t=>tools.set(t.name,t)},systemPrompt:{context:()=>{}},commands:{list:()=>[],register:()=>{}},on:(n,f)=>listeners.push([n,f]),effect:f=>effects.push(f()),sessions:{flush:async()=>{}},agents:{get:id=>parents.get(id),create:async spec=>{let settled;const idle=new Promise(r=>settled=r),events=[];const child={options:spec.agentOptions,session:{id:'child-'+children.length,header:{cwd:spec.meta.cwd},deriveMessages:()=>[],snapshotEvents:()=>events},followup:()=>{},send:()=>{},cancel:()=>settled(),whenIdle:()=>idle};const owned={parent:spec.parentAgent,disposed:false};children.push(owned);spec.setup({tools:{register:()=>{},restrict:()=>{}},systemPrompt:{section:()=>{}},on:()=>{}},child);return {agent:child,dispose:async()=>{owned.disposed=true;settled()}}}}};
+  await registerNativeTools(ctx);
+  for(const id of ['a','b']){const events=[],session={id,header:{cwd:join(home,id)},snapshotEvents:()=>events,append:(type,data)=>events.push({type,data})},agent={session,options:{provider:'fixture'},status:'running'};parents.set(id,agent);await tools.get('memory_path_write').execute({path:'reference/exports',body:'Amber exports retain receipts.',source:'fixture'},{agent});const event={type:'user/message',seq:1,data:{id:'human-'+id,source:{kind:'user'},content:'Amber exports receipts'}};events.push(event);await emit('session/event',session,event);}
+  assert.equal(children.length,2);assert(children.every(c=>!c.disposed));
+  await emit('session/event',parents.get('a').session,{type:'turn/end',data:{reason:{kind:'aborted',reason:{kind:'user'}}}});assert.equal(children[0].disposed,true);assert.equal(children[1].disposed,false);
+  await emit('tools/result',{agent:parents.get('a'),arguments:{path:'exports'},toolName:'read'});assert.equal(children.length,2);
+  const next={type:'user/message',seq:2,data:{id:'new-human',source:{kind:'user'},content:'Amber exports receipts'}};parents.get('a').session.append(next.type,next.data);await emit('session/event',parents.get('a').session,next);assert.equal(children.length,3);assert.equal(children[2].disposed,false);
+  await emit('agent/disposed',{agent:parents.get('b')});assert.equal(children[1].disposed,true);assert.equal(children[2].disposed,false);
+ } finally {for(const cleanup of effects.reverse())await cleanup?.();for(const k of keys)if(saved[k]===undefined)delete process.env[k];else process.env[k]=saved[k];await rm(home,{recursive:true,force:true})}
+});

@@ -1,0 +1,139 @@
+{
+  "sourceCommit": "59d23b5",
+  "source": "packages/omo-opencode/src/cli/cli-program.ts and runtime-commands.ts",
+  "nativeEntry": "/scrum-cli JSON {operation,options,message,serverName}",
+  "output": "Always JSON {ok,exitCode,result|error}; native command kind success/error corresponds to exitCode 0/1",
+  "operations": [
+    {
+      "source": "install/setup",
+      "native": "install/setup",
+      "flags": {
+        "no-tui": "options.tui=false; tui=true invokes native scrum-onboard",
+        "subscription no/yes and claude max20": "validated subscriptionRequests; fixed Sol low catalog/capability validated; native credential settings retain authentication ownership",
+        "platform": "validated native/opencode/codex/both target metadata; native-dev gated by original environment switch",
+        "codex-autonomous": "true rejected: host permissions cannot be granted by plugin; false leaves host policy",
+        "skip-auth": "skip native authentication hints"
+      },
+      "scope": "Verifies mounted package and persists missing native runtime model defaults, roles and categories transactionally through accepted saveModel API; previous workerModels settings backed up, custom overrides/tasks/fallbacks preserved",
+      "proof": "Actual SDK install writes settings and previous-settings backup; fresh database connection reads persisted role model and custom role preservation; second actual native command omits runtime and forwards installer_config through real serve/request Unix socket, persisted backup read from fresh readonly database connection"
+    },
+    {
+      "source": "run",
+      "native": "run",
+      "flags": {
+        "agent": "native role/system instructions with inherited parent policy",
+        "model": "fixed GPT6.1Sol low enforced by user requirement",
+        "directory": "must equal active native session workspace",
+        "session-id": "active or owned child only",
+        "on-complete": "native guarded bash action after completed run",
+        "json": "JSON unconditional",
+        "no-timestamp": "options.timestamp=false",
+        "verbose": "owned native event stream",
+        "port/attach": "explicit error: operator already runs within attached SDK host, OpenCode HTTP transport absent",
+        "unknown passthrough": "not supported by native SDK operator; source delegates these to OpenCode CLI"
+      },
+      "proof": "actual Sol6.1 low completed output, verbose events, guarded completion marker, owned child disposal"
+    },
+    {
+      "source": "get-local-version/version",
+      "native": "get-local-version/version",
+      "flags": {
+        "directory": "active workspace validation",
+        "json": "JSON unconditional"
+      },
+      "proof": "actual SDK package version result"
+    },
+    {
+      "source": "doctor",
+      "native": "doctor",
+      "flags": {
+        "status": "status mode",
+        "verbose": "verbose mode",
+        "json": "JSON unconditional",
+        "platform": "requested target metadata; native provider/filesystem/tool diagnostics"
+      },
+      "proof": "actual SDK provider/tool/command diagnostics"
+    },
+    {
+      "source": "config migrate",
+      "native": "config-migrate",
+      "flags": {
+        "dry-run": "copy-on-write engine adapter, including pending journal recovery and lock operations",
+        "json": "JSON unconditional"
+      },
+      "proof": "actual pending migration dry-run preserves file hashes and backup count; apply recovers pending journal in scratch home"
+    },
+    {
+      "source": "cleanup/uninstall",
+      "native": "cleanup/uninstall",
+      "flags": {
+        "platform": "native ownership adaptation",
+        "codex-home": "must identify current native DSH_HOME",
+        "project": "must identify current native workspace",
+        "json": "JSON unconditional"
+      },
+      "proof": "foreign project rejected; own handles only disposed, no filesystem deletion"
+    },
+    {
+      "source": "refresh-model-capabilities",
+      "native": "refresh-model-capabilities",
+      "flags": {
+        "directory": "active workspace",
+        "source-url": "bounded HTTP JSON fetch with atomic native snapshot cache and digest",
+        "json": "JSON unconditional"
+      },
+      "proof": "actual mock HTTP fetch and persisted hash; native provider declarations remain authoritative"
+    },
+    {
+      "source": "boulder",
+      "native": "boulder",
+      "flags": {
+        "directory": "active workspace",
+        "work-id": "filters native owner workflow list",
+        "json": "JSON unconditional"
+      },
+      "proof": "actual standalone runtime workflow_list owner-scoped response"
+    },
+    {
+      "source": "worktree-sweep",
+      "native": "worktree-sweep",
+      "flags": {
+        "apply": "guarded removal only for host-tracked session-owned worktrees",
+        "older-than": "nonnegative age condition for unmerged worktrees",
+        "repo repeated": "options.repo array bounded20",
+        "json": "JSON unconditional"
+      },
+      "proof": "actual guarded Git preserves foreign worktree on apply and removes trusted owned worktree",
+      "scope": "No global git worktree prune: pruning unrelated stale registrations would exceed owner-only cleanup authorization"
+    },
+    {
+      "source": "ulw-loop",
+      "native": "ulw-loop",
+      "flags": {
+        "source opaque arguments": "native state, stop/resume, or message through existing ULW run path"
+      },
+      "proof": "actual registered ULW state command"
+    },
+    {
+      "source": "mcp oauth login/logout/status",
+      "native": "mcp-oauth-login/logout/status",
+      "flags": {
+        "server-name": "input.serverName configured safe server",
+        "server-url": "must match administrator configured server",
+        "client-id": "login clientId",
+        "scopes": "login scopes"
+      },
+      "proof": "actual SDK discovery/register/auth callback/token exchange/status/logout; secret-free JSON status"
+    }
+  ],
+  "disabledOrArchitectureSpecific": [
+    "native-dev installer remains source environment gated",
+    "OpenCode HTTP attach/port and CLI passthrough have no native SDK transport counterpart",
+    "Legacy global binary installation and Codex/OpenCode config removal are represented by mounted native lifecycle and session-owned cleanup"
+  ],
+  "evidence": "work/scrum-implementation/live-native-cli-compat-evidence.json",
+  "evidenceScope": "Operator manually mounted on real native SDK host; root mounted-entry loading is covered separately by parent cold native smoke",
+  "installerOwnership": "Direct native runtime ownerOf worker rejected; external runtime after callerSession worker deny; optional cached host model catalog independently validates fixed route",
+  "operatorMutationAuthorization": "Mutating operations require public native agents.roots membership and no durable parentSession/subagent origin/delegationDepth/runtime worker owner, plus no immutable readOnly/planningOnly policy. isSeeded alone does not deny a legitimate root. Read-only version/doctor/status and copy-on-write migration dryRun remain available to children.",
+  "operatorMutationProof": "Actual SDK ownerOf-null side child and bare native child cannot mutate; DB/config files and mock OAuth/network contact count unchanged. Actual seeded root can install. Actual child version and dryRun permitted. live-native-cli-compat-evidence.json at 2026-10-09T16:32:05.669Z"
+}

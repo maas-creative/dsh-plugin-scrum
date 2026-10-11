@@ -1,0 +1,22 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {mkdtemp,writeFile,rm} from 'node:fs/promises';import {tmpdir} from 'node:os';import {join} from 'node:path';
+import {parseLspRequestContext,runWithRequestContext,withLspClient,getLspManager} from './independent/lsp-client.mjs';
+const server=`let buffer=Buffer.alloc(0),waiting;const send=m=>{const body=Buffer.from(JSON.stringify({jsonrpc:'2.0',...m}));process.stdout.write('Content-Length: '+body.length+'\\r\\n\\r\\n');process.stdout.write(body);};process.stdin.on('data',chunk=>{buffer=Buffer.concat([buffer,chunk]);while(true){const end=buffer.indexOf('\\r\\n\\r\\n');if(end<0)return;const length=Number(/Content-Length: (\\d+)/i.exec(buffer.subarray(0,end).toString())[1]);if(buffer.length<end+4+length)return;const m=JSON.parse(buffer.subarray(end+4,end+4+length));buffer=buffer.subarray(end+4+length);if(m.method==='exit')process.exit(0);if(m.method==='initialize')send({id:m.id,result:{capabilities:{textDocumentSync:1}}});else if(m.method==='shutdown')send({id:m.id,result:null});else if(m.method==='echo')send({id:m.id,result:m.params});else if(m.method==='askApply'){waiting=m.id;send({id:'server-edit',method:'workspace/applyEdit',params:{edit:{}}});}else if(m.id==='server-edit')send({id:waiting,result:m.result});else if(m.method==='diagnostics'){send({method:'textDocument/publishDiagnostics',params:{uri:m.params.uri,version:0,diagnostics:[{message:'stale'}]}});setTimeout(()=>{send({method:'textDocument/publishDiagnostics',params:{uri:m.params.uri,version:1,diagnostics:[{message:'current'}]}});send({id:m.id,result:null});},15);}else if(m.method==='bad')process.stdout.write('Content-Length: 999999999\\r\\n\\r\\n');}});`;
+async function fixture(fn){const cwd=await mkdtemp(join(tmpdir(),'scrum-own-lsp-wire-'));try{await writeFile(join(cwd,'a.fixture'),'日本😀');await writeFile(join(cwd,'server.cjs'),server);await writeFile(join(cwd,'lsp.json'),JSON.stringify({lsp:{fixture:{command:[process.execPath,join(cwd,'server.cjs')],extensions:['.fixture']}}}));await runWithRequestContext(parseLspRequestContext({cwd,userConfigPath:join(cwd,'lsp.json')}),()=>fn(cwd));}finally{await getLspManager().stopAll();await rm(cwd,{recursive:true,force:true});}}
+test('independent LSP byte framing, server write refusal, document versions and request cancellation',()=>fixture(async cwd=>{
+ await withLspClient('a.fixture',async client=>{
+  assert.deepEqual(await client.sendRequest('echo',{text:'日本😀'}),{text:'日本😀'});
+  assert.equal((await client.sendRequest('askApply',{})).applied,false);
+  await client.openFile(join(cwd,'a.fixture'));assert.equal(client.getOpenDocumentVersion(join(cwd,'a.fixture')),1);
+  await writeFile(join(cwd,'a.fixture'),'changed');await client.openFile(join(cwd,'a.fixture'));assert.equal(client.getOpenDocumentVersion(join(cwd,'a.fixture')),2);
+  const abort=new AbortController(),request=client.sendRequest('hang',{}, {signal:abort.signal});abort.abort(new Error('stop request'));await assert.rejects(request,/stop request/);
+  await assert.rejects(client.sendRequest('hang',{}, {timeoutMs:15}),/timed out/);assert.equal(await client.sendRequest('echo','alive'),'alive');const uri='file:///fixture',waiting=client.waitForDiagnostics(uri,{version:1});await client.sendRequest('diagnostics',{uri});assert.equal((await waiting).diagnostics[0].message,'current');assert.equal(await client.waitForDiagnostics('file:///missing',{timeoutMs:10}),undefined);
+ });
+ await assert.rejects(withLspClient('../outside.fixture',()=>{}),/ENOENT|outside/);
+}));
+test('independent LSP rejects oversized frames and closes every pending request',()=>fixture(async()=>{
+ await withLspClient('a.fixture',async client=>{const pending=client.sendRequest('hang',{});await assert.rejects(client.sendRequest('bad',{}),/Oversized/);await assert.rejects(pending,/Oversized/);});
+}));
+
+test('independent LSP idle cleanup removes closed clients and terminates owned processes',()=>fixture(async cwd=>{
+ await writeFile(join(cwd,'lsp.json'),JSON.stringify({lsp:{fixture:{command:[process.execPath,join(cwd,'server.cjs')],extensions:['.fixture'],idleTimeoutMs:20}}}));let pid;await withLspClient('a.fixture',async client=>{pid=client.child.pid;assert.equal(await client.sendRequest('echo','active'),'active');});const deadline=Date.now()+2000;while((await getLspManager().status()).length&&Date.now()<deadline)await new Promise(r=>setTimeout(r,10));assert.equal((await getLspManager().status()).length,0);assert.throws(()=>process.kill(pid,0));
+}));

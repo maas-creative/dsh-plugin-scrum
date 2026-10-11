@@ -1,0 +1,15 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {mkdtemp,mkdir,writeFile,symlink,rm} from 'node:fs/promises';import {join} from 'node:path';import {tmpdir} from 'node:os';import {roleInstruction,rolePolicy} from './roles.mjs';import {registerRoleContext,planPathAllowed} from './role-context.mjs';import {bindAgentRole} from './agent-role.mjs';
+test('native and OpenCode role contracts preserve fixed model and dynamic skill/delegation inventory',async()=>{
+ const cwd=await mkdtemp(join(tmpdir(),'scrum-role-'));try{
+ const events={},agent={session:{header:{cwd},id:'root'}};bindAgentRole(agent,'sisyphus');
+ registerRoleContext({on:(name,handler)=>events[name]=handler,tools:{schemas:()=>[{name:'task'}]},skills:{list:async()=>[{name:'fixture-skill',description:'fixture routing',source:'project-dsh'}]}});
+ const next=async()=>({sections:[],contexts:[]});const first=await events['system-prompt/assemble']({}, {agent},next);assert.match(first.sections[0].text,/fixture-skill/);assert.match(first.sections[0].text,/gpt-6.1|GPT 6.1/);assert.match(roleInstruction('omo-native-gate-reviewer',cwd),/report artifact|report/i);assert.match(roleInstruction('prometheus',cwd),/Planning roles/);assert.match(roleInstruction('sisyphus-junior',cwd),/scrum_review/);assert.match(roleInstruction('sisyphus-junior',cwd),/acceptance criteria/);
+ await mkdir(join(cwd,'.omo'));await writeFile(join(cwd,'.omo','omo.json'),'{"disabled_agents":["librarian"],"disabled_skills":["fixture-skill"]}');const second=await events['system-prompt/assemble']({}, {agent},next);assert.doesNotMatch(second.sections[0].text,/fixture-skill/);await assert.rejects(Promise.resolve().then(()=>roleInstruction('librarian',cwd)),/無効化/);assert.equal(rolePolicy('prometheus',cwd).planningOnly,true);
+ }finally{await rm(cwd,{recursive:true,force:true})}
+});
+test('planning-only paths permit plans and drafts while refusing implementation, delegation and symlink escape',async()=>{
+ const cwd=await mkdtemp(join(tmpdir(),'scrum-plan-')),outside=await mkdtemp(join(tmpdir(),'scrum-plan-out-'));try{
+ await mkdir(join(cwd,'.omo','plans'),{recursive:true});assert.equal(await planPathAllowed(cwd,'.omo/plans/nested/plan.md'),true);assert.equal(await planPathAllowed(cwd,'src/main.js'),false);assert.equal(await planPathAllowed(cwd,'.omo/plans/code.js'),false);await symlink(outside,join(cwd,'.omo','drafts'));assert.equal(await planPathAllowed(cwd,'.omo/drafts/plan.md'),false);
+ const events={},agent={session:{header:{cwd}}};bindAgentRole(agent,'prometheus');registerRoleContext({on:(name,fn)=>events[name]=fn});const run=(name,arguments_)=>events['tools/pre-execute']({agent,name,arguments:arguments_},async()=>({kind:'allow'}));assert.equal((await run('write',{file_path:'.omo/plans/new.md'})).kind,'allow');assert.equal((await run('write',{file_path:'main.js'})).kind,'deny');assert.equal((await run('task',{})).kind,'deny');assert.equal((await run('workpool',{op:'create'})).kind,'deny');assert.equal((await run('workpool',{op:'yield'})).kind,'allow');
+ }finally{await rm(cwd,{recursive:true,force:true});await rm(outside,{recursive:true,force:true})}
+});

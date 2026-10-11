@@ -1,0 +1,21 @@
+---
+name: oxlint
+description: High-performance linter for JavaScript and TypeScript written in Rust.
+homepage: https://github.com/oxc-project/oxc
+licenses:
+  - MIT
+languages:
+  - JavaScript
+  - TypeScript
+categories:
+  - LSP
+  - Linter
+
+source:
+  id: pkg:npm/oxlint@1.87.0
+
+bin:
+  oxlint: npm:oxlint
+
+neovim:
+  lspconfig: oxlint

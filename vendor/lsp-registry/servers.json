@@ -1,0 +1,706 @@
+{
+  "typescript": {
+    "command": [
+      "typescript-language-server",
+      "--stdio"
+    ],
+    "extensions": [
+      ".ts",
+      ".tsx",
+      ".js",
+      ".jsx",
+      ".mjs",
+      ".cjs",
+      ".mts",
+      ".cts"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "typescript-language-server",
+    "references": [
+      "nvim-lspconfig/ts_ls.lua"
+    ]
+  },
+  "deno": {
+    "command": [
+      "deno",
+      "lsp"
+    ],
+    "extensions": [
+      ".ts",
+      ".tsx",
+      ".js",
+      ".jsx",
+      ".mjs"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "deno",
+    "references": [
+      "nvim-lspconfig/denols.lua"
+    ]
+  },
+  "vue": {
+    "command": [
+      "vue-language-server",
+      "--stdio"
+    ],
+    "extensions": [
+      ".vue"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "vue-language-server",
+    "references": [
+      "nvim-lspconfig/vue_ls.lua"
+    ]
+  },
+  "eslint": {
+    "command": [
+      "vscode-eslint-language-server",
+      "--stdio"
+    ],
+    "extensions": [
+      ".ts",
+      ".tsx",
+      ".js",
+      ".jsx",
+      ".mjs",
+      ".cjs",
+      ".mts",
+      ".cts",
+      ".vue"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "eslint-lsp",
+    "references": [
+      "nvim-lspconfig/eslint.lua"
+    ]
+  },
+  "oxlint": {
+    "command": [
+      "oxlint",
+      "--lsp"
+    ],
+    "extensions": [
+      ".ts",
+      ".tsx",
+      ".js",
+      ".jsx",
+      ".mjs",
+      ".cjs",
+      ".mts",
+      ".cts",
+      ".vue",
+      ".astro",
+      ".svelte"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "oxlint",
+    "references": [
+      "nvim-lspconfig/oxlint.lua"
+    ]
+  },
+  "biome": {
+    "command": [
+      "biome",
+      "lsp-proxy"
+    ],
+    "extensions": [
+      ".ts",
+      ".tsx",
+      ".js",
+      ".jsx",
+      ".mjs",
+      ".cjs",
+      ".mts",
+      ".cts",
+      ".json",
+      ".jsonc",
+      ".vue",
+      ".astro",
+      ".svelte",
+      ".css",
+      ".graphql",
+      ".gql",
+      ".html"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "biome",
+    "references": [
+      "nvim-lspconfig/biome.lua"
+    ]
+  },
+  "gopls": {
+    "command": [
+      "gopls"
+    ],
+    "extensions": [
+      ".go"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "gopls",
+    "references": [
+      "nvim-lspconfig/gopls.lua"
+    ]
+  },
+  "ruby-lsp": {
+    "command": [
+      "ruby-lsp"
+    ],
+    "extensions": [
+      ".rb",
+      ".rake",
+      ".gemspec",
+      ".ru"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "ruby-lsp",
+    "references": [
+      "nvim-lspconfig/ruby_lsp.lua"
+    ]
+  },
+  "basedpyright": {
+    "command": [
+      "basedpyright-langserver",
+      "--stdio"
+    ],
+    "extensions": [
+      ".py",
+      ".pyi"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "basedpyright",
+    "references": [
+      "nvim-lspconfig/basedpyright.lua"
+    ]
+  },
+  "pyright": {
+    "command": [
+      "pyright-langserver",
+      "--stdio"
+    ],
+    "extensions": [
+      ".py",
+      ".pyi"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "pyright",
+    "references": [
+      "nvim-lspconfig/pyright.lua"
+    ]
+  },
+  "ty": {
+    "command": [
+      "ty",
+      "server"
+    ],
+    "extensions": [
+      ".py",
+      ".pyi"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "ty",
+    "references": [
+      "nvim-lspconfig/ty.lua"
+    ]
+  },
+  "ruff": {
+    "command": [
+      "ruff",
+      "server"
+    ],
+    "extensions": [
+      ".py",
+      ".pyi"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "ruff",
+    "references": [
+      "nvim-lspconfig/ruff.lua"
+    ]
+  },
+  "elixir-ls": {
+    "command": [
+      "elixir-ls"
+    ],
+    "extensions": [
+      ".ex",
+      ".exs"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "elixir-ls",
+    "references": [
+      "nvim-lspconfig/elixirls.lua"
+    ]
+  },
+  "zls": {
+    "command": [
+      "zls"
+    ],
+    "extensions": [
+      ".zig",
+      ".zon"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "zls",
+    "references": [
+      "nvim-lspconfig/zls.lua"
+    ]
+  },
+  "csharp": {
+    "command": [
+      "csharp-ls"
+    ],
+    "extensions": [
+      ".cs"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "csharp-language-server",
+    "references": [
+      "nvim-lspconfig/csharp_ls.lua"
+    ]
+  },
+  "fsharp": {
+    "command": [
+      "fsautocomplete",
+      "--adaptive-lsp-server-enabled"
+    ],
+    "extensions": [
+      ".fs",
+      ".fsi",
+      ".fsx",
+      ".fsscript"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "fsautocomplete",
+    "references": [
+      "nvim-lspconfig/fsautocomplete.lua"
+    ]
+  },
+  "sourcekit-lsp": {
+    "command": [
+      "sourcekit-lsp"
+    ],
+    "extensions": [
+      ".swift",
+      ".m",
+      ".mm"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "references": [
+      "nvim-lspconfig/sourcekit.lua"
+    ]
+  },
+  "rust": {
+    "command": [
+      "rust-analyzer"
+    ],
+    "extensions": [
+      ".rs"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "rust-analyzer",
+    "references": [
+      "nvim-lspconfig/rust_analyzer.lua"
+    ]
+  },
+  "clangd": {
+    "command": [
+      "clangd"
+    ],
+    "extensions": [
+      ".c",
+      ".cpp",
+      ".cc",
+      ".cxx",
+      ".c++",
+      ".h",
+      ".hpp",
+      ".hh",
+      ".hxx",
+      ".h++"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "clangd",
+    "references": [
+      "nvim-lspconfig/clangd.lua"
+    ]
+  },
+  "svelte": {
+    "command": [
+      "svelteserver",
+      "--stdio"
+    ],
+    "extensions": [
+      ".svelte"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "svelte-language-server",
+    "references": [
+      "nvim-lspconfig/svelte.lua"
+    ]
+  },
+  "astro": {
+    "command": [
+      "astro-ls",
+      "--stdio"
+    ],
+    "extensions": [
+      ".astro"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "astro-language-server",
+    "references": [
+      "nvim-lspconfig/astro.lua"
+    ]
+  },
+  "bash": {
+    "command": [
+      "bash-language-server",
+      "start"
+    ],
+    "extensions": [
+      ".sh",
+      ".bash",
+      ".zsh",
+      ".ksh"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "bash-language-server",
+    "references": [
+      "nvim-lspconfig/bashls.lua"
+    ]
+  },
+  "bash-ls": {
+    "command": [
+      "bash-language-server",
+      "start"
+    ],
+    "extensions": [
+      ".sh",
+      ".bash",
+      ".zsh",
+      ".ksh"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "bash-language-server",
+    "references": [
+      "nvim-lspconfig/bashls.lua"
+    ]
+  },
+  "jdtls": {
+    "command": [
+      "jdtls"
+    ],
+    "extensions": [
+      ".java"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "jdtls",
+    "references": [
+      "nvim-lspconfig/jdtls.lua"
+    ]
+  },
+  "yaml-ls": {
+    "command": [
+      "yaml-language-server",
+      "--stdio"
+    ],
+    "extensions": [
+      ".yaml",
+      ".yml"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "yaml-language-server",
+    "references": [
+      "nvim-lspconfig/yamlls.lua"
+    ]
+  },
+  "lua-ls": {
+    "command": [
+      "lua-language-server"
+    ],
+    "extensions": [
+      ".lua"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "lua-language-server",
+    "references": [
+      "nvim-lspconfig/lua_ls.lua"
+    ]
+  },
+  "php": {
+    "command": [
+      "intelephense",
+      "--stdio"
+    ],
+    "extensions": [
+      ".php"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "intelephense",
+    "references": [
+      "nvim-lspconfig/intelephense.lua"
+    ]
+  },
+  "dart": {
+    "command": [
+      "dart",
+      "language-server",
+      "--protocol=lsp"
+    ],
+    "extensions": [
+      ".dart"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "references": [
+      "nvim-lspconfig/dartls.lua"
+    ]
+  },
+  "terraform": {
+    "command": [
+      "terraform-ls",
+      "serve"
+    ],
+    "extensions": [
+      ".tf",
+      ".tfvars"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "terraform-ls",
+    "references": [
+      "nvim-lspconfig/terraformls.lua"
+    ]
+  },
+  "terraform-ls": {
+    "command": [
+      "terraform-ls",
+      "serve"
+    ],
+    "extensions": [
+      ".tf",
+      ".tfvars"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "terraform-ls",
+    "references": [
+      "nvim-lspconfig/terraformls.lua"
+    ]
+  },
+  "prisma": {
+    "command": [
+      "prisma-language-server",
+      "--stdio"
+    ],
+    "extensions": [
+      ".prisma"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "prisma-language-server",
+    "references": [
+      "nvim-lspconfig/prismals.lua"
+    ]
+  },
+  "ocaml-lsp": {
+    "command": [
+      "ocamllsp"
+    ],
+    "extensions": [
+      ".ml",
+      ".mli"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "ocaml-lsp",
+    "references": [
+      "nvim-lspconfig/ocamllsp.lua"
+    ]
+  },
+  "texlab": {
+    "command": [
+      "texlab"
+    ],
+    "extensions": [
+      ".tex",
+      ".bib"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "texlab",
+    "references": [
+      "nvim-lspconfig/texlab.lua"
+    ]
+  },
+  "dockerfile": {
+    "command": [
+      "docker-langserver",
+      "--stdio"
+    ],
+    "extensions": [
+      ".dockerfile"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "dockerfile-language-server",
+    "references": [
+      "nvim-lspconfig/dockerls.lua"
+    ]
+  },
+  "gleam": {
+    "command": [
+      "gleam",
+      "lsp"
+    ],
+    "extensions": [
+      ".gleam"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "references": [
+      "nvim-lspconfig/gleam.lua"
+    ]
+  },
+  "clojure-lsp": {
+    "command": [
+      "clojure-lsp"
+    ],
+    "extensions": [
+      ".clj",
+      ".cljs",
+      ".cljc",
+      ".edn"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "clojure-lsp",
+    "references": [
+      "nvim-lspconfig/clojure_lsp.lua"
+    ]
+  },
+  "nixd": {
+    "command": [
+      "nixd"
+    ],
+    "extensions": [
+      ".nix"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "references": [
+      "nvim-lspconfig/nixd.lua"
+    ]
+  },
+  "tinymist": {
+    "command": [
+      "tinymist"
+    ],
+    "extensions": [
+      ".typ",
+      ".typc"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "tinymist",
+    "references": [
+      "nvim-lspconfig/tinymist.lua"
+    ]
+  },
+  "haskell-language-server": {
+    "command": [
+      "haskell-language-server-wrapper",
+      "--lsp"
+    ],
+    "extensions": [
+      ".hs",
+      ".lhs"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "haskell-language-server",
+    "references": [
+      "nvim-lspconfig/hls.lua"
+    ]
+  },
+  "kotlin-ls": {
+    "command": [
+      "intellij-server",
+      "--stdio"
+    ],
+    "extensions": [
+      ".kt",
+      ".kts"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "kotlin-lsp",
+    "references": [
+      "nvim-lspconfig/kotlin_lsp.lua"
+    ]
+  },
+  "julials": {
+    "command": [
+      "julia-lsp"
+    ],
+    "extensions": [
+      ".jl"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "recipe": "julia-lsp",
+    "references": [
+      "nvim-lspconfig/julials.lua"
+    ],
+    "alternativeCommands": [
+      [
+        "julia",
+        "--startup-file=no",
+        "--history-file=no",
+        "-e",
+        "using LanguageServer; LanguageServer.runserver()"
+      ]
+    ]
+  },
+  "razor": {
+    "command": [
+      "rzls"
+    ],
+    "extensions": [
+      ".razor",
+      ".cshtml"
+    ],
+    "priority": -100,
+    "source": "builtin",
+    "references": [
+      "https://github.com/dotnet/vscode-csharp/blob/main/package.json"
+    ]
+  }
+}

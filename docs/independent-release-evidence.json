@@ -1,0 +1,99 @@
+{
+  "version": "0.7.0",
+  "package": "dsh-plugin-scrum-0.7.0.tgz",
+  "license": "AGPL-3.0-only",
+  "publisher": "MaaS Creative",
+  "target": "macOS arm64, Node >=24, DSH 0.2.0-rc.2",
+  "regression": {
+    "passed": 731,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  "cleanPackage": {
+    "files": 1266,
+    "installationPassed": true,
+    "rebuiltBundles": 6,
+    "exactReproduction": true,
+    "protectedSnapshotExcluded": true,
+    "privateExecutionDataExcluded": true
+  },
+  "nativeSdkCases": [
+    {
+      "order": "scrum-only",
+      "passed": true,
+      "ordinaryTask": true,
+      "hdt": true,
+      "stop": true,
+      "businessLedgerSeparation": true,
+      "lifecycleStatus": "Executed and asserted by native acceptance runner"
+    },
+    {
+      "order": "dashboard-scrum",
+      "passed": true,
+      "ordinaryTask": true,
+      "hdt": true,
+      "stop": true,
+      "businessLedgerSeparation": true,
+      "lifecycleStatus": "Executed and asserted by native acceptance runner"
+    },
+    {
+      "order": "scrum-dashboard",
+      "passed": true,
+      "ordinaryTask": true,
+      "hdt": true,
+      "stop": true,
+      "businessLedgerSeparation": true,
+      "lifecycleStatus": "Executed and asserted by native acceptance runner"
+    }
+  ],
+  "model": {
+    "provider": "openai-codex",
+    "model": "gpt-6.1-sol",
+    "reasoningEffort": "low"
+  },
+  "liveExecution": [
+    {
+      "case": "Dashboard + Scrum, HardTackle",
+      "tasks": 2,
+      "parentPlanningDelegationReview": true,
+      "phase": "completed",
+      "workersReleased": true
+    },
+    {
+      "case": "Scrum only, ordinary request with explicit execution authorization",
+      "tasks": 2,
+      "hardtackleArmed": false,
+      "parentPlanningDelegationReview": true,
+      "phase": "completed",
+      "workersReleased": true
+    }
+  ],
+  "businessBoundary": {
+    "unverifiedCompletionRejected": true,
+    "verifiedTaskDone": true,
+    "deadlineAndSubmissionReceiptsUnchanged": true,
+    "residentDataTouched": false
+  },
+  "sourceAudit": {
+    "protectedReferenceCommit": "59d23b5c1ddc2a02210ede4cb485f88996fd02bd",
+    "matchedPackagePathsClassified": 72,
+    "matchedRepositoryPathsClassified": 74,
+    "sourceOriginAndPreferredSourceReviewed": true,
+    "formalCleanRoomClaim": false,
+    "everyOperatingSystemPhysicallyTested": false
+  },
+  "notPerformed": [
+    "GitHub or npm publication",
+    "Resident installation replacement",
+    "24-hour soak test"
+  ],
+  "upgradeNote": "Older installed updater code that only accepts SEE LICENSE IN descriptors may require a package-manager installation for this SPDX release. The new updater accepts safe legacy paths and AGPL-3.0-only with a root LICENSE; its migration acceptance used legacy metadata with the new updater.",
+  "packageIntegrity": "Final archive SHA256 is provided in the external SHA256SUMS sidecar; package cannot contain its own archive digest.",
+  "publicReleaseAdaptations": {
+    "oauthApplicationCredentials": "No bundled values; caller supplies environment configuration; two additional tests verify missing/configured behavior",
+    "testPrerequisites": "Portable uv-managed Python and verified Texlab setup; generated dependencies are ignored",
+    "reproduction": "Current source rebuild byte identity verified after adaptations"
+  },
+  "baselineTestedRuntimeCandidateSha256": "6301d5ed2d34b3b2d8bb4081ba04043a14d5f15b6eaa619df57436ae73f24381"
+}

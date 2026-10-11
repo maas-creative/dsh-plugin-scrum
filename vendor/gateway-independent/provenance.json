@@ -1,0 +1,11 @@
+{
+  "independentlyGenerated": true,
+  "source": "https://apis.opengateway.ai/v1/models",
+  "sourceFacts": "work/independent-gateway-catalog/correlated-facts.json",
+  "models": 102,
+  "unknownLimitsAreOmitted": true,
+  "pricingRoutesNotFlattened": true,
+  "sha256": "8a796db24c92ba203875c25f5e7e8d671bdb080f42b4100fa3f335eadfb10fda",
+  "acceptanceComplete": true,
+  "acceptanceScope": "Independent official public facts, catalog registration and target regression. Authentication/execution of every catalog model is not inferred; unknown facts remain omitted."
+}

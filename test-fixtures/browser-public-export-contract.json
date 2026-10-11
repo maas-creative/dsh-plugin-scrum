@@ -1,0 +1,340 @@
+{
+  "scope": "Public export-name classification using mock functions, not runtime behavior acceptance",
+  "result": [
+    {
+      "name": "AgentTabManager",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "BridgeProtocolError",
+      "called": true
+    },
+    {
+      "name": "BridgeUnavailableError",
+      "called": true
+    },
+    {
+      "name": "BrowserCdpCommandError",
+      "called": true
+    },
+    {
+      "name": "BrowserConnection",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "BskIpcClient",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "BskRpcError",
+      "called": true
+    },
+    {
+      "name": "BskSession",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "CdpClient",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "ElementHandle",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "FrameLocator",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "FrameManager",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "Locator",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "ModifierState",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "OmOKeyboard",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "OmOMouse",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "OmOPage",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "PipeCdpClient",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "SessionManager",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "TabRepository",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "UnsupportedOperationError",
+      "called": true
+    },
+    {
+      "name": "bskDoctor",
+      "called": true
+    },
+    {
+      "name": "bskOnboard",
+      "called": true
+    },
+    {
+      "name": "bskSnapshot",
+      "called": true
+    },
+    {
+      "name": "buildCloakBrowserArgs",
+      "called": true
+    },
+    {
+      "name": "buildSnapshotExpression",
+      "called": true
+    },
+    {
+      "name": "catalogBrowsers",
+      "called": true
+    },
+    {
+      "name": "collectWhileScrolling",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "compactSnapshot",
+      "called": true
+    },
+    {
+      "name": "connect",
+      "called": false,
+      "error": "browser_engine_owned_blocked"
+    },
+    {
+      "name": "connectBrowserSkill",
+      "called": true
+    },
+    {
+      "name": "connectCloakProfile",
+      "called": false,
+      "error": "browser_engine_owned_blocked"
+    },
+    {
+      "name": "connectPipe",
+      "called": false,
+      "error": "browser_engine_owned_blocked"
+    },
+    {
+      "name": "createAgentTabs",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "createBridgeClient",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "createCaptcha",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "createChromeApi",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "createCua",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "createEvents",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "createNativeMessagingHost",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "createNetworkSnoop",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "createRoutes",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "createTrace",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "decodeFrames",
+      "called": true
+    },
+    {
+      "name": "describeLayers",
+      "called": true
+    },
+    {
+      "name": "detectBrowsers",
+      "called": true
+    },
+    {
+      "name": "emulate",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "encodeFrame",
+      "called": true
+    },
+    {
+      "name": "externalExtensionEntry",
+      "called": true
+    },
+    {
+      "name": "findCloakBrowserPath",
+      "called": true
+    },
+    {
+      "name": "identifyBrowser",
+      "called": true
+    },
+    {
+      "name": "injectCookies",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "installBskCli",
+      "called": true
+    },
+    {
+      "name": "installNativeMessagingHost",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "layersHeader",
+      "called": true
+    },
+    {
+      "name": "listBrowsers",
+      "called": true
+    },
+    {
+      "name": "macOSVisionOcr",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "normalizeDialogPolicy",
+      "called": true
+    },
+    {
+      "name": "probeBrowserSignals",
+      "called": true
+    },
+    {
+      "name": "readDaemonInfo",
+      "called": true
+    },
+    {
+      "name": "reconcileFrames",
+      "called": true
+    },
+    {
+      "name": "registerExternalExtension",
+      "called": true
+    },
+    {
+      "name": "repinViewport",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "requestHuman",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "resolveBskHome",
+      "called": true
+    },
+    {
+      "name": "resolveCloakProfile",
+      "called": true
+    },
+    {
+      "name": "resolveDialogAction",
+      "called": true
+    },
+    {
+      "name": "sanitizeCookies",
+      "called": true
+    },
+    {
+      "name": "snapshotTokens",
+      "called": true
+    },
+    {
+      "name": "snapshotWithFrames",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "snapshotWithLayers",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "takeSnapshot",
+      "called": false,
+      "error": "browser_engine_export_blocked"
+    },
+    {
+      "name": "toHar",
+      "called": true
+    },
+    {
+      "name": "unregisterExternalExtension",
+      "called": true
+    }
+  ]
+}
