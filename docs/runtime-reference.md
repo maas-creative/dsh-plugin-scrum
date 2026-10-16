@@ -79,3 +79,11 @@ DSH Webの公開UI拡張APIで、会話上部に「Scrum接続済み／未接続
 
 このUIはDSH WebのUIです。Dashboard独自UIの会話画面には、この拡張を自動挿入しません。TUI／SDK利用時のコマンドも維持します。`client-source.js`が原本、`npm run build:client`で配布用`client.js`を生成します。ホストやDSH本体のコードは書き換えません。
 
+
+## 成果物と担当実施報告、却下後の再提出
+
+書き込み可能な担当は、タスクの `output` に成果物を作成します。`scrum_report(content)` は実施内容・検証結果・障害をScrum管理データ領域の `.scrum-reports/<assignmentIdのSHA256>.md` に別保存します。成果物の作成や承認の代わりにはなりません。旧版で保存先が成果物と同じになっている実行も、書き込み担当の実施報告はこの別保存先を使います。
+
+読み取り専用の調査・レビュー担当は通常の write/edit を持たないため、従来どおり `scrum_report` で報告書自体をタスクの成果物として保存します。この場合は実施サマリーではなく、完了条件を満たす報告書全文を渡します。同じ担当の報告書は置換されます。
+
+`scrum_review` で却下された割当は `blocked` になり、同じ assignmentId の再承認はできません。親は `task({taskId, session_id: 既存担当のrunId, prompt: 修正指示, run_in_background: false})` で再提出を依頼します。旧割当が `cancelled`、新割当が実行・収集後に `review` となります。親は新しい assignmentId、成果物全文、実行証跡と収集された SHA256 を確認し、その新hashで承認します。非同期委譲の場合も収集完了を待ちます。ファイルの修正だけでは再提出やdone登録にならず、旧hash・古いタスク版・収集後に変更されたファイルの承認は拒否します。
