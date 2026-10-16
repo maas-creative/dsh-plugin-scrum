@@ -1,6 +1,12 @@
 import {realpath,mkdir,open,lstat} from 'node:fs/promises';
 import {constants} from 'node:fs';
+import {createHash} from 'node:crypto';
 import {resolve,relative,dirname,join,sep} from 'node:path';
+// Execution summaries are separate from the task artifact, including on resumed legacy runs.
+export function workerReportPath(dataDir,assignmentId){
+ if(typeof assignmentId!=='string'||!assignmentId)throw Error('Invalid report assignment ID');
+ return join(dataDir,'.scrum-reports',createHash('sha256').update(assignmentId).digest('hex')+'.md');
+}
 export async function writeReport(cwd,path,content){
  if(typeof content!=='string'||!content.trim()||Buffer.byteLength(content)>200000)throw Error('報告書は空でない200KB以下の文字列で指定してください');
  const source=resolve(cwd),root=await realpath(cwd),requested=resolve(path);
