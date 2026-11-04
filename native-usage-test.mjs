@@ -49,3 +49,13 @@ test('task usage includes reported tokens from an interrupted model attempt',asy
  const ctx={on:()=>{},sessions:{messageProjections:[]},sessionPersistence:{open:async()=>({read:async()=>({events}),close:async()=>{}})},agents:{},tools:{}};
  const stats=await nativeExecution(ctx,store).pi.readUsage('worker');assert.deepEqual(stats.totalUsage,{inputTokens:30,outputTokens:5,cacheReadTokens:12,cacheWriteTokens:0,totalTokens:47});
 });
+
+test('last call reflects a failed attempt or summarization rather than an older answer',async()=>{
+ const usage=(n)=>({inputTokens:n,outputTokens:2,cacheReadTokens:1,cacheWriteTokens:0,totalTokens:n+3});
+ const events=[{type:'assistant/message',seq:0,data:{usage:usage(10)}},{type:'assistant/attempt',seq:1,data:{stream:[{type:'chunk',time:1,chunk:{type:'usage',usage:usage(20)}}]}}];
+ const store={get:()=>({id:'worker'}),setting:(_key,fallback)=>fallback,set:()=>{}};
+ const ctx={on:()=>{},sessions:{messageProjections:[]},sessionPersistence:{open:async()=>({read:async()=>({events}),close:async()=>{}})},agents:{},tools:{}};
+ const read=()=>nativeExecution(ctx,store).pi.readUsage('worker');assert.equal((await read()).lastCall.inputTokens,20);
+ events[1].data.stream=[];assert.deepEqual((await read()).lastCall,{available:false});
+ events.push({type:'compaction/summary',seq:2,data:{llmStreamCall:true,usage:usage(30)}});assert.equal((await read()).lastCall.inputTokens,30);
+});
