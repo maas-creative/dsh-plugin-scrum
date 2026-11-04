@@ -37,7 +37,7 @@ export default class ScrumCompactionEngine extends BasicCompactionEngine {
   if(pressure&&(!sourceHookEnabled(agent,'preemptive-compaction')||this.pressureInFlight.has(agent)))return null;
   if(pressure){
    this.pressureInFlight.add(agent);
-   try{if(Date.now()-(this.lastPressure.get(agent)??-Infinity)<60000&&await this.safeDuringCooldown(agent,signal))return null;if(await this.deferWarmPressure(agent,signal)){this.cacheDeferred.add(agent);this.ctx.logger?.info('Deferred one pressure compaction while the measured prefix cache is warm');return null}}
+   try{const cooldown=Date.now()-(this.lastPressure.get(agent)??-Infinity)<60000;if(cooldown&&await this.safeDuringCooldown(agent,signal))return null;if(!cooldown&&await this.deferWarmPressure(agent,signal)){this.cacheDeferred.add(agent);this.ctx.logger?.info('Deferred one pressure compaction while the measured prefix cache is warm');return null}}
    catch(error){if(signal.aborted)throw error}
    finally{this.pressureInFlight.delete(agent)}
    this.pressureInFlight.add(agent);
