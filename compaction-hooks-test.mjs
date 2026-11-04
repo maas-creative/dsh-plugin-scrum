@@ -61,3 +61,14 @@ test('bounded selection prices repeated snapshots after delta conversion',async(
  engine.compactRegion=async(start,end)=>{regions.push([start,end]);const a=nodes.indexOf(start),b=nodes.indexOf(end),seq=100;events.set(seq,{seq,type:'user/message',data:{role:'user',content:[{type:'text',text:'summary'}]}});sizes.set(seq,100);nodes.splice(a,b-a+1,seq);session.surface.replaceGeneration++;return {ok:true}};
  await engine.compactWithBoundedInput(agent,'pressure',new AbortController().signal);assert.deepEqual(regions,[[2,11]]);assert.equal(session.eventAt(12).data.content[0].text,'未処理の指示');
 });
+
+test('failed pressure summary does not start the successful compaction cooldown',async()=>{
+ const original=BasicCompactionEngine.prototype.summarize,engine=Object.create(ScrumCompactionEngine.prototype);engine.ctx={};engine.triggers=new WeakMap();engine.lastPressure=new WeakMap();
+ const agent={session:{id:'pressure-cooldown-fixture',header:{cwd:'/tmp'}}};engine.triggers.set(agent,'pressure');
+ try{
+  BasicCompactionEngine.prototype.summarize=async()=>{throw Error('temporary provider failure')};
+  await assert.rejects(engine.summarize({messages:[]},agent,new AbortController().signal),/temporary provider failure/);assert.equal(engine.lastPressure.has(agent),false);
+  BasicCompactionEngine.prototype.summarize=async()=>({summary:'ok'});await engine.summarize({messages:[]},agent,new AbortController().signal);assert.equal(engine.lastPressure.has(agent),false);
+  engine.pressureInFlight=new WeakSet();engine.cacheDeferred=new WeakSet();engine.deferWarmPressure=async()=>false;engine.compactWithBoundedInput=async()=>({compacted:true});await engine.compactIfNeeded(agent,'pressure',new AbortController().signal);assert.equal(engine.lastPressure.has(agent),true);assert.equal(await engine.compactIfNeeded(agent,'pressure',new AbortController().signal),null);
+ }finally{BasicCompactionEngine.prototype.summarize=original}
+});

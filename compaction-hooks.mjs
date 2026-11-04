@@ -45,7 +45,7 @@ export default class ScrumCompactionEngine extends BasicCompactionEngine {
   this.triggers.set(agent,trigger);
   const controller=new AbortController(),abort=()=>controller.abort(signal.reason);if(signal.aborted)abort();else signal.addEventListener('abort',abort,{once:true});
   const timer=pressure?setTimeout(()=>controller.abort(Error('Source preemptive compaction timed out after 300000ms')),300000):null;timer?.unref();
-  try{const result=await this.compactWithBoundedInput(agent,trigger,controller.signal,()=>timer?.refresh());if(result)this.cacheDeferred.delete(agent);return result}finally{if(timer)clearTimeout(timer);signal.removeEventListener('abort',abort);this.triggers.delete(agent);if(pressure)this.pressureInFlight.delete(agent)}
+  try{const result=await this.compactWithBoundedInput(agent,trigger,controller.signal,()=>timer?.refresh());if(result){this.cacheDeferred.delete(agent);if(pressure)this.lastPressure.set(agent,Date.now())}return result}finally{if(timer)clearTimeout(timer);signal.removeEventListener('abort',abort);this.triggers.delete(agent);if(pressure)this.pressureInFlight.delete(agent)}
  }
 
  async compactWithBoundedInput(agent,trigger,signal,onProgress=()=>{}){
@@ -93,7 +93,7 @@ export default class ScrumCompactionEngine extends BasicCompactionEngine {
 
  async recoverPostCompaction(agent,signal){if(!sourceHookEnabled(agent,'preemptive-compaction'))return null;this.triggers.set(agent,'source-recovery');try{const result=await super.compactIfNeeded(agent,'context-overflow',signal);if(result)this.cacheDeferred.delete(agent);return result}finally{this.triggers.delete(agent)}}
  async summarize(input,agent,signal){
-  if(['pressure','source-recovery'].includes(this.triggers.get(agent))&&!sourceHookEnabled(agent,'preemptive-compaction'))throw Error('Source preemptive compaction disabled before summarization');if(this.triggers.get(agent)==='pressure')this.lastPressure.set(agent,Date.now())
+  if(['pressure','source-recovery'].includes(this.triggers.get(agent))&&!sourceHookEnabled(agent,'preemptive-compaction'))throw Error('Source preemptive compaction disabled before summarization')
   const epoch=await beginCompaction(agent,{ctx:this.ctx});let failure;
   try{const prepared=await prepareCompactionInput(this.ctx,input,agent,signal,this.triggers.get(agent)==='manual'?'manual':'auto');if(['pressure','source-recovery'].includes(this.triggers.get(agent))&&!sourceHookEnabled(agent,'preemptive-compaction'))throw Error('Source preemptive compaction disabled during hook I/O');return await super.summarize(prepared,agent,signal)}
   catch(error){failure=error;throw error}
