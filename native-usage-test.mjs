@@ -22,3 +22,12 @@ test('context measurement uses persisted session after worker release',async()=>
  const ctx={on:()=>{},sessions:{messageProjections:[]},sessionPersistence:{open:async()=>({read:async()=>({events,header:session.header}),close:async()=>{}})},agents:{},tools:{},llm:{resolveModelInfo:async()=>({context:{contextWindow:262144}})},get:name=>name==='tokenMeter'?{measure:s=>{measured=typeof s.snapshotEvents==='function';return {totalTokens:123,baseline:{kind:'usage'}}}}:null};
  const stats=await nativeExecution(ctx,store).pi.readUsage('worker');assert.equal(measured,true);assert.deepEqual(stats.contextUsage,{tokens:123,basis:'usage'});assert.equal(stats.contextWindow,262144);
 });
+
+test('released fork restores persisted header and inherited boundary before measuring context',async()=>{
+ const {Session}=await import('@deepseek-ai/dsh-session');
+ const header={version:4,id:'worker',createdAt:Date.now(),isSeeded:true,cwd:'/tmp'};
+ const parent=Session.create('parent',[]),original=Session.create('worker',parent.snapshotEvents(),header,1),events=original.snapshotEvents(),settings={'runModel:worker':{provider:'local-glm',model:'glm53-fast'}};let seen;
+ const store={get:()=>({id:'worker'}),setting:(key,fallback)=>settings[key]??fallback,set:(key,value)=>settings[key]=value};
+ const ctx={on:()=>{},sessions:{messageProjections:[]},sessionPersistence:{open:async()=>({header:original.header,inheritedEventCount:1,read:async()=>({events}),close:async()=>{}})},agents:{},tools:{},llm:{resolveModelInfo:async()=>({context:{contextWindow:262144}})},get:name=>name==='tokenMeter'?{measure:s=>{seen=s;return {totalTokens:123,baseline:{kind:'usage'}}}}:null};
+ const stats=await nativeExecution(ctx,store).pi.readUsage('worker');assert.equal(seen?.header.isSeeded,true);assert.equal(seen?.header.cwd,'/tmp');assert.equal(seen?.inheritedEventCount,1);assert.deepEqual(stats.contextUsage,{tokens:123,basis:'usage'});
+});
