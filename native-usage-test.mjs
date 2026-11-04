@@ -42,3 +42,10 @@ test('released fork displays both inherited and own messages',async()=>{
  const messages=await nativeExecution(ctx,store).pi.readMessages('worker');assert.deepEqual(messages.filter(m=>m.role==='user').flatMap(m=>m.content.map(c=>c.text)),['inherited instruction','own instruction']);
  ctx.sessionPersistence.open=async()=>({header:original.header,inheritedEventCount:seed.length+1,read:async()=>({events:original.snapshotEvents()}),close:async()=>{}});await assert.rejects(()=>nativeExecution(ctx,store).pi.readMessages('worker'),/seeded session/);
 });
+
+test('task usage includes reported tokens from an interrupted model attempt',async()=>{
+ const events=[{type:'assistant/attempt',seq:0,data:{stream:[{type:'chunk',time:1,chunk:{type:'usage',usage:{inputTokens:10,outputTokens:2,cacheReadTokens:4,cacheWriteTokens:0,totalTokens:16}}}]}},{type:'assistant/message',seq:1,data:{usage:{inputTokens:20,outputTokens:3,cacheReadTokens:8,cacheWriteTokens:0,totalTokens:31}}}];
+ const store={get:()=>({id:'worker'}),setting:(_key,fallback)=>fallback,set:()=>{}};
+ const ctx={on:()=>{},sessions:{messageProjections:[]},sessionPersistence:{open:async()=>({read:async()=>({events}),close:async()=>{}})},agents:{},tools:{}};
+ const stats=await nativeExecution(ctx,store).pi.readUsage('worker');assert.deepEqual(stats.totalUsage,{inputTokens:30,outputTokens:5,cacheReadTokens:12,cacheWriteTokens:0,totalTokens:47});
+});
