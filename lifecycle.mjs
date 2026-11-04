@@ -7,7 +7,7 @@ import {localVersion,effectiveVersion,checkPackageUpdate,stagePackageUpdate,pack
 import {loadScrumConfiguration,configurationAllows} from './configuration.mjs';
 const defaultPluginDir=dirname(fileURLToPath(import.meta.url));
 // Queue without waking: the SDK commits its protected system head before inbox messages.
-function append(agent,text){agent.inject(createUserMessage({content:[{type:'text',text}],source:{kind:'runtime-context',provider:'scrum-lifecycle'}}))}
+function append(agent,text){agent.inject(createUserMessage({content:[{type:'text',text}],source:{kind:'agent-message',form:'relay',senderSessionId:agent.session.id}}))}
 function hasHumanRequest(agent){return [...(agent.inbox?.nextStep||[]),...(agent.inbox?.nextTurn||[]),...(agent.session.deriveMessages?.()||[])].some(m=>m.role==='user'&&m.source?.kind==='user')}
 function runSkill(agent,name){agent.followup(createUserMessage({content:[{type:'text',text:`Read the ${name} skill with the skill tool and follow it. ${name==='onboarding'?'Greet the user first.':''}`}],source:{kind:'agent-message',form:'relay',senderSessionId:agent.session.id}}))}
 export async function startupDiagnostics(ctx,{pluginDir=defaultPluginDir,cwd=process.cwd(),env=process.env,timeoutMs=1000}={}){
