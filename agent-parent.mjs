@@ -6,3 +6,5 @@ export async function belongsToQuestionHost(ctx,agent,root){
  while(id&&seen.size<128){if(id===root)return true;if(seen.has(id))return false;seen.add(id);id=parent||header?.parentSession;if(!id)return false;if(id===root)return true;const live=ctx.agents?.get(id);header=live?.session.header||(await ctx.sessionPersistence?.stat(id))?.header;parent=live?parents.get(live):undefined;}
  return false;
 }
+
+export function agentRegistryFor(ctx,parent){return parent?.ctx?.agents||ctx.agents}

@@ -1,3 +1,4 @@
+import {agentRegistryFor} from './agent-parent.mjs';
 import {appendScrumEvent,scrumEventType} from './scrum-events.mjs';
 import {randomUUID,createHash} from 'node:crypto';
 import {defineTool} from '@deepseek-ai/dsh-tools';
@@ -13,7 +14,7 @@ export async function executeLookAt(ctx,args,exec,options={}){
  const signal=AbortSignal.any([exec.signal||new AbortController().signal,AbortSignal.timeout(120000)]);let handle;
  const cancel=()=>handle?.agent.cancel({kind:'user'});signal.addEventListener('abort',cancel,{once:true});
  try{
-  signal.throwIfAborted();handle=await ctx.agents.create({sessionId:'look-at-'+randomUUID(),parentAgent:exec.agent,meta:{cwd:exec.agent.session.header.cwd,origin:'subagent'},agentOptions:{provider:'openai-codex',model:'gpt-6.1-sol',reasoningEffort:'low'},setup:(scoped,agent)=>{
+  signal.throwIfAborted();handle=await agentRegistryFor(ctx,exec.agent).create({sessionId:'look-at-'+randomUUID(),parentAgent:exec.agent,meta:{cwd:exec.agent.session.header.cwd,origin:'subagent'},agentOptions:{provider:'openai-codex',model:'gpt-6.1-sol',reasoningEffort:'low'},setup:(scoped,agent)=>{
    bindAgentRole(agent,'reviewer');scoped.on?.('agent/request',async(_payload,next)=>{const route=await next();if(route.model!=='gpt-6.1-sol'||route.reasoningEffort!=='low')throw Error('look_at model drift rejected');return route;});scoped.tools.restrict({allow:['read_image',...((normalized.file_paths||[]).some(path=>!inferMimeTypeFromFilePath(path).startsWith('image/'))?['read']:[])]});
    const documents=(normalized.file_paths||[]).filter(path=>!inferMimeTypeFromFilePath(path).startsWith('image/'));
    if(documents.length)scoped.tools.register(defineTool({name:'read',description:'Read only the supplied look_at document inputs, completely and within fixed bounds.',parameters:{file_path:{type:'string',required:true}},output:{schema:{type:'string'},render:(_,value)=>JSON.parse(value)},execute:async(input,readExec)=>{

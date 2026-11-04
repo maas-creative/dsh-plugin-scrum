@@ -1,3 +1,4 @@
+import {agentRegistryFor} from './agent-parent.mjs';
 import {Check} from 'typebox/value';
 import {randomUUID} from 'node:crypto';
 import {createUserMessage} from '@deepseek-ai/dsh-llm';
@@ -6,7 +7,7 @@ import {bindAgentRole} from './agent-role.mjs';
 export function createKibitzerChildStarter(ctx,parentAgent){const disposals=new Set(),disposeErrors=[];const start=async input=>{
  const listeners=new Set(),early=[];let ended=false,handle,subscribed=false;
  const emit=event=>{if(!subscribed){early.push(event);if(early.length>256)early.shift();return}for(const listener of listeners)listener(event)};
- handle=await ctx.agents.create({sessionId:'kibitzer-'+randomUUID(),parentAgent,meta:{cwd:parentAgent.session.header.cwd,origin:'subagent'},agentOptions:{provider:parentAgent.options.provider,model:'gpt-6.1-sol',reasoningEffort:'low'},setup:(scoped,agent)=>{
+ handle=await agentRegistryFor(ctx,parentAgent).create({sessionId:'kibitzer-'+randomUUID(),parentAgent,meta:{cwd:parentAgent.session.header.cwd,origin:'subagent'},agentOptions:{provider:parentAgent.options.provider,model:'gpt-6.1-sol',reasoningEffort:'low'},setup:(scoped,agent)=>{
  bindAgentRole(agent,'reviewer');
  for(const tool of input.tools)scoped.tools.register(defineTool({name:tool.name,description:tool.description+' Arguments inside input: '+JSON.stringify(tool.parameters),parameters:{input:{type:'json',required:true}},output:{schema:{type:'string'},render:(_,text)=>[{type:'text',text}]},execute:async(args,exec)=>{emit({type:'tool_execution_start'});try{if(!Check(tool.parameters,args.input))throw Error('Kibitzer tool arguments do not match the scoped schema');const result=await tool.execute(exec.callId||randomUUID(),args.input,exec.signal);if(result.terminate)agent.cancel({kind:'user'});return JSON.stringify(result)}finally{emit({type:'tool_execution_end'})}}}));
  // DSH restrictions filter inherited tools; own scoped closures remain visible.

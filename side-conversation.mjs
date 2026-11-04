@@ -1,3 +1,4 @@
+import {agentRegistryFor} from './agent-parent.mjs';
 import {appendScrumEvent,scrumEventType} from './scrum-events.mjs';
 import {bindAgentRole} from './agent-role.mjs';
 import {randomUUID,createHash} from 'node:crypto';import {createUserMessage} from '@deepseek-ai/dsh-llm';import {boundBtwParentContext} from './independent/side-context.mjs';
@@ -10,7 +11,7 @@ export class SideConversations {
  async open(parent,question,{empty=false}={}){
   if(this.closed)throw Error('Side conversation host is closed');if(!empty&&!question?.trim())throw Error('A side question is required');question=question||'';if(Buffer.byteLength(question)>65536)throw Error('Side question exceeds64KB');
   const background=sideBackground(parent);if(!background.length)throw Error('Side conversation requires a started parent session');
-  const id='btw-'+randomUUID(),work=this.ctx.agents.create({sessionId:id,parentAgent:parent,meta:{cwd:parent.session.header.cwd,parentSession:parent.session.id,origin:'subagent'},agentOptions:{provider:'openai-codex',model:'gpt-6.1-sol',reasoningEffort:'low'},setup:(ctx,agent)=>{
+  const id='btw-'+randomUUID(),work=agentRegistryFor(this.ctx,parent).create({sessionId:id,parentAgent:parent,meta:{cwd:parent.session.header.cwd,parentSession:parent.session.id,origin:'subagent'},agentOptions:{provider:'openai-codex',model:'gpt-6.1-sol',reasoningEffort:'low'},setup:(ctx,agent)=>{
    bindAgentRole(agent,'executor');
    // A separate SDK session owns its observations. Parent orchestration mutation
    // and delegation tools are not inherited; explicit file work remains native.
@@ -36,7 +37,7 @@ export class SideConversations {
    const meta=events.find(event=>scrumEventType(event.type)==='scrum/btw'&&event.data.ownerSessionId===id)?.data;if(!meta||meta.parentSessionId!==parentId||events.some(event=>scrumEventType(event.type)==='scrum/btw-deleted'&&event.data.ownerSessionId===id))continue;
    const retained=events.filter(event=>scrumEventType(event.type)==='scrum/btw-retained'&&event.data.ownerSessionId===id).at(-1)?.data.retained??meta.retained;if(!retained)continue;
    const stopped=events.some(event=>scrumEventType(event.type)==='scrum/btw-stopped'&&event.data.ownerSessionId===id);
-   const handle=await this.ctx.agents.resume({resumeSessionId:id,parentAgent:parent,agentOptions:{provider:'openai-codex',model:'gpt-6.1-sol',reasoningEffort:'low'},setup:(ctx,agent)=>{
+   const handle=await agentRegistryFor(this.ctx,parent).resume({resumeSessionId:id,parentAgent:parent,agentOptions:{provider:'openai-codex',model:'gpt-6.1-sol',reasoningEffort:'low'},setup:(ctx,agent)=>{
     bindAgentRole(agent,'executor');ctx.tools.restrict({allow:ctx.tools.schemas(agent).map(tool=>tool.name).filter(name=>/^(read|read_image|write|edit|hashline_read|hashline_edit|glob|grep|bash|web_search|websearch|webfetch|fetch_content|get_search_content|project_search|skill|lsp_[a-z_]+)$/.test(name))});
     ctx.systemPrompt.section({name:'scrum:btw',order:10000,complete:true,interpolate:false,text:'<omo-btw-boundary> Earlier parent messages are read-only background. Answer only this side conversation. Do not mutate files or external state unless explicitly requested. Do not delegate to subagents or modify parent project, tasks, goals or plans. Parent background: '+JSON.stringify(meta.background||[])});
    }});
