@@ -31,3 +31,14 @@ test('released fork restores persisted header and inherited boundary before meas
  const ctx={on:()=>{},sessions:{messageProjections:[]},sessionPersistence:{open:async()=>({header:original.header,inheritedEventCount:1,read:async()=>({events}),close:async()=>{}})},agents:{},tools:{},llm:{resolveModelInfo:async()=>({context:{contextWindow:262144}})},get:name=>name==='tokenMeter'?{measure:s=>{seen=s;return {totalTokens:123,baseline:{kind:'usage'}}}}:null};
  const stats=await nativeExecution(ctx,store).pi.readUsage('worker');assert.equal(seen?.header.isSeeded,true);assert.equal(seen?.header.cwd,'/tmp');assert.equal(seen?.inheritedEventCount,1);assert.deepEqual(stats.contextUsage,{tokens:123,basis:'usage'});
 });
+
+test('released fork displays both inherited and own messages',async()=>{
+ const {Session}=await import('@deepseek-ai/dsh-session');const {createUserMessage}=await import('@deepseek-ai/dsh-llm');
+ const parent=Session.create('parent',[]);parent.append('user/message',createUserMessage({content:[{type:'text',text:'inherited instruction'}],source:{kind:'user'}}),{surfaceOp:'append'});
+ const seed=parent.snapshotEvents(),header={version:4,id:'worker',createdAt:Date.now(),isSeeded:true,cwd:'/tmp'};
+ const original=Session.create('worker',seed,header,seed.length);original.append('user/message',createUserMessage({content:[{type:'text',text:'own instruction'}],source:{kind:'user'}}),{surfaceOp:'append'});
+ const store={get:()=>({id:'worker'}),setting:(_key,fallback)=>fallback,set:()=>{}};
+ const ctx={on:()=>{},sessions:{messageProjections:[]},sessionPersistence:{open:async()=>({header:original.header,inheritedEventCount:seed.length,read:async()=>({events:original.snapshotEvents()}),close:async()=>{}})},agents:{},tools:{}};
+ const messages=await nativeExecution(ctx,store).pi.readMessages('worker');assert.deepEqual(messages.filter(m=>m.role==='user').flatMap(m=>m.content.map(c=>c.text)),['inherited instruction','own instruction']);
+ ctx.sessionPersistence.open=async()=>({header:original.header,inheritedEventCount:seed.length+1,read:async()=>({events:original.snapshotEvents()}),close:async()=>{}});await assert.rejects(()=>nativeExecution(ctx,store).pi.readMessages('worker'),/seeded session/);
+});
