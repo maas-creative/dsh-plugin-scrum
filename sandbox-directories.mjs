@@ -6,6 +6,7 @@ const marker='// Scrum: session-owned additional directories share the filesyste
 const anchor='\t\tpolicy.workspaceRoot,\n\t\t"/tmp",';
 export async function installSandboxDirectoryCompatibility(){
  const path=createRequire(import.meta.url).resolve('@deepseek-ai/dsh-sandbox'),source=await readFile(path,'utf8');
+ if(source.includes('policy.additionalWritableRoots'))return {installed:false,path};
  if(source.includes(marker)){if(!source.includes('Invalid Scrum writable roots'))throw Error('Incomplete DSH directory adapter; installation must be repaired');return {installed:false,path};}
  if(source.split(anchor).length!==2)throw Error('Unsupported DSH writableRoots implementation; directory grants unavailable');
  const replacement='\t\t'+marker+'\n\t\tpolicy.workspaceRoot,\n\t\t...(policy.scrumWritableRoots ?? []),\n\t\t"/tmp",';
@@ -19,7 +20,7 @@ export function createSandboxDirectoryAdapter(ctx){
  const service=ctx.get?.('sandboxPolicy')||ctx.sandboxPolicy;
  if(!service?.resolve)return {supported:false,sync:()=>{throw Error('Additional directories require the native DSH sandbox policy provider');}};
  const original=service.resolve,roots=new WeakMap();
- const wrapped=function(request={}){const policy=original.call(this,request),extra=request.session&&roots.get(request.session);return extra?.length?{...policy,scrumWritableRoots:[...extra]}:policy;};
+ const wrapped=function(request={}){const policy=original.call(this,request),extra=request.session&&roots.get(request.session);return extra?.length?{...policy,scrumWritableRoots:[...extra],additionalWritableRoots:[...new Set([...(policy.additionalWritableRoots||[]),...extra])]}:policy;};
  service.resolve=wrapped;
  ctx.effect?.(()=>()=>{if(service.resolve===wrapped)service.resolve=original;});
  return {supported:true,sync:(agent,directories)=>{
