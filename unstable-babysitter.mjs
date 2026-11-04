@@ -1,3 +1,4 @@
+import {appendScrumEvent,scrumEventType} from './scrum-events.mjs';
 import {sourceHookEnabled} from './source-hook-policy.mjs';
 import {ProcessNotices} from './process-notices.mjs';
 export const BABYSITTER_TIMEOUT_MS=120000,BABYSITTER_COOLDOWN_MS=300000;
@@ -17,16 +18,16 @@ export function registerUnstableBabysitter(ctx,{runtime,timeoutMs=BABYSITTER_TIM
    const child=ctx.agents.get(task.runId);if(child&&pendingQuestion(child))continue;
    const operation=runtime.s.setting('pi-send:'+(task.requestId||task.id),{}),lastActivity=Math.max(Number(task.lastActivityAt)||0,Number(operation.lastEventAt)||0,Number(task.started)||Number(task.created)||0);
    if(!lastActivity||at-lastActivity<timeoutMs)continue;
-   const prior=agent.session.snapshotEvents().filter(event=>event.type==='scrum/babysitter-state'&&event.data.taskId===task.id).at(-1)?.data;
+   const prior=agent.session.snapshotEvents().filter(event=>scrumEventType(event.type)==='scrum/babysitter-state'&&event.data.taskId===task.id).at(-1)?.data;
    if(prior&&at-prior.lastReminderAt<cooldownMs)continue;
    let messages;try{messages=await runtime.pi.readMessages(task.runId)}catch(error){ctx.logger?.warn('Scrum babysitter transcript unavailable: '+error.message);continue}
    if(task.isUnstableAgent!==true&&!thinkingOnly(messages))continue;
    // Check again after transcript I/O; a stop or a question can arrive meanwhile.
    if(!enabled(agent)||closed||agent.status!=='idle'||isStopped(agent)||pendingQuestion(agent)||freshHuman(agent)||child&&pendingQuestion(child))continue;
-   const batchSeq=(prior?.generation||0)+1,receipt={taskId:task.id,lastReminderAt:at,generation:batchSeq,status:'reserved'};agent.session.append('scrum/babysitter-state',receipt);await ctx.sessions.flush(agent.session);
-   if(!enabled(agent)||closed||agent.status!=='idle'||isStopped(agent)||pendingQuestion(agent)||freshHuman(agent)||child&&pendingQuestion(child)){agent.session.append('scrum/babysitter-state',{...receipt,status:'skipped'});await ctx.sessions.flush(agent.session);continue}
+   const batchSeq=(prior?.generation||0)+1,receipt={taskId:task.id,lastReminderAt:at,generation:batchSeq,status:'reserved'};appendScrumEvent(agent.session,'scrum/babysitter-state',receipt);await ctx.sessions.flush(agent.session);
+   if(!enabled(agent)||closed||agent.status!=='idle'||isStopped(agent)||pendingQuestion(agent)||freshHuman(agent)||child&&pendingQuestion(child)){appendScrumEvent(agent.session,'scrum/babysitter-state',{...receipt,status:'skipped'});await ctx.sessions.flush(agent.session);continue}
    const reminder={id:'babysitter:'+task.id,batchSeq,mode:'idle',status:'reminder',taskId:task.id,sessionId:task.runId,idleMs:at-lastActivity,thinkingSummary:thinkingSummary(messages),message:'This worker has been quiet or produced only thinking. Inspect background_output with full_session, include_thinking, include_tool_results and message_limit=50. background_cancel is available if the parent decides to cancel. This is a reminder only; no action or model change was taken.'};
-   try{await notices.enqueue(agent,reminder);let wakeRequested=false;const state=runtime.state?.(id);if(enabled(agent)&&state?.active===true&&runtime.requestPlan&&agent.status==='idle'&&!isStopped(agent)&&!pendingQuestion(agent)&&!freshHuman(agent)){wakeRequested=true;await runtime.requestPlan(id,state,{queueOnly:true})}agent.session.append('scrum/babysitter-state',{...receipt,status:'delivered',wakeRequested});await ctx.sessions.flush(agent.session);reminders++}catch(error){agent.session.append('scrum/babysitter-state',{...receipt,status:'uncertain',error:error.message});await ctx.sessions.flush(agent.session)}
+   try{await notices.enqueue(agent,reminder);let wakeRequested=false;const state=runtime.state?.(id);if(enabled(agent)&&state?.active===true&&runtime.requestPlan&&agent.status==='idle'&&!isStopped(agent)&&!pendingQuestion(agent)&&!freshHuman(agent)){wakeRequested=true;await runtime.requestPlan(id,state,{queueOnly:true})}appendScrumEvent(agent.session,'scrum/babysitter-state',{...receipt,status:'delivered',wakeRequested});await ctx.sessions.flush(agent.session);reminders++}catch(error){appendScrumEvent(agent.session,'scrum/babysitter-state',{...receipt,status:'uncertain',error:error.message});await ctx.sessions.flush(agent.session)}
   }return {reminders};
  };
  const check=agent=>{if(work.has(agent))return work.get(agent);const job=inspect(agent).finally(()=>work.delete(agent));work.set(agent,job);return job};

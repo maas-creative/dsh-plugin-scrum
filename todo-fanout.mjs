@@ -1,3 +1,4 @@
+import {appendScrumEvent,scrumEventType} from './scrum-events.mjs';
 export function todoMutationOperation(previous,selected){
  if(selected.preserved)return 'update';
  if(!previous.initialized)return 'init';
@@ -7,8 +8,8 @@ export function todoMutationOperation(previous,selected){
 export function fanoutReminderState(events){
  let shown=false;
  for(const event of events){
-  if(event.type==='scrum/todo-fanout'&&event.data?.action==='shown')shown=true;
-  if(event.type==='scrum/todo-fanout'&&event.data?.action==='reset')shown=false;
+  if(scrumEventType(event.type)==='scrum/todo-fanout'&&event.data?.action==='shown')shown=true;
+  if(scrumEventType(event.type)==='scrum/todo-fanout'&&event.data?.action==='reset')shown=false;
   if(event.type==='compaction/end'&&!event.data?.error&&event.data?.accepted!==false)shown=false;
  }
  return {shown};
@@ -24,7 +25,7 @@ import {delegationForbidden} from './usage-reminders.mjs';
 export function registerTodoFanout(ctx,{readConfiguration}={}){
  const shown=new WeakMap();
  // Native disposal flush precedes disposed listeners: reset at the next owned incarnation.
- const begin=agent=>{shown.set(agent,false);agent.session.append('scrum/todo-fanout',{action:'reset',reason:'native-incarnation'})};
+ const begin=agent=>{shown.set(agent,false);appendScrumEvent(agent.session,'scrum/todo-fanout',{action:'reset',reason:'native-incarnation'})};
  ctx.on('agent/created',({agent})=>begin(agent));for(const agent of ctx.agents.list())begin(agent);
  ctx.on('tools/post-execute',async(exec,value,next)=>{
   const prior=await next(),agent=exec.agent;
@@ -32,10 +33,10 @@ export function registerTodoFanout(ctx,{readConfiguration}={}){
   let result;try{result=JSON.parse(value.content.filter(x=>x.type==='text').map(x=>x.text).join(''))}catch{return prior}
   if(!['init','append'].includes(result.operation))return prior;
   if(shown.get(agent)??fanoutReminderState(agent.session.snapshotEvents()).shown)return prior;
-  shown.set(agent,true);agent.session.append('scrum/todo-fanout',{action:'shown'});
+  shown.set(agent,true);appendScrumEvent(agent.session,'scrum/todo-fanout',{action:'shown'});
   const text=fanoutReminderText({delegationForbidden:delegationForbidden(agent)});
   return {...prior,content:[...(prior.content||value.content||[]),{type:'text',text}]};
  });
- ctx.on('session/event',(session,event)=>{if(event.type!=='compaction/end'||event.data?.error||event.data?.accepted===false)return;for(const agent of ctx.agents.list())if(agent.session===session)shown.set(agent,false);session.append('scrum/todo-fanout',{action:'reset'})});
- ctx.on('agent/disposed',({agent})=>{shown.delete(agent);agent.session.append('scrum/todo-fanout',{action:'reset'})});
+ ctx.on('session/event',(session,event)=>{if(event.type!=='compaction/end'||event.data?.error||event.data?.accepted===false)return;for(const agent of ctx.agents.list())if(agent.session===session)shown.set(agent,false);appendScrumEvent(session,'scrum/todo-fanout',{action:'reset'})});
+ ctx.on('agent/disposed',({agent})=>{shown.delete(agent);appendScrumEvent(agent.session,'scrum/todo-fanout',{action:'reset'})});
 }

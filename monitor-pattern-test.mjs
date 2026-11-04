@@ -1,3 +1,4 @@
+import {scrumEventType} from './scrum-events.mjs';
 import test from 'node:test';import assert from 'node:assert/strict';import {ProcessMonitor} from './process-monitor.mjs';import {ProcessNotices} from './process-notices.mjs';
 test('monitor retains split UTF8 lines in matched/unmatched rings with truthful drop counters',async()=>{
  const monitor=new ProcessMonitor({maxBytes:100,maxRecords:2}),batches=[];monitor.onBatch(batch=>batches.push(batch));try{
@@ -10,7 +11,7 @@ test('idle notices survive reconstruction and live-safe uses next-step without a
  const events=[],messages=[],sent=[],session={id:'parent',snapshotEvents:()=>events,deriveMessages:()=>messages,append(type,data){events.push({type,data});if(type==='user/message')messages.push(data)}};
  const agent={session,status:'running',inbox:{nextStep:[],nextTurn:[]},send(message,mode){assert.equal(mode,'next-step');sent.push(message);this.inbox.nextStep.push(message)}},ctx={sessions:{flush:async()=>{}}};
  const notices=new ProcessNotices(ctx);await notices.enqueue(agent,{id:'idle',batchSeq:1,mode:'idle',lines:[{text:'first'}]});assert.equal(sent.length,0);assert.equal(notices.pending(agent).length,1);
- await notices.enqueue(agent,{id:'live',batchSeq:1,mode:'live_safe',lines:[{text:'second'}]});assert.equal(sent.length,1);assert.equal(events.filter(e=>e.type==='scrum/process-notice-ack').length,0);
+ await notices.enqueue(agent,{id:'live',batchSeq:1,mode:'live_safe',lines:[{text:'second'}]});assert.equal(sent.length,1);assert.equal(events.filter(e=>scrumEventType(e.type)==='scrum/process-notice-ack').length,0);
  messages.push(sent[0]);agent.inbox.nextStep=[];agent.status='idle';const recovered=new ProcessNotices(ctx);await recovered.drain(agent);assert.equal(recovered.pending(agent).length,0);assert.equal(messages.length,2);await recovered.drain(agent);assert.equal(messages.length,2);await notices.close();await recovered.close();
 });
 test('live delivery retries send failures and avoids an already queued notice after reconstruction',async()=>{

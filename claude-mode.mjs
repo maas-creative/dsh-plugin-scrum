@@ -1,8 +1,9 @@
+import {scrumEventType,appendScrumEvent} from './scrum-events.mjs';
 // Keep the native preset selected before Claude Auto across cold resume.
 export function createClaudeModeAdapter(ctx){
  const previousByAgent=new WeakMap(),presets=typeof ctx.get==='function'?ctx.get('permissionPresets'):ctx.permissionPresets;
- const restore=agent=>{if(previousByAgent.has(agent))return previousByAgent.get(agent);const record=agent.session.snapshotEvents?.().filter(event=>event.type==='scrum/claude-auto-previous'&&event.data.ownerSessionId===agent.session.id).at(-1);if(record?.data.active){previousByAgent.set(agent,record.data.previous);return record.data.previous;}};
- const record=(agent,previous,active)=>agent.session.append?.('scrum/claude-auto-previous',{ownerSessionId:agent.session.id,previous,active});
+ const restore=agent=>{if(previousByAgent.has(agent))return previousByAgent.get(agent);const record=agent.session.snapshotEvents?.().filter(event=>scrumEventType(event.type)==='scrum/claude-auto-previous'&&event.data.ownerSessionId===agent.session.id).at(-1);if(record?.data.active){previousByAgent.set(agent,record.data.previous);return record.data.previous;}};
+ const record=(agent,previous,active)=>appendScrumEvent(agent.session,'scrum/claude-auto-previous',{ownerSessionId:agent.session.id,previous,active});
  return (agent,mode)=>{
   let previous=restore(agent);
   if(mode==='auto'){
