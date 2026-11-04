@@ -11,7 +11,7 @@ export async function prepareCompactionInput(ctx,input,agent,signal,trigger='aut
  const result=await runClaudeHooks(await loadClaudeHooksFor(ctx,agent),'PreCompact',{...claudeHookPayload(ctx,agent),trigger},{signal});
  for(const warning of result.warnings)ctx.logger?.warn('Scrum PreCompact hook: '+warning);
  const messages=compactLedgerSnapshots(input.messages);
- if(!result.contexts.length)return {...input,messages};
+ if(!result.contexts.length)return messages.every((message,index)=>message===input.messages[index])?input:{...input,messages};
  return {...input,messages:[...messages,createUserMessage({content:[{type:'text',text:'Configured pre-compaction context:\n'+result.contexts.join('\n')}],source:{kind:'agent-message',form:'relay',senderSessionId:agent.session.id}})]};
 }
 export default class ScrumCompactionEngine extends BasicCompactionEngine {
