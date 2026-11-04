@@ -69,6 +69,20 @@ test('failed pressure summary does not start the successful compaction cooldown'
   BasicCompactionEngine.prototype.summarize=async()=>{throw Error('temporary provider failure')};
   await assert.rejects(engine.summarize({messages:[]},agent,new AbortController().signal),/temporary provider failure/);assert.equal(engine.lastPressure.has(agent),false);
   BasicCompactionEngine.prototype.summarize=async()=>({summary:'ok'});await engine.summarize({messages:[]},agent,new AbortController().signal);assert.equal(engine.lastPressure.has(agent),false);
-  engine.pressureInFlight=new WeakSet();engine.cacheDeferred=new WeakSet();engine.deferWarmPressure=async()=>false;engine.compactWithBoundedInput=async()=>({compacted:true});await engine.compactIfNeeded(agent,'pressure',new AbortController().signal);assert.equal(engine.lastPressure.has(agent),true);assert.equal(await engine.compactIfNeeded(agent,'pressure',new AbortController().signal),null);
+  engine.pressureInFlight=new WeakSet();engine.cacheDeferred=new WeakSet();engine.deferWarmPressure=async()=>false;engine.compactWithBoundedInput=async()=>({compacted:true});await engine.compactIfNeeded(agent,'pressure',new AbortController().signal);assert.equal(engine.lastPressure.has(agent),true);engine.safeDuringCooldown=async()=>true;assert.equal(await engine.compactIfNeeded(agent,'pressure',new AbortController().signal),null);
  }finally{BasicCompactionEngine.prototype.summarize=original}
+});
+
+test('successful cooldown does not suppress compaction near the context limit',async()=>{
+ const engine=Object.create(ScrumCompactionEngine.prototype),agent={session:{id:'pressure-limit-fixture',header:{cwd:'/tmp'},requestHeader:()=>({config:{provider:'local-glm',model:'glm53-fast'}})}};let tokens=150000,calls=0;
+ engine.ctx={llm:{resolveModelInfo:async()=>({context:{contextWindow:262144},defaultMaxTokens:8192})},tokenMeter:{measure:()=>({totalTokens:tokens})}};engine.config={headroomTokens:65536,modelPolicies:[]};engine.triggers=new WeakMap();engine.pressureInFlight=new WeakSet();engine.lastPressure=new WeakMap();engine.cacheDeferred=new WeakSet();engine.deferWarmPressure=async()=>false;engine.compactWithBoundedInput=async()=>{calls++;return {compacted:true}};engine.lastPressure.set(agent,Date.now());
+ assert.equal(await engine.compactIfNeeded(agent,'pressure',new AbortController().signal),null);assert.equal(calls,0);
+ tokens=200000;assert.deepEqual(await engine.compactIfNeeded(agent,'pressure',new AbortController().signal),{compacted:true});assert.equal(calls,1);
+ engine.ctx.llm.resolveModelInfo=async()=>{throw Error('model information unavailable')};assert.deepEqual(await engine.compactIfNeeded(agent,'pressure',new AbortController().signal),{compacted:true});assert.equal(calls,2);
+});
+
+test('concurrent pressure checks do not start overlapping compactions during cooldown assessment',async()=>{
+ const engine=Object.create(ScrumCompactionEngine.prototype),agent={session:{id:'pressure-race-fixture',header:{cwd:'/tmp'}}};let release,calls=0;
+ engine.triggers=new WeakMap();engine.pressureInFlight=new WeakSet();engine.lastPressure=new WeakMap();engine.cacheDeferred=new WeakSet();engine.lastPressure.set(agent,Date.now());engine.safeDuringCooldown=()=>new Promise(resolve=>{release=()=>resolve(false)});engine.deferWarmPressure=async()=>false;engine.compactWithBoundedInput=async()=>{calls++;return {compacted:true}};
+ const first=engine.compactIfNeeded(agent,'pressure',new AbortController().signal);assert.equal(await engine.compactIfNeeded(agent,'pressure',new AbortController().signal),null);release();assert.deepEqual(await first,{compacted:true});assert.equal(calls,1);
 });

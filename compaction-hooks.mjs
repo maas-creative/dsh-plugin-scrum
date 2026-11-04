@@ -34,10 +34,10 @@ export default class ScrumCompactionEngine extends BasicCompactionEngine {
  async compactNow(agent,signal,sourceCommandId){this.triggers.set(agent,'manual');try{const result=await super.compactNow(agent,signal,sourceCommandId);if(result)this.cacheDeferred.delete(agent);return result}finally{this.triggers.delete(agent)}}
  async compactIfNeeded(agent,trigger,signal){
   const pressure=trigger==='pressure';
-  if(pressure&&(!sourceHookEnabled(agent,'preemptive-compaction')||this.pressureInFlight.has(agent)||Date.now()-(this.lastPressure.get(agent)??-Infinity)<60000))return null;
+  if(pressure&&(!sourceHookEnabled(agent,'preemptive-compaction')||this.pressureInFlight.has(agent)))return null;
   if(pressure){
    this.pressureInFlight.add(agent);
-   try{if(await this.deferWarmPressure(agent,signal)){this.cacheDeferred.add(agent);this.ctx.logger?.info('Deferred one pressure compaction while the measured prefix cache is warm');return null}}
+   try{if(Date.now()-(this.lastPressure.get(agent)??-Infinity)<60000&&await this.safeDuringCooldown(agent,signal))return null;if(await this.deferWarmPressure(agent,signal)){this.cacheDeferred.add(agent);this.ctx.logger?.info('Deferred one pressure compaction while the measured prefix cache is warm');return null}}
    catch(error){if(signal.aborted)throw error}
    finally{this.pressureInFlight.delete(agent)}
    this.pressureInFlight.add(agent);
@@ -46,6 +46,13 @@ export default class ScrumCompactionEngine extends BasicCompactionEngine {
   const controller=new AbortController(),abort=()=>controller.abort(signal.reason);if(signal.aborted)abort();else signal.addEventListener('abort',abort,{once:true});
   const timer=pressure?setTimeout(()=>controller.abort(Error('Source preemptive compaction timed out after 300000ms')),300000):null;timer?.unref();
   try{const result=await this.compactWithBoundedInput(agent,trigger,controller.signal,()=>timer?.refresh());if(result){this.cacheDeferred.delete(agent);if(pressure)this.lastPressure.set(agent,Date.now())}return result}finally{if(timer)clearTimeout(timer);signal.removeEventListener('abort',abort);this.triggers.delete(agent);if(pressure)this.pressureInFlight.delete(agent)}
+ }
+
+ async safeDuringCooldown(agent,signal){
+  try{
+   const route=agent.session.requestHeader?.()?.config||agent.options,info=await this.ctx.llm.resolveModelInfo(route.provider,route.model,signal),window=info.context?.contextWindow,maxTokens=route.maxTokens??info.defaultMaxTokens,policy=this.config.modelPolicies?.find(p=>p.provider===route.provider&&p.model===route.model),headroom=policy?.headroomTokens??this.config.headroomTokens,tokens=this.ctx.tokenMeter.measure(agent.session).totalTokens;
+   return Number.isSafeInteger(window)&&window>0&&Number.isSafeInteger(maxTokens)&&maxTokens>0&&Number.isSafeInteger(headroom)&&headroom>=0&&Number.isSafeInteger(tokens)&&tokens>=0&&tokens<window-maxTokens-headroom;
+  }catch(error){if(signal.aborted)throw error;return false}
  }
 
  async compactWithBoundedInput(agent,trigger,signal,onProgress=()=>{}){
