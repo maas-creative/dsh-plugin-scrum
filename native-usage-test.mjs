@@ -59,3 +59,19 @@ test('last call reflects a failed attempt or summarization rather than an older 
  events[1].data.stream=[];assert.deepEqual((await read()).lastCall,{available:false});
  events.push({type:'compaction/summary',seq:2,data:{llmStreamCall:true,usage:usage(30)}});assert.equal((await read()).lastCall.inputTokens,30);
 });
+
+test('usage is read from real persisted DSH attempt and message events',async()=>{
+ const {mkdtemp,rm}=await import('node:fs/promises'),{join}=await import('node:path'),{tmpdir}=await import('node:os');
+ const {Context}=await import('@deepseek-ai/cordis'),{Session}=await import('@deepseek-ai/dsh-session'),{createAssistantMessage}=await import('@deepseek-ai/dsh-llm');
+ const persistence=await import('@deepseek-ai/dsh-session-persistence-jsonl'),dir=await mkdtemp(join(tmpdir(),'scrum-usage-persistence-')),host=new Context();
+ try{
+  await host.plugin(persistence.apply?persistence:persistence.default,{root:dir,compression:'none'});
+  const session=Session.create('worker'),usage=n=>({inputTokens:n,outputTokens:2,cacheReadTokens:4,cacheWriteTokens:0,totalTokens:n+6});
+  session.append('turn/start',{turn:1});session.append('step/start',{turn:1,step:1});
+  session.append('assistant/attempt',{turn:1,step:1,stream:[{type:'chunk',time:1,chunk:{type:'usage',usage:usage(10)}}]});
+  session.append('assistant/message',{turn:1,step:1,message:createAssistantMessage({content:[{type:'text',text:'done'}],source:{provider:'fixture',model:'fixture'}}),usage:usage(20)},{surfaceOp:'append'});
+  const writer=await host.sessionPersistence.create(session.header);await writer.append(session.snapshotEvents());await writer.flush();await writer.close();
+  const store={get:()=>({id:'worker'}),setting:(_key,fallback)=>fallback,set:()=>{}},ctx={on:()=>{},sessions:{messageProjections:[]},sessionPersistence:host.sessionPersistence,agents:{},tools:{}};
+  const stats=await nativeExecution(ctx,store).pi.readUsage('worker');assert.equal(stats.lastCall.inputTokens,20);assert.equal(stats.totalUsage.inputTokens,30);assert.equal(stats.totalUsage.cacheReadTokens,8);
+ }finally{await host.fiber.dispose();await rm(dir,{recursive:true,force:true})}
+});
