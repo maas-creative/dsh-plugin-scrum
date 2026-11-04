@@ -4,7 +4,7 @@ export const defaultModel={provider:'openai-codex',model:'gpt-6.1-sol',reasoning
 // Task overrides take priority over role overrides and the shared default.
 export function selectModel(settings={},role='executor',taskId,category){return settings.tasks?.[taskId]||settings.roles?.[role]||settings.categories?.[category]||settings.default||defaultModel;}
 export function fallbackModels(settings={},role,taskId,category){return settings.fallbacks?.tasks?.[taskId]||settings.fallbacks?.roles?.[role]||settings.fallbacks?.categories?.[category]||settings.fallbacks?.default||[];}
-export function mayRetryModel(operation){return !operation.toolEvidence?.length&&/429|503|rate.?limit|overloaded|model.*(unavailable|not found)|provider.*unavailable/i.test(operation.error||'');}
+export function mayRetryModel(operation){const error=operation.error||'';return !operation.toolStarted&&!operation.toolEvidence?.length&&!/401|403|authenticat|permission|api.?key|unauthori[sz]ed|forbidden/i.test(error)&&/429|503|rate.?limit|overloaded|model.*(unavailable|not found)|provider.*unavailable|ECONNREFUSED|ECONNRESET|ENETUNREACH|ETIMEDOUT|fetch failed/i.test(error);}
 export function saveModel(store,body,catalog){
  const role=body.role||'',category=body.category||'',target=body.taskId||'';
  if(role&&!roles[role])throw Error('担当役割がありません');
@@ -14,8 +14,8 @@ export function saveModel(store,body,catalog){
  const settings=store.setting('workerModels',{default:defaultModel,tasks:{}}),group=target?'tasks':role?'roles':category?'categories':null,key=target||role||category;
  if(group)settings[group]||={};
  if(group&&body.reset===true){delete settings[group][key];if(settings.fallbacks?.[group])delete settings.fallbacks[group][key];store.set('workerModels',settings);return settings;}
- const valid=m=>m&&m.reasoningEffort==='low'&&catalog.some(p=>p.provider===m.provider&&p.models.some(x=>x.id===m.model));
- if(!valid(body.model))throw Error('利用可能なモデルとlowの推論強度を選択してください');
+ const valid=m=>m&&catalog.some(p=>p.provider===m.provider&&p.models.some(x=>x.id===m.model&&(x.reasoningEfforts?.length?x.reasoningEfforts:['low']).includes(m.reasoningEffort)));
+ if(!valid(body.model))throw Error('利用可能なモデルと対応する推論強度を選択してください');
  if(body.fallbacks!==undefined){
   if(!Array.isArray(body.fallbacks)||body.fallbacks.some(m=>!valid(m)))throw Error('利用可能な代替モデルを指定してください');
   settings.fallbacks||={};const chain=body.fallbacks.map(m=>({provider:m.provider,model:m.model,reasoningEffort:m.reasoningEffort}));

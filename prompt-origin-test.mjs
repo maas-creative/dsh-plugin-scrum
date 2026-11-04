@@ -8,5 +8,5 @@ test('scheduled planner traffic cannot impersonate human goal authority',()=>{
 });
 test('persisted and environment model settings enforce low at actual startup',()=>{
  assert.equal(lowModel().reasoningEffort,'low');assert.equal(lowModel({provider:'custom',model:'test'}).provider,'custom');
- assert.throws(()=>lowModel({reasoningEffort:'high'}));assert.throws(()=>lowModel({provider:''}));
+ assert.equal(lowModel({reasoningEffort:'high'}).reasoningEffort,'high');assert.throws(()=>lowModel({reasoningEffort:''}));assert.throws(()=>lowModel({provider:''}));
 });

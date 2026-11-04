@@ -8,13 +8,13 @@ const registrations=new WeakMap();
 const meaningful=part=>part.type==='text'?!!part.text?.trim():['thinking','reasoning','tool','tool_use','tool_call'].includes(part.type);
 export function hasAssistantOutput(message){return typeof message?.content==='string'?!!message.content.trim():(message?.content||[]).some(meaningful)}
 export function readDegradationState(agent){return agent.session.snapshotEvents().filter(event=>event.type==='scrum/degradation-state').at(-1)?.data||{noOutputCount:0}}
-const fixed=route=>route?.model==='gpt-6.1-sol'&&route?.provider==='openai-codex'&&(!route.reasoningEffort||route.reasoningEffort==='low');
+const sameRoute=(route,checkpoint)=>!!route?.provider&&!!route?.model&&route.provider===checkpoint?.provider&&route.model===checkpoint?.model&&(route.reasoningEffort||'low')===(checkpoint.reasoningEffort||'low');
 export async function restoreCompactionCheckpoint(ctx,agent,{reason='compacted',now=Date.now(),isStopped=()=>false,pendingQuestion=()=>false,enabled=()=>true}={}){
  if(!enabled(agent)||isStopped(agent)||pendingQuestion(agent)||agent.status==='disposed')return {restored:false,reason:'not-authorized-to-continue'};
  const checkpoint=compactionCheckpoint(agent);if(!checkpoint)return {restored:false,reason:'no-checkpoint'};
  const state=readDegradationState(agent);if(state.lastRecoveryAt!==undefined&&now-state.lastRecoveryAt<RECOVERY_COOLDOWN_MS)return {restored:false,reason:'cooldown'};
  const current=agent.session.requestHeader?.()?.config||agent.options||{};
- if(!fixed(checkpoint.route)||!fixed({provider:current.provider||checkpoint.route.provider,model:current.model||checkpoint.route.model,reasoningEffort:current.reasoningEffort||'low'}))return {restored:false,reason:'model-route-conflict'};
+ if(!sameRoute({provider:current.provider||checkpoint.route?.provider,model:current.model||checkpoint.route?.model,reasoningEffort:current.reasoningEffort||'low'},checkpoint.route))return {restored:false,reason:'model-route-conflict'};
  // Restore metadata and narrow exposed tools. Never replay a tool or silently
  // route a request to another model; the native session keeps its request header.
  const generation=(state.recoveryGeneration||0)+1,id='compaction-recovery:'+checkpoint.epoch+':'+reason+':'+generation;
@@ -35,7 +35,7 @@ export function registerDegradationRecovery(ctx,{runtime,now=Date.now,readConfig
  const isStopped=agent=>{const events=agent.session.snapshotEvents(),last=events.filter(event=>event.type==='scrum/recovery-stop'||event.type==='scrum/recovery-human-resume').at(-1);const native=events.filter(event=>event.type==='user/message'&&event.data.source?.kind==='user'||event.type==='turn/end'&&event.data.reason?.kind==='aborted').at(-1);return native?.type==='turn/end'||last?.type==='scrum/recovery-stop'||['paused','stopped','completed'].includes(runtime?.state?.(agent.session.id)?.phase)};
  const pendingQuestion=agent=>{const view=ctx.sessionProjections?.snapshot?.(agent.session,['userQuestions'])?.values?.userQuestions;return !!view?.active?.length||!!runtime?.s?.setting?.('scrumParentWait:'+agent.session.id,{}).pendingQuestion};
  const enqueue=(agent,fn)=>{if(closed)return Promise.resolve();const previous=work.get(agent)||Promise.resolve(),job=previous.catch(()=>{}).then(fn).catch(error=>ctx.logger?.warn('Scrum degradation recovery: '+error.message)).finally(()=>{if(work.get(agent)===job)work.delete(agent)});work.set(agent,job);return job};
- ctx.on('agent/request',async({agent},next)=>{const config=await next();if(compactionCheckpoint(agent)&&!fixed(config))throw Error('Compaction recovery cannot change the fixed GPT 6.1 Sol low model route');return config});
+ ctx.on('agent/request',async({agent},next)=>{const config=await next(),checkpoint=compactionCheckpoint(agent);if(checkpoint&&!sameRoute(config,checkpoint.route))throw Error('Compaction recovery cannot change the saved model route');return config});
  const observe=(session,event)=>{const agent=ctx.agents.get(session.id);if(!agent)return;
   if(event.type==='user/message'&&event.data.source?.kind==='user'){return enqueue(agent,()=>session.append('scrum/recovery-human-resume',{at:now()}))}
   if(event.type==='turn/end'&&event.data.reason?.kind==='aborted'){return enqueue(agent,()=>session.append('scrum/recovery-stop',{at:now()}))}

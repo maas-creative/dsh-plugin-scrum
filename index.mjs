@@ -1,6 +1,7 @@
 import {registerScrumUi} from './scrum-ui-host.mjs';
 import {registerScrumPanel} from './scrum-panel.mjs';
 import {registerDeliveryAuthorization} from './delivery-authorization.mjs';
+import {registerAutoReview} from './auto-review.mjs';
 import {registerSessionNotifications} from './session-notification.mjs';
 import {registerGateway} from './gateway.mjs';
 import {registerOpenGateway} from './opengateway.mjs';
@@ -57,6 +58,7 @@ export async function apply(ctx,config={}){
  if(!config.standalone&&config.runtime?.s?.executionOnly){const {registerStandaloneTools}=await import('./standalone.mjs');await registerStandaloneTools(ctx,config.runtime)}
  if(ctx.fs&&ctx.sessionPersistence){const {registerNativeTools}=await import('./native-tools.mjs');await registerNativeTools(ctx);registerLookAt(ctx,{audio:config.audio});if(ctx.agents&&ctx.sessions&&ctx.effect)registerSideConversations(ctx);registerWebTools(ctx);await registerXSearch(ctx,config.xSearch);registerTodos(ctx);registerOperationTools(ctx);await registerMcp(ctx);await registerOAuthSetup(ctx);}
  if(config.runtime)registerDeliveryAuthorization(ctx,config.runtime);
+ if(config.runtime?.s)config.runtime.autoReview=registerAutoReview(ctx,config.runtime.s);
  if(config.runtime)registerNativeTaskCommands(ctx,config.runtime);
  if(ctx.agents&&typeof ctx.on==='function')registerSessionNotifications(ctx,{runtime:config.runtime,...config.sessionNotification});
  if(ctx.commands&&typeof ctx.on==='function')await registerGateway(ctx,{runtime:config.runtime,...config.gateway});

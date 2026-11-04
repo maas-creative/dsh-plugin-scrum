@@ -19,7 +19,7 @@ export function upstreamRolePrompt(role,{agents=[],tools=[],skills=[],categories
 }
 export const scrumRoleContract=`Scrum execution requirements:
 Use the tools available in this session and follow the user's authorization and file ownership boundaries.
-Execution uses GPT 6.1 Sol with low reasoning; role instructions do not override model settings.
+Use the configured model and reasoning effort; role instructions do not override model settings.
 For delegated tasks, record the task ID, requested output and acceptance criteria. Retrieve the report, inspect the output, and record acceptance through scrum_review. A report alone does not prove completion or submission.
 When delegation is prohibited, perform the authorized work directly.
 Report failed checks and remaining work accurately. Continue until the assigned acceptance criteria are satisfied or a concrete external blocker requires user action.
