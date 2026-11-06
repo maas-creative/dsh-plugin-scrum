@@ -18,6 +18,13 @@ hdt このプロジェクトの不具合を調査して修正し、テストと�
 
 [リリース](https://github.com/maas-creative/dsh-plugin-scrum/releases) · [設定と実行仕様](docs/runtime-reference.md) · [Issues](https://github.com/maas-creative/dsh-plugin-scrum/issues)
 
+## 最新のコンテキスト管理
+
+- メインセッションは **EoCC**（意味状態を保ちながら継続する圧縮）を使います。
+- メイン以外のWorker・スケジュール・レビュー・検証セッションは **SAC**（意味状態と直近の実行境界を保持する圧縮）を既定にします。
+- SACは目的、制約、確定事項、次の行動、完了条件、根拠を意味状態として保存し、ツール実行境界と直近履歴を引き継ぎます。失敗した要約は履歴を破棄せず、再試行可能な状態に戻します。
+- DeepSeek／GLMの作業経路は維持し、要約経路は設定された既定モデルへフォールバックします。圧縮の成功・失敗・復旧はテストで検証しています。
+
 ![DSH WebでのScrum接続状態、hdt操作、担当一覧](docs/assets/scrum-workspace.png)
 
 *DSH Web上のScrum表示。担当の状態は公開用サンプルです。*

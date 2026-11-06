@@ -9,7 +9,7 @@ const append=(agent,type,data)=>agent?.session&&appendScrumEvent(agent.session,t
 export async function beginCompaction(agent,{ctx}={}){
  const previous=compactionState(agent)||{},state={epoch:(previous.epoch||0)+1,startedAt:Date.now(),active:true};states.set(agent,state);
  try{
- const selected=agent.session?.requestHeader?.()?.config||agent.options||{},policy=agentPolicy(agent);let toolNames;
+ const selected=agent.model?.current?.()||agent.session?.requestHeader?.()?.config||agent.options||{},policy=agentPolicy(agent);let toolNames;
  const tools=ctx?.get?.('tools')||agent.ctx?.get?.('tools');if(tools?.schemas)toolNames=tools.schemas(agent).map(tool=>tool.name).sort();
  append(agent,'scrum/compaction-checkpoint',{epoch:state.epoch,capturedAt:state.startedAt,role:agentRole(agent),policy:JSON.parse(JSON.stringify(policy)),cwd:agent.session?.header?.cwd||'',route:{provider:selected.provider||'openai-codex',model:selected.model||'gpt-6.1-sol',reasoningEffort:selected.reasoningEffort||'low'},...(toolNames?{toolNames}:{})});
  append(agent,'scrum/compaction-state',state);if(ctx?.sessions?.flush)await ctx.sessions.flush(agent.session);

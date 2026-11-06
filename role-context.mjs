@@ -1,5 +1,5 @@
 import {realpath} from 'node:fs/promises';import {resolve,relative,dirname,isAbsolute} from 'node:path';
-import {roles,roleInstruction,rolePolicy} from './roles.mjs';import {agentRole,agentPolicy} from './agent-role.mjs';
+import {roles,defaultWorkerRoles,roleInstruction,rolePolicy} from './roles.mjs';import {agentRole,agentPolicy} from './agent-role.mjs';
 import {loadScrumConfiguration,configurationAllows} from './configuration.mjs';
 export async function planPathAllowed(cwd,path){
  if(typeof path!=='string'||!path.endsWith('.md'))return false;
@@ -11,7 +11,7 @@ export function registerRoleContext(ctx,{coordinator=false}={}){
  ctx.on('system-prompt/assemble',async(assembly,input,next)=>{
   const prior=await next(),agent=input.agent||input.scope;if(!agent?.session)return prior;
   const cwd=agent.session.header.cwd||process.cwd(),config=loadScrumConfiguration({cwd}).config,boundRole=agentRole(agent)||'executor',role=coordinator&&!agent.session.header.parentSession&&boundRole==='executor'?'sisyphus':boundRole;
-  const availableAgents=Object.entries(roles).filter(([name])=>configurationAllows(config,'agents',name)&&config.agents?.[name]?.disable!==true).map(([name,definition])=>({name,description:definition.instruction,metadata:{category:'utility',cost:'FREE',triggers:[]}}));
+  const availableAgents=Object.entries(roles).filter(([name])=>(role==='sisyphus'?defaultWorkerRoles.includes(name):true)&&configurationAllows(config,'agents',name)&&config.agents?.[name]?.disable!==true).map(([name,definition])=>({name,description:definition.instruction,metadata:{category:'utility',cost:'FREE',triggers:[]}}));
   const tools=ctx.tools.schemas(agent).map(t=>t.name),skills=ctx.skills?await ctx.skills.list({cwd,scope:agent}):[];
   const categories=Object.entries(config.categories||{}).map(([name,definition])=>({name,description:definition.description||name}));
   const text=roleInstruction(role,cwd,{agents:availableAgents,tools,skills:skills.filter(s=>configurationAllows(config,'skills',s.name)).map(s=>({name:s.name,description:s.description,location:s.source?.startsWith('project')?'project':'plugin'})),categories});

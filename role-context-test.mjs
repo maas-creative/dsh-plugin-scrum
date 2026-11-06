@@ -7,6 +7,17 @@ test('native and OpenCode role contracts preserve fixed model and dynamic skill/
  await mkdir(join(cwd,'.omo'));await writeFile(join(cwd,'.omo','omo.json'),'{"disabled_agents":["librarian"],"disabled_skills":["fixture-skill"]}');const second=await events['system-prompt/assemble']({}, {agent},next);assert.doesNotMatch(second.sections[0].text,/fixture-skill/);await assert.rejects(Promise.resolve().then(()=>roleInstruction('librarian',cwd)),/無効化/);assert.equal(rolePolicy('prometheus',cwd).planningOnly,true);
  }finally{await rm(cwd,{recursive:true,force:true})}
 });
+test('the coordinator prompt exposes the main Worker and only the five standard workers',async()=>{
+ const cwd=await mkdtemp(join(tmpdir(),'scrum-coordinator-'));try{
+  const events={},agent={session:{header:{cwd},id:'root'}};bindAgentRole(agent,'executor');
+  registerRoleContext({on:(name,handler)=>events[name]=handler,tools:{schemas:()=>[]},skills:{list:async()=>[]}}, {coordinator:true});
+  const result=await events['system-prompt/assemble']({}, {agent},async()=>({sections:[]}));
+  const text=result.sections[0].text;
+  for(const role of ['planner','researcher','executor','reviewer','validator'])assert.match(text,new RegExp(role));
+  for(const role of ['architect','librarian','sisyphus-junior'])assert.doesNotMatch(text,new RegExp('agents:.*'+role));
+  assert.match(text,/メインWorker|チャットの入口/);assert.match(text,/圧縮/);
+ }finally{await rm(cwd,{recursive:true,force:true})}
+});
 test('planning-only paths permit plans and drafts while refusing implementation, delegation and symlink escape',async()=>{
  const cwd=await mkdtemp(join(tmpdir(),'scrum-plan-')),outside=await mkdtemp(join(tmpdir(),'scrum-plan-out-'));try{
  await mkdir(join(cwd,'.omo','plans'),{recursive:true});assert.equal(await planPathAllowed(cwd,'.omo/plans/nested/plan.md'),true);assert.equal(await planPathAllowed(cwd,'src/main.js'),false);assert.equal(await planPathAllowed(cwd,'.omo/plans/code.js'),false);await symlink(outside,join(cwd,'.omo','drafts'));assert.equal(await planPathAllowed(cwd,'.omo/drafts/plan.md'),false);

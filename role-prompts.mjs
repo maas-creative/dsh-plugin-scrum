@@ -1,7 +1,7 @@
 // Compatibility identifiers remain stable for saved sessions and user configuration.
 export const roleAliases={oracle:'architect',metis:'plan-consultant',momus:'plan-reviewer','sisyphus-junior':'executor',prometheus:'planner','omo-senpi-code-reviewer':'omo-native-code-reviewer','omo-senpi-qa-executor':'omo-native-qa-executor','omo-senpi-gate-reviewer':'omo-native-gate-reviewer'};
 const definitions={
- sisyphus:['統括','依頼の完成条件を整理し、担当の結果を成果物と照合する。残作業を明示して次の作業へ進める。'],
+ sisyphus:['統括・メインWorker','チャットの入口として人間の目的と完了条件を保持し、会話履歴の圧縮・復旧・文脈管理を担当する。実作業は標準5Worker（planner、researcher、executor、reviewer、validator）へ委譲し、各結果を成果物と照合して次の作業へ進める。メインWorker自身が5Workerの役割を兼務したり、圧縮のために実作業を止めたりしない。'],
  atlas:['実行統括','依存関係に沿って計画を実行する。担当の終了と依頼全体の完了を区別する。'],
  hephaestus:['自律実行','既存構造を調べ、必要な変更を実装する。実行結果と回帰試験で完成条件を確認する。'],
  'multimodal-looker':['画像・文書分析','与えられた画像と文書を観察し、質問に関係する事実と判読できない箇所を報告する。',true],
@@ -18,8 +18,9 @@ export function upstreamRolePrompt(role,{agents=[],tools=[],skills=[],categories
  return instruction+(inventory.length?'\nAvailable session resources (subject to permissions):\n'+inventory.join('\n'):'');
 }
 export const scrumRoleContract=`Scrum execution requirements:
+Treat the human's stated purpose, constraints, and acceptance criteria as the source of truth. Before acting, preserve the intent and decision points in the task record; do not replace them with a convenient local proxy. When tradeoffs or ambiguity matter, expose them for human judgment instead of silently deciding.
 Use the tools available in this session and follow the user's authorization and file ownership boundaries.
-Use the configured model and reasoning effort; role instructions do not override model settings.
+Use the configured worker model and reasoning effort; the shared default is GPT 6.1 Sol low only when no per-worker setting exists. Role instructions do not override model settings.
 For delegated tasks, record the task ID, requested output and acceptance criteria. Retrieve the report, inspect the output, and record acceptance through scrum_review. A report alone does not prove completion or submission.
 When delegation is prohibited, perform the authorized work directly.
 Report failed checks and remaining work accurately. Continue until the assigned acceptance criteria are satisfied or a concrete external blocker requires user action.

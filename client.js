@@ -19677,8 +19677,8 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
   window.__ModuleLoader__.load({ id: "dsh-plugin-scrum", factory(require2) {
     const React = require2("react"), h = React.createElement;
     const ns = "scrum.ui", tabId = "dsh-plugin-scrum.monitor";
-    const ja = { connecting: "Scrum \u63A5\u7D9A\u4E2D\u2026", connected: "Scrum \u63A5\u7D9A\u6E08\u307F", disconnected: "Scrum \u672A\u63A5\u7D9A", error: "Scrum \u63A5\u7D9A\u30A8\u30E9\u30FC", on: "hdt \u6709\u52B9", off: "hdt \u505C\u6B62", enable: "hdt \u3092\u6709\u52B9\u5316", stop: "hdt \u3092\u505C\u6B62", resume: "\u518D\u958B", open: "\u62C5\u5F53\u4E00\u89A7", title: "Scrum", loading: "\u8AAD\u307F\u8FBC\u307F\u4E2D\u2026", workers: "\u62C5\u5F53\u306E\u4F5C\u696D", details: "\u7D50\u679C\u30FB\u6210\u679C\u7269\u3092\u8868\u793A", none: "\u62C5\u5F53\u306F\u307E\u3060\u3044\u307E\u305B\u3093", noGoal: "\u76EE\u6A19\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044", goal: "\u4ECA\u56DE\u306E\u76EE\u6A19", normal: "\u901A\u5E38\u30E2\u30FC\u30C9", phase: "\u5B9F\u884C\u72B6\u614B", role: "\u5F79\u5272", model: "\u30E2\u30C7\u30EB", reason: "\u5F85\u6A5F\u30FB\u5931\u6557\u306E\u7406\u7531", artifact: "\u6210\u679C\u7269", result: "\u7D50\u679C", verification: "\u6210\u679C\u7269\u306E\u78BA\u8A8D", settings: "\u62C5\u5F53\u30E2\u30C7\u30EB\u306E\u8A2D\u5B9A", default: "\u5171\u901A\u306E\u30E2\u30C7\u30EB", save: "\u4FDD\u5B58", reset: "\u5171\u901A\u8A2D\u5B9A\u306B\u623B\u3059", saved: "\u4FDD\u5B58\u3057\u307E\u3057\u305F", low: "\u63A8\u8AD6\u5F37\u5EA6: low", future: "\u5909\u66F4\u306F\u6B21\u306B\u8D77\u52D5\u3059\u308B\u62C5\u5F53\u3078\u9069\u7528\u3055\u308C\u307E\u3059", readonly: "\u63A5\u7D9A\u5148\u30DB\u30B9\u30C8\u3067\u30E2\u30C7\u30EB\u3092\u8A2D\u5B9A\u3057\u3066\u304F\u3060\u3055\u3044", reload: "\u518D\u63A5\u7D9A", settingsSummary: "Scrum\u306E\u62C5\u5F53\u5F79\u5272\u3068\u30E2\u30C7\u30EB\u3092\u8A2D\u5B9A\u3057\u307E\u3059", unknown: "\u72B6\u614B\u3092\u53D6\u5F97\u3067\u304D\u307E\u305B\u3093", done: "\u78BA\u8A8D\u6E08\u307F", unverified: "\u672A\u78BA\u8A8D" };
-    const en = { connecting: "Connecting Scrum\u2026", connected: "Scrum connected", disconnected: "Scrum disconnected", error: "Scrum connection error", on: "hdt enabled", off: "hdt stopped", enable: "Enable hdt", stop: "Stop hdt", resume: "Resume", open: "Workers", title: "Scrum", loading: "Loading\u2026", workers: "Worker activity", details: "View result and artifact", none: "No workers yet", noGoal: "Enter a goal to begin work", goal: "Goal", normal: "Normal mode", phase: "Execution state", role: "Role", model: "Model", reason: "Waiting / failure reason", artifact: "Artifact", result: "Result", verification: "Artifact review", settings: "Worker models", default: "Shared default", save: "Save", reset: "Use shared default", saved: "Saved", low: "Reasoning: low", future: "Changes apply to new workers", readonly: "Configure models on the connected host", reload: "Reconnect", settingsSummary: "Configure Scrum roles and models", unknown: "State unavailable", done: "Verified", unverified: "Unverified" };
+    const ja = { connecting: "Scrum \u63A5\u7D9A\u4E2D\u2026", connected: "Scrum \u63A5\u7D9A\u6E08\u307F", disconnected: "Scrum \u672A\u63A5\u7D9A", error: "Scrum \u63A5\u7D9A\u30A8\u30E9\u30FC", on: "hdt \u6709\u52B9", off: "hdt \u505C\u6B62", enable: "hdt \u3092\u6709\u52B9\u5316", stop: "hdt \u3092\u505C\u6B62", resume: "\u518D\u958B", open: "\u62C5\u5F53\u4E00\u89A7", title: "Scrum", loading: "\u8AAD\u307F\u8FBC\u307F\u4E2D\u2026", workers: "\u62C5\u5F53\u306E\u4F5C\u696D", details: "\u7D50\u679C\u30FB\u6210\u679C\u7269\u3092\u8868\u793A", none: "\u62C5\u5F53\u306F\u307E\u3060\u3044\u307E\u305B\u3093", noGoal: "\u76EE\u6A19\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044", goal: "\u4ECA\u56DE\u306E\u76EE\u6A19", normal: "\u901A\u5E38\u30E2\u30FC\u30C9", phase: "\u5B9F\u884C\u72B6\u614B", role: "\u5F79\u5272", model: "\u30E2\u30C7\u30EB", reason: "\u5F85\u6A5F\u30FB\u5931\u6557\u306E\u7406\u7531", artifact: "\u6210\u679C\u7269", result: "\u7D50\u679C", verification: "\u6210\u679C\u7269\u306E\u78BA\u8A8D", settings: "\u62C5\u5F53\u30E2\u30C7\u30EB\u306E\u8A2D\u5B9A", default: "\u5171\u901A\u306E\u30E2\u30C7\u30EB", save: "\u4FDD\u5B58", reset: "\u5171\u901A\u8A2D\u5B9A\u306B\u623B\u3059", saved: "\u4FDD\u5B58\u3057\u307E\u3057\u305F", reasoning: "\u63A8\u8AD6\u5F37\u5EA6", auto: "\u81EA\u52D5", future: "\u5909\u66F4\u306F\u6B21\u306B\u8D77\u52D5\u3059\u308B\u62C5\u5F53\u3078\u9069\u7528\u3055\u308C\u307E\u3059", readonly: "\u63A5\u7D9A\u5148\u30DB\u30B9\u30C8\u3067\u30E2\u30C7\u30EB\u3092\u8A2D\u5B9A\u3057\u3066\u304F\u3060\u3055\u3044", reload: "\u518D\u63A5\u7D9A", settingsSummary: "Scrum\u306E\u62C5\u5F53\u5F79\u5272\u3068\u30E2\u30C7\u30EB\u3092\u8A2D\u5B9A\u3057\u307E\u3059", unknown: "\u72B6\u614B\u3092\u53D6\u5F97\u3067\u304D\u307E\u305B\u3093", done: "\u78BA\u8A8D\u6E08\u307F", unverified: "\u672A\u78BA\u8A8D" };
+    const en = { connecting: "Connecting Scrum\u2026", connected: "Scrum connected", disconnected: "Scrum disconnected", error: "Scrum connection error", on: "hdt enabled", off: "hdt stopped", enable: "Enable hdt", stop: "Stop hdt", resume: "Resume", open: "Workers", title: "Scrum", loading: "Loading\u2026", workers: "Worker activity", details: "View result and artifact", none: "No workers yet", noGoal: "Enter a goal to begin work", goal: "Goal", normal: "Normal mode", phase: "Execution state", role: "Role", model: "Model", reason: "Waiting / failure reason", artifact: "Artifact", result: "Result", verification: "Artifact review", settings: "Worker models", default: "Shared default", save: "Save", reset: "Use shared default", reasoning: "Reasoning", auto: "Auto", future: "Changes apply to new workers", readonly: "Configure models on the connected host", reload: "Reconnect", settingsSummary: "Configure Scrum roles and models", unknown: "State unavailable", done: "Verified", unverified: "Unverified" };
     const codec2 = { mode: "strict", create: () => external_exports.unknown(), typeSymbol: "dsh-plugin-scrum#json" };
     const parameter = (name, lookup) => ({ name, wire: lookup ? "agentId" : name, source: lookup ? "lookup" : "json", ...lookup ? { lookup: "agent" } : {}, codec: { mode: "strict", create: () => name === "body" ? external_exports.object({ role: external_exports.string(), reset: external_exports.boolean(), model: external_exports.unknown() }).strict() : external_exports.string(), typeSymbol: "dsh-plugin-scrum#" + name } });
     const descriptors = [["snapshot", [parameter("agent", true)]], ["action", [parameter("agent", true), parameter("verb")]], ["settings", []], ["saveModel", [parameter("body")]]].map(([method, parameters]) => ({ id: "dsh-plugin-scrum#scrumUi/" + method, service: "scrumUi", namespace: "scrumUi", method, invocation: { kind: "direct" }, ...parameters.some((p) => p.lookup) ? { scope: { context: "agent", wire: "agentId" } } : {}, parameters, result: codec2 }));
@@ -19793,13 +19793,13 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
               };
             }, [view]);
             if (view === "summary") return h("span", null, t("settingsSummary"));
-            const update = async (role, selected, reset = false) => {
+            const update = async (role, selected, reasoningEffort, reset = false) => {
               setBusy(true);
               setError("");
               setSaved(false);
               try {
                 const [provider, model] = JSON.parse(selected || "[]");
-                const r = await ctx2.remote.scrumUi.saveModel({ role, reset, model: reset ? null : { provider, model, reasoningEffort: "low" } });
+                const r = await ctx2.remote.scrumUi.saveModel({ role, reset, model: reset ? null : { provider, model, reasoningEffort: reasoningEffort || "low" } });
                 if (!r.ok) throw Error(r.error?.message || "Save failed");
                 setConfig(r.value);
                 setSaved(true);
@@ -19809,12 +19809,41 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
                 setBusy(false);
               }
             };
-            const models = (config2?.catalog || []).flatMap((p) => p.models.map((m) => ({ value: JSON.stringify([p.provider, m.id]), label: p.provider + " / " + (m.name || m.id) })));
-            return h("section", { className: "scrum-ui scrum-ui-settings", "data-testid": "scrum-settings" }, styles, h("h2", { className: "scrum-ui-panel-title" }, t("settings")), h("p", null, t("low") + " \xB7 " + t("future")), error62 && h("p", { className: "scrum-ui-error", role: "alert" }, error62), saved && h("p", { role: "status" }, t("saved")), !config2 && h("p", null, t("loading")), config2 && !config2.writable && h("p", null, t("readonly")), config2 && ["", ...config2.roles].map((role) => {
+            const models = (config2?.catalog || []).flatMap((p) => p.models.map((m) => ({ provider: p.provider, id: m.id, value: JSON.stringify([p.provider, m.id]), label: p.provider + " / " + (m.name || m.id), reasoningEfforts: m.reasoningEfforts || [] })));
+            const modelFor = (selected) => models.find((m) => m.provider === selected?.provider && m.id === selected?.model);
+            const effortsFor = (selected) => modelFor(selected)?.reasoningEfforts?.length ? modelFor(selected).reasoningEfforts : ["low"];
+            const rows = config2 ? ["", ...config2.roles].map((role) => {
               const selected = config2.models.roles?.[role] || config2.models.default;
               const value = selected ? JSON.stringify([selected.provider, selected.model]) : "";
-              return h("label", { key: role || "default" }, h("span", { style: { minWidth: 100 } }, role || t("default")), h("select", { "aria-label": (role || t("default")) + " " + t("model"), value, disabled: busy || !config2.writable, onChange: (e) => update(role, e.target.value) }, !models.some((m) => m.value === value) && h("option", { value }, selected ? [selected.provider, selected.model].join(" / ") : t("unknown")), ...models.map((m) => h("option", { key: m.value, value: m.value }, m.label))), role && config2.models.roles?.[role] && h("button", { type: "button", disabled: busy, onClick: () => update(role, null, true) }, t("reset")));
-            }));
+              const efforts = effortsFor(selected);
+              const effort = efforts.includes(selected?.reasoningEffort) ? selected.reasoningEffort : efforts[0];
+              const next = (event) => {
+                const model = models.find((item) => item.value === event.target.value);
+                update(role, event.target.value, model?.reasoningEfforts?.[0] || "low");
+              };
+              return h(
+                "div",
+                { key: role || "default", className: "scrum-ui-settings-row" },
+                h(
+                  "label",
+                  null,
+                  h("span", { style: { minWidth: 100 } }, role || t("default")),
+                  h(
+                    "select",
+                    { "aria-label": (role || t("default")) + " " + t("model"), value, disabled: busy || !config2.writable, onChange: next },
+                    !models.some((m) => m.value === value) && h("option", { value }, selected ? [selected.provider, selected.model].join(" / ") : t("unknown")),
+                    ...models.map((m) => h("option", { key: m.value, value: m.value }, m.label))
+                  ),
+                  h(
+                    "select",
+                    { "aria-label": (role || t("default")) + " " + t("reasoning"), value: effort, disabled: busy || !config2.writable, onChange: (e) => update(role, value, e.target.value) },
+                    ...efforts.map((level) => h("option", { key: level, value: level }, level))
+                  ),
+                  role && config2.models.roles?.[role] && h("button", { type: "button", disabled: busy, onClick: () => update(role, null, null, true) }, t("reset"))
+                )
+              );
+            }) : [];
+            return h("section", { className: "scrum-ui scrum-ui-settings", "data-testid": "scrum-settings" }, styles, h("h2", { className: "scrum-ui-panel-title" }, t("settings")), h("p", null, t("reasoning") + " \xB7 " + t("future")), error62 && h("p", { className: "scrum-ui-error", role: "alert" }, error62), saved && h("p", { role: "status" }, t("saved")), !config2 && h("p", null, t("loading")), config2 && !config2.writable && h("p", null, t("readonly")), rows);
           }
           const register = (name, options, component) => ctx2.effect(() => ctx2.slots.inject(name, () => ctx2.slots.register({ name, locale: ns, ...options }, component)));
           register("conversation.session.header.actions", { id: "scrum-status", order: 40 }, Header);

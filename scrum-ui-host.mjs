@@ -1,5 +1,5 @@
 import {Remote,TypertRemoteService} from '@deepseek-ai/dsh-typert-protocol';
-import {roles} from './roles.mjs';
+import {roles,workerRoles} from './roles.mjs';
 import {saveModel,defaultModel} from './models.mjs';
 
 // Public Remote markers use the SDK's decorator API, without a transpilation step.
@@ -25,14 +25,23 @@ export class ScrumUiService extends TypertRemoteService {
   for(const provider of this.ctx.llm.listProviders()){
    const id=provider.id||provider.name||provider.provider;
    if(!id)continue;
-   try{catalog.push({provider:id,models:(await this.ctx.llm.listModels(id)).map(m=>({id:m.id,name:m.name||m.id}))})}catch{catalog.push({provider:id,models:[],unavailable:true})}
+   try{
+    const models=[];
+    for(const m of await this.ctx.llm.listModels(id)){
+     let reasoningEfforts=Array.isArray(m.reasoningEfforts)?m.reasoningEfforts:[];
+     try{const info=await this.ctx.llm.resolveModelInfo(id,m.id);if(Array.isArray(info?.reasoning?.efforts))reasoningEfforts=info.reasoning.efforts.map(e=>typeof e==='string'?e:e.id).filter(Boolean)}catch{}
+     models.push({id:m.id,name:m.name||m.id,reasoningEfforts:[...new Set(reasoningEfforts)]});
+    }
+    catalog.push({provider:id,models});
+   }catch{catalog.push({provider:id,models:[],unavailable:true})}
   }
-  return {roles:Object.keys(roles),models:this.runtime?.s.setting('workerModels',{default:defaultModel})||{default:defaultModel},catalog,writable:!!this.runtime?.s};
+  const models=this.runtime?.s.setting('workerModels',{default:defaultModel})||{default:defaultModel};
+  return {roles:workerRoles(models),mainWorker:models.main||models.default||defaultModel,models,catalog,writable:!!this.runtime?.s};
  }
  async saveModel(body){
   if(!this.runtime?.s)throw Error('Model settings are owned by the connected Scrum host');
   if(!body||typeof body!=='object'||Array.isArray(body)||body.taskId||body.category||body.fallbacks)throw Error('This settings page accepts one role or the default model');
-  if(body.role!==undefined&&(typeof body.role!=='string'||body.role&&!Object.hasOwn(roles,body.role)))throw Error('Unknown Scrum role');
+  if(body.role!==undefined&&(typeof body.role!=='string'||(body.role&&body.role!=='main'&&!Object.hasOwn(roles,body.role))))throw Error('Unknown Scrum role');
   const config=await this.settings();
   saveModel(this.runtime.s,{role:body.role,reset:body.reset,model:body.model},config.catalog);
   return this.settings();

@@ -7,20 +7,21 @@ export function fallbackModels(settings={},role,taskId,category){return settings
 export function mayRetryModel(operation){const error=operation.error||'';return !operation.toolStarted&&!operation.toolEvidence?.length&&!/401|403|authenticat|permission|api.?key|unauthori[sz]ed|forbidden/i.test(error)&&/429|503|rate.?limit|overloaded|model.*(unavailable|not found)|provider.*unavailable|ECONNREFUSED|ECONNRESET|ENETUNREACH|ETIMEDOUT|fetch failed/i.test(error);}
 export function saveModel(store,body,catalog){
  const role=body.role||'',category=body.category||'',target=body.taskId||'';
- if(role&&!roles[role])throw Error('担当役割がありません');
+ const main=role==='main';
+ if(role&&!main&&!roles[role])throw Error('担当役割がありません');
  if(category&&!categories[category]&&!store.setting('scrumCategories',{})[category])throw Error('担当カテゴリがありません');
  if([role,category,target].filter(Boolean).length>1)throw Error('割り当て先は一つだけ指定してください');
  if(target&&!store.get('SELECT id FROM tasks WHERE id=?',target))throw Error('タスクがありません');
- const settings=store.setting('workerModels',{default:defaultModel,tasks:{}}),group=target?'tasks':role?'roles':category?'categories':null,key=target||role||category;
+ const settings=store.setting('workerModels',{default:defaultModel,tasks:{}}),group=target?'tasks':(!main&&role)?'roles':category?'categories':null,key=target||role||category;
  if(group)settings[group]||={};
- if(group&&body.reset===true){delete settings[group][key];if(settings.fallbacks?.[group])delete settings.fallbacks[group][key];store.set('workerModels',settings);return settings;}
+ if(body.reset===true&&(group||main)){if(main)delete settings.main;else delete settings[group][key];if(settings.fallbacks?.[group||''])delete settings.fallbacks[group][key];if(main&&settings.fallbacks)delete settings.fallbacks.main;store.set('workerModels',settings);return settings;}
  const valid=m=>m&&catalog.some(p=>p.provider===m.provider&&p.models.some(x=>x.id===m.model&&(x.reasoningEfforts?.length?x.reasoningEfforts:['low']).includes(m.reasoningEffort)));
  if(!valid(body.model))throw Error('利用可能なモデルと対応する推論強度を選択してください');
  if(body.fallbacks!==undefined){
   if(!Array.isArray(body.fallbacks)||body.fallbacks.some(m=>!valid(m)))throw Error('利用可能な代替モデルを指定してください');
   settings.fallbacks||={};const chain=body.fallbacks.map(m=>({provider:m.provider,model:m.model,reasoningEffort:m.reasoningEffort}));
-  if(group){settings.fallbacks[group]||={};settings.fallbacks[group][key]=chain}else settings.fallbacks.default=chain;
+  if(group){settings.fallbacks[group]||={};settings.fallbacks[group][key]=chain}else settings.fallbacks[main?'main':'default']=chain;
  }
  const selected={provider:body.model.provider,model:body.model.model,reasoningEffort:body.model.reasoningEffort};
- if(group)settings[group][key]=selected;else settings.default=selected;store.set('workerModels',settings);return settings;
+ if(group)settings[group][key]=selected;else settings[main?'main':'default']=selected;store.set('workerModels',settings);return settings;
 }

@@ -16,6 +16,14 @@ export const roles={
  reviewer:{name:'レビュー',instruction:'指定成果物を独立に照合し、根拠付き指摘を指定の報告に記録する。対象実装を修正しない。'},
  validator:{name:'検証',instruction:'完了条件に対応する試験を実行し、実施・未実施・失敗を指定の報告に記録する。'}
 };
+// The UI and new assignments start with a small, complete thinking-to-action
+// loop. Legacy roles remain addressable for saved sessions and explicit API
+// requests, but they are not shown as the default worker catalog.
+export const defaultWorkerRoles=['planner','researcher','executor','reviewer','validator'];
+export function workerRoles(settings={}){
+ const configured=Object.keys(settings.roles||{}).filter(role=>Object.hasOwn(roles,role));
+ return [...new Set([...defaultWorkerRoles,...configured])];
+}
 export function resolveRole(role='executor'){return roleAliases[role]||role}
 export function roleInstruction(role='executor',cwd,available={}){
  const original=role;role=resolveRole(role);const {config}=loadScrumConfiguration({cwd});
