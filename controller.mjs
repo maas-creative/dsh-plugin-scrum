@@ -25,12 +25,12 @@ export function projectIds(adapter){
  return ids;
 }
 export function settle(adapter){
- const state=adapter.readState(),ids=projectIds(adapter);if(!ids)return state;
+ let state=adapter.readState();if(state.executionOnly&&state.phase==='completed'&&!state.goalVerification){state={...state,active:true,phase:'verification',prematureCompletionRecovered:true};adapter.writeState(state)}const ids=projectIds(adapter);if(!ids)return state;
  const snapshot=adapter.snapshot(),tasks=snapshot.tasks.filter(t=>(state.executionOnly?!state.excludedTaskIds?.includes(t.id):ids.has(t.projectId))&&(t.actor!=='archived'||t.status==='done'));
  const assignments=(snapshot.assignments||[]).filter(a=>tasks.some(t=>t.id===a.taskId)&&!['done','cancelled'].includes(a.status));
  const done=tasks.length&&tasks.every(t=>t.status==='done')&&assignments.length===0;
  const finalChecks=state.executionOnly?tasks.map(t=>({executionId:t.id,verified:t.status==='done'&&Boolean(t.completionEvidence)})):snapshot.finalChecks||[];
- const verified=state.executionOnly?tasks.length>0&&tasks.every(t=>t.status==='done'&&t.completionEvidence):[...ids].every(id=>finalChecks.some(c=>c.projectId===id&&c.verified===true));
+ const verified=state.executionOnly?state.goalVerification?.passed===true&&state.goalVerification.startedAt===state.startedAt&&state.goalVerification.taskVersions===JSON.stringify(tasks.map(t=>[t.id,t.version]).sort((a,b)=>a[0].localeCompare(b[0])))&&tasks.length>0&&tasks.every(t=>t.status==='done'&&t.completionEvidence):[...ids].every(id=>finalChecks.some(c=>c.projectId===id&&c.verified===true));
  const pendingCleanup={teamIds:(snapshot.teams||[]).filter(t=>t.status!=='deleted').map(t=>t.id),monitorIds:(snapshot.monitors||[]).filter(m=>m.active).map(m=>m.id)};
  const pendingWorkflowIds=(snapshot.workflows||[]).filter(w=>w.status!=='done').map(w=>w.id);
  const pendingPoolIds=(snapshot.workpools||[]).filter(p=>p.status==='open'||p.items.some(i=>!['completed','error','cancelled'].includes(i.status))||p.workers.some(w=>w.status==='busy')||!(p.aggregate?.delivered||p.aggregate?.suppressed&&p.aggregate.reason==='parent_stop')).map(p=>p.pool_id);

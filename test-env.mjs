@@ -4,6 +4,9 @@ import {dirname,join,delimiter} from 'node:path';
 const temp=process.env.DSH_SCRUM_TEST_TMP||fileURLToPath(new URL('../.development/Scrum/tmp/',import.meta.url));
 mkdirSync(temp,{recursive:true});
 process.env.TMPDIR=temp;process.env.TMP=temp;process.env.TEMP=temp;
+// Tests must not read or populate the operator's or live Worker's home.
+const testHome=join(temp,'home');mkdirSync(testHome,{recursive:true});process.env.HOME=testHome;
+const testDshHome=join(temp,'dsh-home');mkdirSync(testDshHome,{recursive:true});process.env.DSH_HOME=testDshHome;
 // npm only adds this package's bin folder; peers may be installed by its host.
 for(let directory=dirname(fileURLToPath(import.meta.url));;directory=dirname(directory)){
  const bin=join(directory,'node_modules','.bin');

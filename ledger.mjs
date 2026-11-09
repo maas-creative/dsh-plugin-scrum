@@ -52,6 +52,10 @@ export class Store {
  CREATE TABLE IF NOT EXISTS runs(id TEXT PRIMARY KEY,source TEXT NOT NULL,title TEXT NOT NULL,cwd TEXT NOT NULL,path TEXT NOT NULL,status TEXT NOT NULL,observed INTEGER NOT NULL,checked INTEGER NOT NULL,projectId TEXT REFERENCES projects(id),detail TEXT NOT NULL,threadId TEXT NOT NULL);
  CREATE TABLE IF NOT EXISTS receipt_meta(submissionId TEXT PRIMARY KEY,deadlineVersion INTEGER NOT NULL,snapshot TEXT NOT NULL);
  CREATE TABLE IF NOT EXISTS revision_snooze(deadlineId TEXT NOT NULL,version INTEGER NOT NULL,untilTime INTEGER NOT NULL,PRIMARY KEY(deadlineId,version));
+ CREATE TABLE IF NOT EXISTS execution_receipts(receiptId TEXT PRIMARY KEY,parentSession TEXT NOT NULL,instructionId TEXT NOT NULL,payloadHash TEXT NOT NULL,payload TEXT NOT NULL,taskId TEXT NOT NULL,createdAt INTEGER NOT NULL,UNIQUE(parentSession,instructionId));
+ CREATE TABLE IF NOT EXISTS delivery_outbox(deliveryId TEXT PRIMARY KEY,parentSession TEXT NOT NULL,kind TEXT NOT NULL,dedupeKey TEXT NOT NULL,payload TEXT NOT NULL,state TEXT NOT NULL,attempts INTEGER NOT NULL DEFAULT 0,nextAt INTEGER NOT NULL,leaseUntil INTEGER,batchId TEXT,wake INTEGER NOT NULL DEFAULT 0,createdAt INTEGER NOT NULL,updatedAt INTEGER NOT NULL,deliveredAt INTEGER,lastError TEXT,UNIQUE(parentSession,dedupeKey));
+ CREATE TABLE IF NOT EXISTS delivery_attempts(attemptId INTEGER PRIMARY KEY AUTOINCREMENT,deliveryId TEXT NOT NULL,attemptNo INTEGER NOT NULL,startedAt INTEGER NOT NULL,finishedAt INTEGER,outcome TEXT NOT NULL,error TEXT,evidence TEXT,UNIQUE(deliveryId,attemptNo));
+ CREATE TABLE IF NOT EXISTS parent_wake_receipts(batchId TEXT PRIMARY KEY,parentSession TEXT NOT NULL,deliveryIds TEXT NOT NULL,state TEXT NOT NULL,requestedAt INTEGER,completedAt INTEGER,error TEXT);
  CREATE TABLE IF NOT EXISTS settings(key TEXT PRIMARY KEY,value TEXT NOT NULL);
  CREATE INDEX IF NOT EXISTS due_index ON deadlines(due); CREATE INDEX IF NOT EXISTS run_time ON runs(observed DESC);`);
  this.tx(()=>{

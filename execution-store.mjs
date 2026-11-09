@@ -9,13 +9,39 @@ export class ExecutionStore {
  CREATE TABLE IF NOT EXISTS tasks(id TEXT PRIMARY KEY,parentSession TEXT NOT NULL,cwd TEXT NOT NULL,projectId TEXT,title TEXT NOT NULL,status TEXT NOT NULL,owner TEXT NOT NULL,nextAction TEXT NOT NULL DEFAULT '',due INTEGER,dependencies TEXT NOT NULL DEFAULT '[]',version INTEGER NOT NULL DEFAULT 1,body TEXT NOT NULL DEFAULT '',inputs TEXT NOT NULL DEFAULT '',output TEXT NOT NULL DEFAULT '',parentId TEXT,waitReason TEXT NOT NULL DEFAULT '',waitingFor TEXT NOT NULL DEFAULT '',checkAt INTEGER,planDay TEXT NOT NULL DEFAULT '',completedAt INTEGER,completionCriteria TEXT NOT NULL DEFAULT '',completionEvidence TEXT NOT NULL DEFAULT '',canonicalTarget TEXT NOT NULL DEFAULT '');
  CREATE TABLE IF NOT EXISTS runs(id TEXT PRIMARY KEY,source TEXT NOT NULL,title TEXT NOT NULL,cwd TEXT NOT NULL,path TEXT NOT NULL,status TEXT NOT NULL,observed INTEGER NOT NULL,checked INTEGER NOT NULL,projectId TEXT,detail TEXT NOT NULL,threadId TEXT NOT NULL);
  CREATE TABLE IF NOT EXISTS task_runs(taskId TEXT NOT NULL REFERENCES tasks(id),runId TEXT NOT NULL REFERENCES runs(id),PRIMARY KEY(taskId,runId));
- CREATE TABLE IF NOT EXISTS deliverables(id TEXT PRIMARY KEY,projectId TEXT,path TEXT NOT NULL,hash TEXT NOT NULL,reviewed INTEGER NOT NULL,checked INTEGER NOT NULL);`);}
+ CREATE TABLE IF NOT EXISTS deliverables(id TEXT PRIMARY KEY,projectId TEXT,path TEXT NOT NULL,hash TEXT NOT NULL,reviewed INTEGER NOT NULL,checked INTEGER NOT NULL);
+ CREATE TABLE IF NOT EXISTS execution_receipts(receiptId TEXT PRIMARY KEY,parentSession TEXT NOT NULL,instructionId TEXT NOT NULL,payloadHash TEXT NOT NULL,payload TEXT NOT NULL,taskId TEXT NOT NULL,createdAt INTEGER NOT NULL,UNIQUE(parentSession,instructionId));
+ CREATE INDEX IF NOT EXISTS receipt_task ON execution_receipts(taskId);
+ CREATE TABLE IF NOT EXISTS delivery_outbox(deliveryId TEXT PRIMARY KEY,parentSession TEXT NOT NULL,kind TEXT NOT NULL,dedupeKey TEXT NOT NULL,payload TEXT NOT NULL,state TEXT NOT NULL,attempts INTEGER NOT NULL DEFAULT 0,nextAt INTEGER NOT NULL,leaseUntil INTEGER,batchId TEXT,wake INTEGER NOT NULL DEFAULT 0,createdAt INTEGER NOT NULL,updatedAt INTEGER NOT NULL,deliveredAt INTEGER,lastError TEXT,UNIQUE(parentSession,dedupeKey));
+ CREATE INDEX IF NOT EXISTS outbox_due ON delivery_outbox(state,nextAt);
+ CREATE INDEX IF NOT EXISTS outbox_parent ON delivery_outbox(parentSession,state);
+ CREATE TABLE IF NOT EXISTS delivery_attempts(attemptId INTEGER PRIMARY KEY AUTOINCREMENT,deliveryId TEXT NOT NULL,attemptNo INTEGER NOT NULL,startedAt INTEGER NOT NULL,finishedAt INTEGER,outcome TEXT NOT NULL,error TEXT,evidence TEXT,UNIQUE(deliveryId,attemptNo));
+ CREATE TABLE IF NOT EXISTS parent_wake_receipts(batchId TEXT PRIMARY KEY,parentSession TEXT NOT NULL,deliveryIds TEXT NOT NULL,state TEXT NOT NULL,requestedAt INTEGER,completedAt INTEGER,error TEXT);`);}
  all(sql,...args){return this.db.prepare(sql).all(...args)}
  get(sql,...args){return this.db.prepare(sql).get(...args)}
  run(sql,...args){return this.db.prepare(sql).run(...args)}
  tx(fn){const nested=this.db.isTransaction;this.db.exec(nested?'SAVEPOINT execution_write':'BEGIN IMMEDIATE');try{const result=fn();this.db.exec(nested?'RELEASE execution_write':'COMMIT');return result}catch(error){this.db.exec(nested?'ROLLBACK TO execution_write':'ROLLBACK');if(nested)this.db.exec('RELEASE execution_write');throw error}}
  setting(key,fallback){const row=this.get('SELECT value FROM settings WHERE key=?',key);return row?JSON.parse(row.value):fallback}
  set(key,value){this.run('INSERT INTO settings VALUES(?,?) ON CONFLICT(key) DO UPDATE SET value=excluded.value',key,JSON.stringify(value))}
+ receipt(parentSession,instructionId){return this.get('SELECT * FROM execution_receipts WHERE parentSession=? AND instructionId=?',parentSession,instructionId)}
+ receiptById(receiptId){return this.get('SELECT * FROM execution_receipts WHERE receiptId=?',receiptId)}
+ receiptForTask(taskId){return this.get('SELECT * FROM execution_receipts WHERE taskId=? ORDER BY createdAt DESC LIMIT 1',taskId)}
+ // Acceptance is one transaction: receipt, task, model selection and queue entry
+ // commit together, so a crash cannot leave a receipt without its execution.
+ acceptExecution({parentSession,instructionId,payloadHash,payload,taskInput,model,fallbacks,pick}){
+  return this.tx(()=>{
+   const existing=instructionId?this.receipt(parentSession,instructionId):null;
+   if(existing)return {existing:true,receipt:existing};
+   const taskId=this.task({...taskInput,parentSession,status:'todo'});
+   const receiptId=randomUUID(),now=Date.now();
+   this.run('INSERT INTO execution_receipts(receiptId,parentSession,instructionId,payloadHash,payload,taskId,createdAt) VALUES(?,?,?,?,?,?,?)',receiptId,parentSession,instructionId||receiptId,payloadHash,JSON.stringify(payload),taskId,now);
+   const settings=this.setting('workerModels',{});
+   this.set('workerModels',{...settings,tasks:{...settings.tasks,[taskId]:model},...(fallbacks===undefined?{}:{fallbacks:{...settings.fallbacks,tasks:{...(settings.fallbacks?.tasks||{}),[taskId]:fallbacks}}})});
+   const key='scrumQueue:'+parentSession,queue=this.setting(key,[]);
+   if(!queue.some(entry=>entry.taskId===taskId))this.set(key,[...queue,{...pick,taskId,dispatch:true}]);
+   return {existing:false,receiptId,taskId};
+  });
+ }
  requireProject(){throw Error('Business projects belong to Dashboard; use an execution task with cwd')}
  task(input){return this.tx(()=>{
  const old=input.id?this.get('SELECT * FROM tasks WHERE id=?',input.id):null;if(input.id&&(!old||old.version!==input.version))throw Error('Execution task version changed');
@@ -24,7 +50,7 @@ export class ExecutionStore {
  if(!isAbsolute(value.cwd))throw Error('Execution cwd must be absolute');if(old&&value.parentSession!==old.parentSession)throw Error('Execution owner cannot change');
  if(value.projectId)throw Error('Business projectId is not an execution context');
  if(!['todo','doing','waiting','review','done','cancelled','reported'].includes(value.status))throw Error('Invalid execution status');
- const dependencies=value.dependencies??(old?JSON.parse(old.dependencies):[]);if(!Array.isArray(dependencies)||dependencies.length>50||new Set(dependencies).size!==dependencies.length)throw Error('Invalid execution dependencies');
+ const dependencies=value.dependencies===undefined?(old?JSON.parse(old.dependencies):[]):(typeof value.dependencies==='string'?JSON.parse(value.dependencies):value.dependencies);if(!Array.isArray(dependencies)||dependencies.length>50||new Set(dependencies).size!==dependencies.length)throw Error('Invalid execution dependencies');
  for(const dependency of dependencies){const task=this.get('SELECT * FROM tasks WHERE id=?',dependency);if(!task||task.parentSession!==value.parentSession||dependency===id)throw Error('Dependency outside parent');}
  if(value.parentId){const parent=this.get('SELECT * FROM tasks WHERE id=?',value.parentId);if(!parent||parent.parentSession!==value.parentSession||value.parentId===id)throw Error('Invalid execution parent');}
  const graph=new Map(this.all('SELECT id,dependencies,parentId FROM tasks').map(t=>[t.id,{dependencies:JSON.parse(t.dependencies),parentId:t.parentId}]));graph.set(id,{dependencies,parentId:value.parentId});
@@ -32,7 +58,7 @@ export class ExecutionStore {
  const done=new Set(),visiting=new Set();const visit=key=>{if(visiting.has(key))throw Error('Execution dependency cycle');if(done.has(key))return;visiting.add(key);for(const dep of graph.get(key)?.dependencies||[])visit(dep);visiting.delete(key);done.add(key)};for(const key of graph.keys())visit(key);
  if(value.status==='done'&&([...graph].some(([child,t])=>t.parentId===id&&!['done','cancelled'].includes(this.get('SELECT status FROM tasks WHERE id=?',child)?.status))||!value.completionCriteria||!value.completionEvidence||dependencies.some(dep=>this.get('SELECT status FROM tasks WHERE id=?',dep)?.status!=='done')))throw Error('Verified evidence and completed dependencies required');
  for(const task of this.all("SELECT id,dependencies FROM tasks WHERE status='done'"))if(task.id!==id&&JSON.parse(task.dependencies).includes(id)&&value.status!=='done')throw Error('Completed dependent must be reopened first');
- const fields={parentSession:value.parentSession,cwd:resolve(value.cwd),projectId:null,title:value.title,status:value.status,owner:value.owner||'Pi',nextAction:value.nextAction||'',dependencies:JSON.stringify(dependencies),body:value.body||'',inputs:value.inputs||'',output:value.output||'',parentId:value.parentId||null,waitReason:value.waitReason||'',waitingFor:value.waitingFor||'',completionCriteria:value.completionCriteria||'',completionEvidence:value.completionEvidence||'',canonicalTarget:value.canonicalTarget||'',completedAt:value.status==='done'?Date.now():null};
+ const fields={parentSession:value.parentSession,cwd:resolve(value.cwd),projectId:null,title:value.title,status:value.status,owner:value.owner||'Pi',nextAction:value.nextAction||'',due:value.due??null,dependencies:JSON.stringify(dependencies),body:value.body||'',inputs:value.inputs||'',output:value.output||'',parentId:value.parentId||null,waitReason:value.waitReason||'',waitingFor:value.waitingFor||'',checkAt:value.checkAt??null,planDay:value.planDay||'',completionCriteria:value.completionCriteria||'',completionEvidence:value.completionEvidence||'',canonicalTarget:value.canonicalTarget||'',completedAt:value.status==='done'?Date.now():null};
  for(const key of ['body','inputs','output','completionCriteria','completionEvidence'])if(typeof fields[key]!=='string'||fields[key].length>200000)throw Error('Invalid '+key);
  if(old)this.run('UPDATE tasks SET '+Object.keys(fields).map(k=>k+'=?').join(',')+',version=version+1 WHERE id=?',...Object.values(fields),id);else this.run('INSERT INTO tasks(id,'+Object.keys(fields).join(',')+') VALUES('+Object.keys({id,...fields}).map(()=>'?').join(',')+')',id,...Object.values(fields));return id;
  })}

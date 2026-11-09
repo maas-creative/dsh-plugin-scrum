@@ -21,7 +21,9 @@ export async function taskApi(runtime,method,args,parent,caller){
   const pick=routeTask({...args,action:args.prompt||args.action,reason:args.reason||'親からの委譲',dispatch:true},s.setting('scrumCategories',{}));
   if(typeof pick.action!=='string'||!pick.action.trim()||pick.action.length>20000)throw Error('担当への作業指示が必要です');
   if(args.run_in_background===false)return runtime.foreground(pick,parent,{timeoutMs:args.timeout_ms});
-  const key='scrumQueue:'+parent,queue=s.setting(key,[]);if(queue.some(p=>p.taskId===pick.taskId))return {queued:true,taskId:pick.taskId};
+  const key='scrumQueue:'+parent,queue=s.setting(key,[]);
+  if(s.executionOnly&&(args.receiptId!==undefined||args.instructionId!==undefined)){if(args.receiptId!==undefined&&(typeof args.receiptId!=='string'||!args.receiptId.trim()))throw Object.assign(new Error('受付IDが不正です'),{status:400});if(args.instructionId!==undefined&&(typeof args.instructionId!=='string'||!args.instructionId.trim()))throw Object.assign(new Error('受付IDが不正です'),{status:400});const receipt=args.receiptId?s.get('SELECT * FROM execution_receipts WHERE receiptId=?',args.receiptId):s.get('SELECT * FROM execution_receipts WHERE parentSession=? AND instructionId=?',parent,args.instructionId);if(!receipt)throw Object.assign(new Error('受付IDが見つかりません'),{status:409});if(receipt.taskId!==pick.taskId)throw Object.assign(new Error('受付IDとタスクが一致しません'),{status:409});return {queued:true,taskId:pick.taskId,receiptId:receipt.receiptId,idempotentReplay:true}}
+  if(queue.some(p=>p.taskId===pick.taskId||(args.receiptId&&p.receiptId===args.receiptId)))return {queued:true,taskId:pick.taskId};
   s.set(key,[...queue,pick]);runtime.schedule();return {queued:true,taskId:pick.taskId,parentSession:parent};
  }
  if(method==='background_cancel')return backgroundCancel(runtime,args,parent);

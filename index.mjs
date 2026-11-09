@@ -6,7 +6,6 @@ import {registerSessionNotifications} from './session-notification.mjs';
 import {registerGateway} from './gateway.mjs';
 import {registerOpenGateway} from './opengateway.mjs';
 import {registerLifecycle} from './lifecycle.mjs';
-import {registerDegradationRecovery} from './degradation-recovery.mjs';
 import {registerGitAttribution} from './git-attribution.mjs';
 import {registerLookAt} from './look-at.mjs';
 import {registerSideConversations} from './side-conversation.mjs';
@@ -62,7 +61,6 @@ export async function apply(ctx,config={}){
  if(config.runtime)registerNativeTaskCommands(ctx,config.runtime);
  if(ctx.agents&&typeof ctx.on==='function')registerSessionNotifications(ctx,{runtime:config.runtime,...config.sessionNotification});
  if(ctx.commands&&typeof ctx.on==='function')await registerGateway(ctx,{runtime:config.runtime,...config.gateway});
- if(ctx.agents&&ctx.sessions&&ctx.sessionProjections&&ctx.tools&&typeof ctx.on==='function')registerDegradationRecovery(ctx,{runtime:config.runtime});
  if(ctx.tools&&typeof ctx.on==='function')registerHooks(ctx,{...config.hooks,notify:event=>{config.hooks?.notify?.(event);config.runtime?.events?.append(event.sessionId,'hook.observed',event)}});
  if(ctx.tools&&typeof ctx.on==='function')registerFsyncWarning(ctx);
  if(ctx.tools&&typeof ctx.on==='function')registerToolRetention(ctx);
@@ -103,9 +101,11 @@ export async function apply(ctx,config={}){
   add('call_omo_agent','探索・資料調査の担当を固定モデルで起動または再利用する。','call_omo_agent',{subagent_type:{type:'string',required:true,enum:['explore','librarian']},prompt:{type:'string',required:true},description:{type:'string'},run_in_background:{type:'boolean'},session_id:{type:'string'},projectId:{type:'string'}});
   add('task','タスクIDを指定して担当へ委譲。却下後は同じtaskIdと既存session_id、修正指示promptで再提出し、新assignmentIdと新hashを収集して確認する。blockedの旧IDを再承認しない。','task',{taskId:{type:'string',required:true},prompt:{type:'string',required:true},category:{type:'string'},subagent_type:{type:'string'},load_skills:{type:'array',items:{type:'string'}},run_in_background:{type:'boolean'},timeout_ms:{type:'integer'},session_id:{type:'string'}});
   add('background_cancel','この親の担当を停止。途中成果と履歴は保持。','background_cancel',{assignmentId:{type:'string'},taskId:{type:'string'},all:{type:'boolean'}});
+  add('scrum_retry','失敗・却下・競合した割当を既存の再試行処理で再開可能にする。成功後は同じtaskIdでtaskを呼び修正指示を渡す。実行中・未照合・完了済み作業は再実行しない。','retry',{assignmentId:{type:'string',required:true}});
   add('task_list','この計画の未完了タスクを列挙。','task_list',{all:{type:'boolean'},import_claude:{type:'boolean'},projectId:{type:'string'},reconcile_claude:{type:'json'}});
   add('task_get','タスクの出力・依存関係・完了条件を読む。','task_get',{id:{type:'string',required:true},import_claude:{type:'boolean'},projectId:{type:'string'},reconcile_claude:{type:'json'}});
   add('task_create','親が所有する実行タスクを作成。cwdは親から継承し、本文・出力・完了条件を指定する。','task_create',{projectId:{type:'string'},cwd:{type:'string'},title:{type:'string'},subject:{type:'string'},body:{type:'string'},description:{type:'string'},output:{type:'string'},completionCriteria:{type:'string'},inputs:{type:'string'},dependencies:{type:'array',items:{type:'string'}},blockedBy:{type:'array',items:{type:'string'}},blocks:{type:'array',items:{type:'string'}},addBlockedBy:{type:'array',items:{type:'string'}},addBlocks:{type:'array',items:{type:'string'}}});
+  add('scrum_verify_goal','独立検証済み報告のハッシュを照合し、Goal全体の合否を明示する。Dockerでは検証時と現在のソース・image一致も必要。報告受理だけではGoalを完了しない。','goal_verify',{assignmentId:{type:'string',required:true},hash:{type:'string',required:true},passed:{type:'boolean',required:true},reason:{type:'string',required:true}});
   add('task_update','既存タスクの本文・依存関係をバージョン確認付きで変更。version または expected_version が必要。','task_update',{id:{type:'string',required:true},version:{type:'integer'},expected_version:{type:'integer'},title:{type:'string'},subject:{type:'string'},body:{type:'string'},description:{type:'string'},output:{type:'string'},completionCriteria:{type:'string'},inputs:{type:'string'},dependencies:{type:'array',items:{type:'string'}},blockedBy:{type:'array',items:{type:'string'}},blocks:{type:'array',items:{type:'string'}},addBlockedBy:{type:'array',items:{type:'string'}},addBlocks:{type:'array',items:{type:'string'}}});
   for(const method of [...teamDagMethods,...threadMethods,...relayMethods,...workflowMethods])add(method,'Persisted Scrum '+method+(method==='workflow_start'?'. input={mode,goal,stages:[{stage,taskId}],planPath?}; stages must be an array of canonical task references, with later tasks depending on earlier ones.':method==='workflow_checkpoint'?'. input={id,data:{evidence,nextAction}}.':method.startsWith('workflow_')?'. input={id}; workflow_list uses input={}.':''),method,{input:{type:'json',required:true}});
   add('team_send','同じ親の担当に連絡を保存し、担当の待機時に配送。','team_send',{to:{type:'string'},message:{type:'string',required:true},idempotency_key:{type:'string'}});

@@ -9,6 +9,22 @@ export async function recordParentNotice(ctx,agent,input,createUserMessage){
 }
 
 
+// Parent wake is exactly-once per delivery batch. The durable session log marker
+// is the receipt: a restart that finds the marker completes the wake receipt
+// without waking the parent again.
+export async function recordParentWake(ctx,agent,store,{batchId,message},createUserMessage){
+ if(typeof batchId!=='string'||!batchId)throw Error('wake batchId is invalid');
+ if(agent.status==='running')throw Error('親は実行中です');
+ const marker='Scrum wake '+batchId+'\n';
+ const text=m=>typeof m.content==='string'?m.content:(m.content||[]).filter(c=>c.type==='text').map(c=>c.text).join('\n');
+ const messages=[...agent.session.snapshotEvents().filter(e=>e.type==='user/message').map(e=>e.data),...agent.inbox.nextStep,...agent.inbox.nextTurn];
+ const present=messages.some(m=>text(m).startsWith(marker));
+ if(!present)agent.followup(createUserMessage({content:[{type:'text',text:marker+(message||'')}],source:{kind:'subagent-settled',form:'wake',summary:'Scrum担当の結果を確認してください',senderSessionId:agent.session.id}}));
+ await ctx.sessions.flush(agent.session);
+ if(typeof store?.run==='function')store.run("UPDATE parent_wake_receipts SET state='completed',completedAt=? WHERE batchId=?",Date.now(),batchId);
+ return {recorded:!present,alreadyPresent:present};
+}
+
 // The durable session log is the receipt. A crash after flush but before the
 // mailbox update retries the same marker, rather than appending another notice.
 export async function recordParentMailbox(ctx,agent,store,createUserMessage){

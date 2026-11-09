@@ -9,9 +9,9 @@ export async function syncNativeGoal(ctx,agent,state,binding){
  if(!goal){goal=ctx.goals.create(agent,{objective:state.goal});ctx.goals.disarm(agent)}
  else if(goal.objective!==state.goal)goal=ctx.goals.edit(agent,ref(goal),{objective:state.goal});
  const phase=state.phase==='completed'?'complete':['paused','stopped','cancelled'].includes(state.phase)?'paused':state.phase==='blocked'?'blocked':'active';
- if(goal.phase==='complete'&&phase!=='complete')throw Error('Completed native goal cannot continue');
+ if(goal.phase==='complete'&&phase!=='complete'){if(!state.prematureCompletionRecovered&&!binding.completedAuditRetained&&!(state.executionOnly&&!state.goalVerification&&binding.startedAt===state.startedAt))throw Error('Completed native goal cannot continue');await ctx.sessions.flush(agent.session);return {supported:true,goal,binding:{id:goal.id,revision:goal.revision,startedAt:state.startedAt,completedAuditRetained:true},driver:'scrum',completedAuditRetained:true}}
  if(goal.phase!==phase){
-  if(phase==='complete'){if(!state.finalChecks?.length||state.finalChecks.some(c=>c.verified!==true))throw Error('Verified final checks required before native completion');goal=ctx.goals.complete(agent,ref(goal))}
+  if(phase==='complete'){if(state.executionOnly&&state.goalVerification?.passed!==true||!state.finalChecks?.length||state.finalChecks.some(c=>c.verified!==true))throw Error('Verified final checks required before native completion');goal=ctx.goals.complete(agent,ref(goal))}
   else if(phase==='active')goal=ctx.goals.resume(agent,ref(goal));
   else {if(goal.phase!=='active')goal=ctx.goals.resume(agent,ref(goal));goal=phase==='paused'?ctx.goals.pause(agent,ref(goal)):ctx.goals.block(agent,ref(goal),{code:'scrum-verification-pending',message:'Scrum ledger has unresolved work or verification'});}
  }

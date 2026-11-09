@@ -18,12 +18,11 @@ hdt このプロジェクトの不具合を調査して修正し、テストと�
 
 [リリース](https://github.com/maas-creative/dsh-plugin-scrum/releases) · [設定と実行仕様](docs/runtime-reference.md) · [Issues](https://github.com/maas-creative/dsh-plugin-scrum/issues)
 
-## 最新のコンテキスト管理
+## コンテキスト管理
 
-- メインセッションは **EoCC**（意味状態を保ちながら継続する圧縮）を使います。
-- メイン以外のWorker・スケジュール・レビュー・検証セッションは **SAC**（意味状態と直近の実行境界を保持する圧縮）を既定にします。
-- SACは目的、制約、確定事項、次の行動、完了条件、根拠を意味状態として保存し、ツール実行境界と直近履歴を引き継ぎます。失敗した要約は履歴を破棄せず、再試行可能な状態に戻します。
-- DeepSeek／GLMの作業経路は維持し、要約経路は設定された既定モデルへフォールバックします。圧縮の成功・失敗・復旧はテストで検証しています。
+圧縮・要約・上限超過からの復旧はDSH標準の `@deepseek-ai/dsh-compaction-basic` をそのまま使用します。Scrumは独自の圧縮エンジンやSAC/EoCC処理を登録しません。モデル別の容量と要約先はDSHの設定で指定します。
+
+Docker隔離を設定したWorkerは、実行ごとのDocker Sandboxes内で公式DSHのSDKプロセスを動かします。ホストのホーム・セッション一覧・Dockerソケットは渡しません。通信は指定した推論エンドポイントだけに許可し、起動失敗時にホストへ迂回しません。履歴と使用量はDSH標準の保存APIへ戻します。読み取り専用Workerの成果物は固定の報告ツールから回収し、書き込みWorkerの差分は既存の隔離Git作業ツリーに戻して従来の確認・統合を通します。
 
 ![DSH WebでのScrum接続状態、hdt操作、担当一覧](docs/assets/scrum-workspace.png)
 

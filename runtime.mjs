@@ -1,3 +1,4 @@
+import {captureWorkerSource} from './docker-worker-host.mjs';
 import {workerReportPath} from './report.mjs';
 import {executionContext} from './execution-store.mjs';
 import {installNativeConfiguration} from './installer-config.mjs';
@@ -39,6 +40,7 @@ export class ScrumCoordinator{
  state(parent){return readExecutionState(this.s,parent)}
  adapter(finalChecks=[],parent){return {readState:()=>this.state(parent),writeState:state=>this.s.set(parent?'ulw:'+parent:'ulw',state),snapshot:()=>({...this.s.snapshot(),tasks:this.s.snapshot().tasks.filter(t=>!this.s.executionOnly||t.parentSession===parent),deliveryGates:parent?readDeliveryGates(this.s).filter(d=>d.parentSession===parent&&d.mode!=='direct').map(d=>({id:d.id,mode:d.mode,completion:new WorkflowStore(this).get(d.id,parent).deliveryCompletion})):[],pendingResourceIds:this.list().filter(a=>(!parent||a.parentSession===parent)&&a.resourcesReleased===false).map(a=>a.id),pendingTodos:parent?(this.pi?.pendingTodos?.(parent)||this.s.setting('scrumParentWait:'+parent,{}).pendingTodos||[]):[],workpools:readWorkpools(this.dir).filter(p=>!parent||p.parent_session_id===parent),workflows:parent?[...new WorkflowStore(this).list(parent),...ulwToolkitWorkflows(this.s,parent),...(this.dir?this.nativeDagRuntime().snapshot(parent):[])]:[],teams:parent?new TeamStore(this.s).list(parent):[],monitors:parent?this.s.all("SELECT value FROM settings WHERE key LIKE 'scrumMonitor:%'").map(r=>JSON.parse(r.value)).filter(m=>m.parentSession===parent):[],assignments:this.list().filter(a=>!parent||a.parentSession===parent),finalChecks})}}
  async settle(parent){
+  const prior=this.state(parent);if(prior.executionOnly&&prior.phase==='completed'&&!prior.goalVerification)settle(this.adapter([],parent));
   await reconcileWorkflows(this);
   const ids=projectIds(this.adapter([],parent));if(!ids)return this.state(parent);
   const checks=[];
@@ -119,7 +121,10 @@ export class ScrumCoordinator{
    this.s.set('ulw:'+parent,{...this.state(parent),phase:'stopped',active:false,stopReason:'parent-session-deleted'});
    this.s.set('scrumQueue:'+parent,[]);this.s.set('scrumContinue:'+parent,false);
    await this.nativeDags?.stop(parent);
-   for(const report of this.reports.all().filter(r=>r.parentSession===parent&&r.state==='pending'))this.s.set('scrumReport:'+report.id,{...report,state:'orphaned'});
+   if(this.reports.outbox){
+    this.s.run("UPDATE delivery_outbox SET state='orphaned',leaseUntil=NULL,batchId=NULL,updatedAt=? WHERE parentSession=? AND state IN ('pending','delivering')",Date.now(),parent);
+    this.s.run("UPDATE parent_wake_receipts SET state='failed',error='parent-session-deleted' WHERE parentSession=? AND state IN ('pending','requested')",parent);
+   }else for(const report of this.reports.all().filter(r=>r.parentSession===parent&&r.state==='pending'))this.s.set('scrumReport:'+report.id,{...report,state:'orphaned'});
     for(const a of this.list().filter(a=>a.parentSession===parent&&['running','preparing'].includes(a.status)))await this.stop(a.id);
     if(this.list().some(a=>a.parentSession===parent&&a.status==='uncertain'))throw Error('Reconcile uncertain orphan execution before cleanup');
     const threads=this.threads||new ThreadStore(this.s,this.threadAdapter||{});
@@ -164,8 +169,8 @@ export class ScrumCoordinator{
   await this.reconcileTeamSessions();
   await this.stopTeamMembers();
   for(const a of this.list().filter(a=>['done','ready'].includes(a.status)&&a.resourcesReleased===false)){try{await this.pi.release?.(a.runId);this.save(a,{resourcesReleased:true,resourceCleanupError:null})}catch(error){this.save(a,{resourceCleanupError:error.message})}}
-  await this.collect();await tickDags(this);await reconcileWorkflows(this);await monitorTick(this);await this.reports.flush();
-  for(const row of this.s.all("SELECT key,value FROM settings WHERE key LIKE 'scrumQueue:%'")){const parent=row.key.slice('scrumQueue:'.length),queue=JSON.parse(row.value);if(!queue.length||await this.reports.isBusy(parent))continue;await this.dispatch(queue,parent);const started=new Set(this.list().filter(a=>a.parentSession===parent&&!['done','cancelled'].includes(a.status)).map(a=>a.taskId));this.s.set(row.key,queue.filter(p=>!started.has(p.taskId)&&!['done','cancelled'].includes(this.s.snapshot().tasks.find(t=>t.id===p.taskId)?.status)));}
+  await this.collect();await tickDags(this);await reconcileWorkflows(this);await monitorTick(this);if(this.reports.outbox&&!this.reports.deliver&&this.reports.outbox.all().some(row=>['pending','delivering'].includes(row.state)))throw Error('Scrum parent delivery is not connected; host must call connectParent before processing notifications');await this.reports.flush();
+  for(const row of this.s.all("SELECT key,value FROM settings WHERE key LIKE 'scrumQueue:%'")){const parent=row.key.slice('scrumQueue:'.length),queue=JSON.parse(row.value);if(!queue.length||this.pi.executionBackend!=='docker'&&await this.reports.isBusy(parent))continue;await this.dispatch(queue,parent);const started=new Set(this.list().filter(a=>a.parentSession===parent&&!['done','cancelled'].includes(a.status)).map(a=>a.taskId));this.s.set(row.key,queue.filter(p=>!started.has(p.taskId)&&!['done','cancelled'].includes(this.s.snapshot().tasks.find(t=>t.id===p.taskId)?.status)));}
 
   for(const row of this.s.all("SELECT key,value FROM settings WHERE key LIKE 'scrumCancelQueue:%'")){const parent=row.key.slice('scrumCancelQueue:'.length);if(await this.reports.isBusy(parent))continue;for(const id of JSON.parse(row.value)){const a=this.list().find(a=>a.id===id&&a.parentSession===parent);if(a&&['running','preparing'].includes(a.status))await this.stop(id)}this.s.set(row.key,[]);}
   await this.deliverWorkerMail();
@@ -217,6 +222,22 @@ export class ScrumCoordinator{
  if(previous.active&&(!args.goal||previous.goal===args.goal)){if(args.activationId)this.s.set(key,args.activationId);return previous;}
  const state=start(this.adapter([],parentSession),{...args,goal:args.goal||'',concurrency:args.concurrency??previous.concurrency??2});if(args.activationId)this.s.set(key,args.activationId);return state;
  }
+  if(method==='goal_verify'){
+   if(!parentSession||callerSession&&callerSession!==parentSession||!this.s.executionOnly)fail('Goal verification is parent-only');
+   const state=this.state(parentSession),a=this.list().find(a=>a.id===args.assignmentId&&a.parentSession===parentSession);
+   if(!a||a.status!=='done'||!['reviewer','validator'].includes(a.role)||!a.artifact?.complete||a.artifact.hash!==args.hash)fail('Reviewed independent verification artifact required');
+   const task=this.s.snapshot().tasks.find(t=>t.id===a.taskId),artifact=await this.artifact(task,true,a.runId);
+   if(artifact.hash!==args.hash)fail('Goal verification artifact changed',409);
+   if(typeof args.passed!=='boolean')fail('Explicit goal verification outcome required');
+   if(args.passed&&this.pi?.executionBackend==='docker'){
+    const snapshot=a.sourceSnapshot,row=this.s.get('SELECT cwd FROM runs WHERE id=?',a.runId),config=this.s.setting('workerSandbox',{});
+    if(!snapshot?.fingerprint||!row||snapshot.imageId!==config.imageId)fail('Current-source independent verification required; snapshot or worker image differs',409);
+    const current=await captureWorkerSource(row.cwd,config.additionalInputs||[],snapshot.excludedFiles||[]);
+    if(current.source!==snapshot.cwd||current.fingerprint!==snapshot.fingerprint)fail('Source changed after independent verification; revalidate the current source before completion',409);
+   }
+   const reason=text(args.reason,'Goal verification result',4000);
+   this.s.set('ulw:'+parentSession,{...state,active:true,phase:'verification',goalVerification:{passed:args.passed,assignmentId:a.id,hash:args.hash,reason,startedAt:state.startedAt,taskVersions:JSON.stringify(this.s.snapshot().tasks.filter(t=>t.parentSession===parentSession&&!state.excludedTaskIds?.includes(t.id)).map(t=>[t.id,t.version]).sort((a,b)=>a[0].localeCompare(b[0]))),at:Date.now()}});return this.settle(parentSession);
+  }
   if(method==='native_workflow')return this.nativeDagRuntime().handle({args,parentSession,callerSession});
   if(method==='ulw_toolkit')return handleUlwToolkit(this,{args,parentSession,callerSession});
   if(method==='goal_usage'){if(!parentSession||args.sessionId!==(callerSession||parentSession))throw Error('Usage source outside caller');return accountGoalUsage(this.s,parentSession,args)}
@@ -238,7 +259,7 @@ export class ScrumCoordinator{
   if(method==='status')return {...this.state(parentSession),workerModels:this.s.setting('workerModels',{default:selectModel()}),assignments:owned.map(a=>{const task=this.s.get('SELECT title,waitReason,waitingFor FROM tasks WHERE id=?',a.taskId);return {...a,title:task?.title,waitReason:task?.waitReason,waitingFor:task?.waitingFor}}),reports:this.reports.all().filter(r=>r.parentSession===parentSession)};
   if(method==='list')return owned;
   if(method==='output')return backgroundOutput(this,args,parentSession);
-  if(method!=='stop-continuation'&&await this.reports.isBusy(parentSession))fail('親の応答が終わってから操作してください',409);
+  if(!['stop-continuation','retry'].includes(method)&&await this.reports.isBusy(parentSession))fail('親の応答が終わってから操作してください',409);
   if(method==='pause'||method==='stop-continuation'){let state=pause(this.adapter([],parentSession));if(method==='stop-continuation'){state={...state,phase:'stopped',stoppedAt:Date.now()};this.s.set('ulw:'+parentSession,state)}await this.nativeDags?.stop(parentSession);await this.workpools?.stop(parentSession);this.s.set('scrumQueue:'+parentSession,[]);this.s.set('scrumContinue:'+parentSession,false);const threads=this.threads||new ThreadStore(this.s,this.threadAdapter||{}),children=this.s.all?threads.list(parentSession).filter(t=>t.status!=='interrupted'):[];const stops=await Promise.allSettled([...owned.filter(a=>['running','preparing'].includes(a.status)).map(a=>this.stop(a.id)),...children.map(t=>threads.handle({method:'thread_interrupt',args:{thread:t.id,discardInbox:true},parentSession}))]);const errors=stops.filter(r=>r.status==='rejected');if(errors.length)fail(errors.map(r=>r.reason.message).join('; '),409);await this.syncNativeGoal?.(parentSession);return state;}
   if(method==='start'||method==='resume'){
    if(!this.requestPlan)fail('親の計画処理が未接続です');const previous=this.state(parentSession);if(method==='resume'&&previous.phase==='completed')fail('完了した計画は再開できません');
@@ -258,7 +279,9 @@ export class ScrumCoordinator{
  }
  collect(){if(this.collecting)return this.collecting;this.collecting=this.collectOnce().finally(()=>{this.collecting=null});return this.collecting;}
  async collectOnce(){let changed=false;
- for(const a of this.list().filter(a=>['preparing','running'].includes(a.status))){const op=this.s.setting('pi-send:'+a.id,null);
+ for(const a of this.list().filter(a=>['preparing','running'].includes(a.status)||this.pi.executionBackend==='docker'&&a.status==='uncertain')){let op=this.s.setting('pi-send:'+a.id,null);
+ if(op&&this.pi.executionBackend==='docker'&&['accepted','submitting','uncertain'].includes(op.status)&&!this.pi.sessions?.has(a.runId)){await this.pi.reconcileDispatch(a.id);op=this.s.setting('pi-send:'+a.id,null)}
+ if(a.status==='uncertain'&&op&&['accepted','submitting','uncertain'].includes(op.status))continue;
  if(!op){if(!this.busy){this.save(a,{status:'uncertain',error:'準備中に中断しました。実行記録を確認してください'});changed=true}continue}
  if(['submitting','accepted'].includes(op.status)){
   const timeout=this.state(a.parentSession).staleTimeoutMs??3600000;
@@ -281,7 +304,7 @@ export class ScrumCoordinator{
  if(!currentAssignment||!['preparing','running'].includes(currentAssignment.status))continue;
  if(currentAssignment.taskVersion!==a.taskVersion||!currentTask||currentTask.version!==t.version||terminal.includes(currentTask.status)){this.save(a,{status:'conflict',result:op.result||'',error:'成果物の読み込み中にタスクが更新されました。結果は保持しています'});changed=true;continue;}
  this.s.tx(()=>{this.s.task({...currentTask,status:'review',waitReason:'technical',waitingFor:error||'今日のPiが成果物と完了条件を照合中',checkLocal:new Date().toISOString().slice(0,16),zone:'UTC'});
- this.save(a,{status:'review',result:op.result||'',toolEvidence:op.toolEvidence||[],artifact,error,taskVersion:currentTask.version+1});});changed=true;
+ this.save(a,{status:'review',result:op.result||'',toolEvidence:op.toolEvidence||[],sourceSnapshot:op.sourceSnapshot,artifact,error,taskVersion:currentTask.version+1});});changed=true;
  }return changed;}
  async review(reviews=[],{human=false}={}){if(!Array.isArray(reviews))fail('結果確認の形式が不正です');
  for(const r of reviews){const a=this.list().find(a=>a.id===r.assignmentId);if(!a)fail('確認対象が変更されました。割当が見つかりません。最新の担当一覧を取得してください',409);
@@ -332,7 +355,7 @@ export class ScrumCoordinator{
  if(newSession){if(!['review','ready'].includes(a.status))fail('担当が確認待ちのときに引き継いでください',409);if(!fork&&task.version!==a.taskVersion)fail('作業が変更されました。最新の内容を確認してください',409);if(!this.pi.sessionExists||!await this.pi.sessionExists(runId))fail('引き継ぎ元の保存記録がありません',409);
   if(!fork){fork={sourceRunId:runId,newRunId:randomUUID(),messageHash,taskId:task.id,originalVersion:task.version};this.s.set(forkKey,fork)}
   if(fork.taskId!==task.id)fail('引き継ぎ先の作業が異なります',409);
-  const prepared=await this.io.createPiSession(this.s,this.dir,{title:task.title,taskId:task.id,projectId:task.projectId,newRunId:fork.newRunId,forkFrom:runId});target=prepared.id;
+  const prepared=await this.io.createPiSession(this.s,this.dir,{title:task.title,taskId:task.id,projectId:task.projectId,newRunId:fork.newRunId,forkFrom:runId,role:this.s.setting('runRole:'+runId,'executor'),model:this.s.setting('runModel:'+runId,{}),policy:this.s.setting('runPolicy:'+runId,null),category:this.s.setting('runCategory:'+runId,''),report:this.s.setting('runReport:'+runId,null)});target=prepared.id;
   task=this.s.snapshot().tasks.find(t=>t.id===a.taskId);if(task.version!==fork.originalVersion+1||JSON.stringify(executionContext(this.s,task))!==a.project)fail('引き継ぎ中に作業が変更されました',409);
   for(const key of ['runModel:','runRole:','runPolicy:','runCategory:','runScrum:','runReport:']){const value=this.s.setting(key+runId,null);if(value!==null)this.s.set(key+target,value)}
  }
@@ -342,7 +365,7 @@ export class ScrumCoordinator{
  try{return await this.pi.prompt(target,message,id,{taskId:task.id,taskVersion:next.taskVersion,cwd:this.s.get('SELECT cwd FROM runs WHERE id=?',target).cwd})}catch(e){this.save(next,{status:'error',error:e.message});throw e}
  }
  async stop(id){const a=this.list().find(a=>a.id===id);if(!a||!['running','preparing'].includes(a.status))fail('実行中ではありません');const entry=this.pi.sessions?.get(a.runId);if(entry?.rpc)await entry.rpc.call('abort',{discardInbox:true},true);else if(this.pi.abortSession)await this.pi.abortSession(a.runId);else if(a.status!=='preparing')fail('実行プロセスが見つかりません。結果を照合してください');const t=this.s.snapshot().tasks.find(t=>t.id===a.taskId);if(t?.version===a.taskVersion&&!terminal.includes(t.status))this.s.task({...t,status:'waiting',waitReason:'paused',waitingFor:'担当Piの作業を停止',checkLocal:new Date(Date.now()+86400000).toISOString().slice(0,16),zone:'UTC'});this.save(a,{status:'cancelled',error:'停止しました。途中の成果物と履歴は保持しています'});}
- async retry(id,{automatic=false}={}){const a=this.list().find(a=>a.id===id);if(!a||!['error','blocked','conflict','uncertain','cancelled'].includes(a.status))fail('再開できない実行です');if(automatic&&(a.attemptCount||1)>=3)fail('自動再試行を3回実施しました。障害を解消してから手動で再開してください');if(!automatic)this.s.set('scrumManualRetry:'+a.taskId,true);const op=this.s.setting('pi-send:'+id,null);if(op&&['uncertain','submitting','accepted'].includes(op.status))fail('先に担当Piの送信結果を照合してください',409);const t=this.s.snapshot().tasks.find(t=>t.id===a.taskId);if(!t||terminal.includes(t.status))fail('完了・取消済みの作業は再開しません');this.s.task({...t,status:'todo'});this.save(a,{status:'cancelled'});this.s.set('dailyNeedsPlan',true);this.s.set('scrumContinue:'+a.parentSession,true);}
+ async retry(id,{automatic=false}={}){const a=this.list().find(a=>a.id===id);if(!a||!['error','blocked','conflict','uncertain','cancelled'].includes(a.status))fail('再開できない実行です');if(this.list().some(other=>other.id!==a.id&&other.taskId===a.taskId&&!['done','cancelled'].includes(other.status)))fail('新しい割当があります。最新の割当を確認してください',409);if(automatic&&(a.attemptCount||1)>=3)fail('自動再試行を3回実施しました。障害を解消してから手動で再開してください');if(!automatic)this.s.set('scrumManualRetry:'+a.taskId,true);const op=this.s.setting('pi-send:'+id,null);if(op&&['uncertain','submitting','accepted'].includes(op.status))fail('先に担当Piの送信結果を照合してください',409);const t=this.s.snapshot().tasks.find(t=>t.id===a.taskId);if(!t||terminal.includes(t.status))fail('完了・取消済みの作業は再開しません');this.s.task({...t,status:'todo'});this.save(a,{status:'cancelled'});this.s.set('dailyNeedsPlan',true);this.s.set('scrumContinue:'+a.parentSession,true);}
  async foreground(pick,parentSession,{timeoutMs=300000}={}){
  if(!Number.isInteger(timeoutMs)||timeoutMs<1||timeoutMs>3600000)fail('待機時間は1〜3600000msです');
  const before=new Set(this.list().map(a=>a.id));
@@ -376,21 +399,24 @@ export class ScrumCoordinator{
  const base=await realpath(p.cwd),target=resolve(base,t.output);if(!target.startsWith(base+sep))fail('タスクの出力先はプロジェクト内にしてください');
  if(this.list().filter(x=>['running','preparing','uncertain'].includes(x.status)).some(x=>!x.workspace&&(this.s.get('SELECT cwd FROM runs WHERE id=?',x.runId)?.cwd||JSON.parse(x.project).cwd)===base))continue;
  const role=pick.role||'executor';roleInstruction(role,base);
- const settings=this.s.setting('workerModels',{}),model=selectModel(settings,role,t.id,pick.category);
+ const settings=this.s.setting('workerModels',{}),model=selectModel(settings,role,t.id,pick.category),policy=rolePolicy(role,base);
+ // A Docker planner returns its plan through the fixed artifact channel; it does not edit source.
+ if(this.pi.executionBackend==='docker'&&policy.planningOnly){policy.readOnly=true;policy.allow=policy.allow.filter(name=>!['write','edit'].includes(name))}
+ const readOnly=policy.readOnly===true;
  const resource=ulw;
  if(active().filter(x=>x.model?.provider===model.provider).length>=(resource.providerLimits?.[model.provider]??Infinity)||active().filter(x=>x.model?.provider===model.provider&&x.model?.model===model.model).length>=(resource.modelLimits?.[model.provider+'/'+model.model]??Infinity))continue;
  const id=randomUUID(),a={id,role,category:pick.category,skills:pick.skills,model,fallbacks:fallbackModels(settings,role,t.id,pick.category),executionId:t.id,taskId:t.id,parentSession,taskVersion:t.version,status:'preparing',created:Date.now(),project:JSON.stringify(p)};
  this.s.run('INSERT INTO assignments VALUES(?,?,?,?,?,?,?,?,?)',id,t.id,parentSession,null,t.version,'preparing',JSON.stringify(a),Date.now(),Date.now());
  try{
  const previous=this.list().find(x=>x.parentSession===parentSession&&x.taskId===t.id&&x.runId&&['done','cancelled'].includes(x.status));a.attemptCount=this.s.setting('scrumManualRetry:'+t.id,false)?1:(previous?.attemptCount||0)+1;this.s.set('scrumManualRetry:'+t.id,false);
- const run=await this.io.createPiSession(this.s,this.dir,{requestId:id,projectId:t.projectId,title:t.title,taskId:t.id,taskVersion:t.version,runId:previous?.runId||''});
+ const run=await this.io.createPiSession(this.s,this.dir,{requestId:id,projectId:t.projectId,title:t.title,taskId:t.id,taskVersion:t.version,runId:previous?.runId||'',role,model,policy,category:pick.category||'',reportRelative:relative(base,target),reportFallback:workerReportPath(this.dir,id)});
  if(this.list().filter(x=>['running','preparing','uncertain'].includes(x.status)).some(x=>x.id!==id&&(x.workspace?.path||JSON.parse(x.project).cwd)===run.cwd)){this.save(a,{status:'cancelled',error:'同じ作業フォルダの担当を待機'});continue;}
  if(executionStopped(this.state(parentSession))){this.save(a,{runId:run.id,status:'cancelled'});continue;}
  const current=this.s.snapshot().tasks.find(x=>x.id===t.id);if(current.version!==run.context.taskVersion||JSON.stringify(executionContext(this.s,current))!==JSON.stringify(p))fail('委譲の準備中に台帳が変更されました',409);this.s.task({...current,status:'doing',owner:'Pi'});const context={...run.context,taskVersion:current.version+1};
- const actualTarget=resolve(run.cwd,relative(base,target)),readOnly=rolePolicy(role,base).readOnly,reportTarget=readOnly?actualTarget:workerReportPath(this.dir,id);
+ const actualTarget=resolve(run.cwd,relative(base,target)),reportTarget=readOnly?actualTarget:workerReportPath(this.dir,id);
  if(!readOnly&&reportTarget===actualTarget)fail('成果物と実施報告の保存先は分けてください');
- const instruction=roleInstruction(role,base)+'\n'+(this.s.setting('roleSettings',{})[role]?.prompt?'役割への追加指示：\n'+this.s.setting('roleSettings',{})[role].prompt+'\n':'')+(pick.skills.length?'使用スキル：'+pick.skills.join(', ')+'。skillツールで読み込む。\n':'')+(rolePolicy(role,base).readOnly?'scrum_reportには実施サマリーではなく、タスク完了条件を満たす報告書の全文を渡す。報告書自体が成果物です。出力先は固定されています。原資料を編集しない。\n':`成果物は出力ファイルへ保存する。scrum_reportは実施内容・検証・障害の別報告を${reportTarget}に保存し、成果物を置換しません。\n`)+`今日のPiから委譲されたタスクです。タスクの範囲内で実作業と検証を行ってください。AGENTS.mdと適用スキルを読み、他の作業を上書きしない。追加のサブエージェントは起動しない。外部送信・公開・課金・破壊操作・権限変更は行わず、必要なら具体的な障害を報告する。認証情報を出力しない。ダッシュボードのDBや制御APIは操作しない。\nプロジェクトの最終成果：${p.outcome}\n全体の完了条件：${p.completionCriteria}\nタスク：${t.title}\n入力資料：${t.inputs}\nタスク本文：${t.body||''}\n実施内容：${t.nextAction}\n出力ファイル：${actualTarget}\nタスク完了条件：${t.completionCriteria}\n今日の指示：${pick.action}\n完了時は実施内容、成果物、実行した検証と結果、残る障害を報告する。未実施を完了と述べない。`;
- this.s.set('runReport:'+run.id,reportTarget);this.s.set('runRole:'+run.id,role);this.s.set('runPolicy:'+run.id,rolePolicy(role,base));this.s.set('runCategory:'+run.id,pick.category||'');if(this.connectionForWorker)this.s.set('runScrum:'+run.id,this.connectionForWorker({parentSession,runId:run.id}));this.s.set('runModel:'+run.id,model);
+ const instruction=roleInstruction(role,base)+'\n'+(this.s.setting('roleSettings',{})[role]?.prompt?'役割への追加指示：\n'+this.s.setting('roleSettings',{})[role].prompt+'\n':'')+(pick.skills.length?'使用スキル：'+pick.skills.join(', ')+'。skillツールで読み込む。\n':'')+(readOnly?'scrum_reportには実施サマリーではなく、タスク完了条件を満たす報告書の全文を渡す。報告書自体が成果物です。出力先は固定されています。原資料を編集しない。\n':`成果物は出力ファイルへ保存する。scrum_reportは実施内容・検証・障害の別報告を${reportTarget}に保存し、成果物を置換しません。\n`)+`今日のPiから委譲されたタスクです。タスクの範囲内で実作業と検証を行ってください。AGENTS.mdと適用スキルを読み、他の作業を上書きしない。追加のサブエージェントは起動しない。外部送信・公開・課金・破壊操作・権限変更は行わず、必要なら具体的な障害を報告する。認証情報を出力しない。ダッシュボードのDBや制御APIは操作しない。\nプロジェクトの最終成果：${p.outcome}\n全体の完了条件：${p.completionCriteria}\nタスク：${t.title}\n入力資料：${t.inputs}\nタスク本文：${t.body||''}\n実施内容：${t.nextAction}\n出力ファイル：${actualTarget}\nタスク完了条件：${t.completionCriteria}\n今日の指示：${pick.action}\n完了時は実施内容、成果物、実行した検証と結果、残る障害を報告する。未実施を完了と述べない。`;
+ this.s.set('runReport:'+run.id,reportTarget);this.s.set('runRole:'+run.id,role);this.s.set('runPolicy:'+run.id,policy);this.s.set('runCategory:'+run.id,pick.category||'');if(this.connectionForWorker)this.s.set('runScrum:'+run.id,this.connectionForWorker({parentSession,runId:run.id}));this.s.set('runModel:'+run.id,model);
  this.save(a,{runId:run.id,workspace:run.workspace||null,status:'running',instruction,taskVersion:context.taskVersion});await this.pi.prompt(run.id,instruction,id,context);
  }catch(e){this.save(this.list().find(x=>x.id===id),{status:'error',error:e.message});}if(!ulw.active)break;
  }
