@@ -39,10 +39,6 @@
     "vendor/pi-web-access.mjs",
     "skills",
     "skills-conditional",
-    "!*-test.mjs",
-    "!test-env.mjs",
-    "!*acceptance.mjs",
-    "!*live-proof.mjs",
     "client.js",
     "cordis.patch.yml",
     "client-source.js",
@@ -77,10 +73,11 @@
     "docs/assets",
     "docs/visual-assets.md",
     "scripts/readme-demo.mjs",
-    "docs/assets-manifest.json"
+    "docs/assets-manifest.json",
+    "!tests/**"
   ],
   "scripts": {
-    "test": "node --import ./test-env.mjs --test --test-concurrency=1 *-test.mjs",
+    "test": "node --import ./tests/test-env.mjs --test --test-concurrency=1 tests/*-test.mjs",
     "postinstall": "node ./session-compat.mjs",
     "build:client": "esbuild client-source.js --bundle --format=iife --platform=browser --outfile=client.js",
     "test:prepare": "node scripts/prepare-tests.mjs",

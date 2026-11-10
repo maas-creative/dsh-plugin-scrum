@@ -6,7 +6,7 @@ import {createHash} from 'node:crypto';
 const root=resolve(import.meta.dirname,'..');
 if(process.platform!=='darwin'||process.arch!=='arm64')throw Error('This native acceptance setup currently targets macOS arm64. Configure Python and Texlab explicitly on other platforms.');
 execFileSync('uv',['venv','--python','3.12',join(root,'.test-venv')],{stdio:'inherit'});
-execFileSync('uv',['pip','install','--python',join(root,'.test-venv/bin/python'),'-r',join(root,'test-python-requirements.txt')],{stdio:'inherit'});
+execFileSync('uv',['pip','install','--python',join(root,'.test-venv/bin/python'),'-r',join(root,'tests/test-python-requirements.txt')],{stdio:'inherit'});
 const directory=join(root,'.test-tools');await mkdir(directory,{recursive:true});
 const response=await fetch('https://github.com/latex-lsp/texlab/releases/download/v5.26.0/texlab-aarch64-macos.tar.gz',{signal:AbortSignal.timeout(60000)});
 if(!response.ok)throw Error('Texlab download failed: '+response.status);
